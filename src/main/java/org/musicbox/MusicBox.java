@@ -10,14 +10,14 @@ import java.util.EnumSet;
 import java.util.logging.Level;
 
 import org.musicbox.command.CommandController;
-import org.musicbox.command.CommandListener;
-import org.musicbox.google.YoutubeSearchManager;
+import org.musicbox.config.MusicBoxConfiguration;
+import org.musicbox.listeners.CommandListener;
+import org.musicbox.listeners.PresenceListener;
+import org.musicbox.listeners.WatcherListener;
 import org.musicbox.managing.GuildTrackerManager;
-import org.musicbox.managing.VoiceChannelWatcher;
+import org.musicbox.managing.YoutubeSearchManager;
+import org.musicbox.models.MusicBoxCommandTable;
 import org.musicbox.player.soundcloud.SoundCloudAudioSourceManager;
-import org.musicbox.signature.MusicBoxCommandTable;
-import org.musicbox.signature.MusicBoxPresence;
-import org.musicbox.signature.configurations.MusicBoxConfiguration;
 
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayerManager;
 import com.sedmelluq.discord.lavaplayer.player.DefaultAudioPlayerManager;
@@ -85,7 +85,7 @@ public class MusicBox {
 
 	  /* loading JDA */
 	  JDA jda = JDABuilder.create(token, intents)
-		  .addEventListeners(new CommandListener(), new MusicBoxPresence(), new VoiceChannelWatcher()).build();
+		  .addEventListeners(new CommandListener(), new PresenceListener(), new WatcherListener()).build();
 
 	  selfUser = jda.getSelfUser();
 

@@ -1,4 +1,4 @@
-package org.musicbox.signature;
+package org.musicbox.utils;
 
 import java.awt.Color;
 import java.util.ArrayList;
@@ -9,11 +9,9 @@ import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
-import org.musicbox.I18n;
 import org.musicbox.MusicBox;
 import org.musicbox.command.CommandController.CommandInfo;
-import org.musicbox.utils.EmbedTranslator;
-import org.musicbox.utils.Placeholder;
+import org.musicbox.models.Placeholder;
 
 import com.google.gson.JsonObject;
 
@@ -23,20 +21,6 @@ import net.dv8tion.jda.api.entities.TextChannel;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
 public class MusicBoxMessages {
-
-  public static void commandNotFound(TextChannel textChannel) {
-	System.out.println("1");
-  }
-
-  public static void commandWrongAlias(TextChannel textChannel) {
-	System.out.println("2");
-
-  }
-
-  public static void internalError(TextChannel textChannel, Throwable e) {
-	System.out.println("3");
-	e.printStackTrace();
-  }
 
   public static void send(TextChannel channel, String key, List<Placeholder> placeholders) {
 	JsonObject jsonMessage = MusicBox.getConfiguration().getMessages(I18n.DEFAULT_LANGUAGE, key);

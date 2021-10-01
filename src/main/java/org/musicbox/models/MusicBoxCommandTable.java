@@ -1,17 +1,16 @@
-package org.musicbox.signature;
+package org.musicbox.models;
 
 import java.util.List;
 import java.util.Queue;
 
-import org.musicbox.I18n;
 import org.musicbox.MusicBox;
 import org.musicbox.annotations.Command;
 import org.musicbox.annotations.Description;
 import org.musicbox.command.CommandCategory;
 import org.musicbox.command.CommandTable;
 import org.musicbox.managing.GuildManager;
-import org.musicbox.managing.LoadingResult;
-import org.musicbox.utils.Placeholder;
+import org.musicbox.utils.I18n;
+import org.musicbox.utils.MusicBoxMessages;
 import org.musicbox.utils.Utils;
 
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
@@ -41,7 +40,8 @@ public class MusicBoxCommandTable extends CommandTable {
 	GuildManager guildManager = getGuildManager(guild);
 
 	List<Placeholder> placeholders = Placeholder.of(Placeholder.defaultPlaceholders(), Placeholder.owner());
-
+	Placeholder.messageEventPlaceholders(event, placeholders);
+	
 	guildManager.play(triggerMessage, url, (trackChunk, exception) -> {
 
 	  Placeholder.messageEventPlaceholders(event, placeholders);
@@ -238,5 +238,5 @@ public class MusicBoxCommandTable extends CommandTable {
 	  }
 	}
   }
-
+  
 }

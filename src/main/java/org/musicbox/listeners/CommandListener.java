@@ -1,7 +1,7 @@
-package org.musicbox.command;
+package org.musicbox.listeners;
 
 import org.musicbox.MusicBox;
-import org.musicbox.signature.MusicBoxMessages;
+import org.musicbox.utils.MusicBoxMessages;
 
 import net.dv8tion.jda.api.entities.ChannelType;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;

@@ -5,9 +5,11 @@ import java.util.TimerTask;
 import java.util.function.BiConsumer;
 
 import org.musicbox.MusicBox;
+import org.musicbox.models.LoadingResult;
+import org.musicbox.models.PlayInfo;
+import org.musicbox.models.TrackChunk;
+import org.musicbox.models.VoiceStateResult;
 import org.musicbox.player.AudioPlayerSendHandler;
-import org.musicbox.player.PlayInfo;
-import org.musicbox.player.TrackChunk;
 import org.musicbox.player.TrackScheduler;
 import com.sedmelluq.discord.lavaplayer.player.AudioLoadResultHandler;
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayer;
@@ -64,18 +66,22 @@ public class GuildManager {
 
 		VoiceStateResult voiceStateResult = connectToVoiceChannel(triggerMessage);
 		switch (voiceStateResult) {
+		/* joined the voice channel */
 		case JOINED:
+		  
 		  LoadingResult loadingResult = addTrack(track, triggerMessage, false);
 		  PlayInfo playInfo = new PlayInfo(track.getInfo().title, track.getInfo().length, false);
 		  getSchedule().addToQueue(track);
 		  playResult.accept(new TrackChunk(playInfo, loadingResult), null);
 		  return;
-
+		/* denied */
 		case REJECTED:
+		  
 		  playResult.accept(new TrackChunk(null, LoadingResult.MISSING_PERMISSION), null);
 		  return;
-
+		/* invalid voice channel */
 		case FAILED:
+		  
 		  playResult.accept(new TrackChunk(null, LoadingResult.MISSING_VOICE_CHANNEL), null);
 		  return;
 		}
@@ -86,9 +92,9 @@ public class GuildManager {
 		VoiceStateResult voiceStateResult = connectToVoiceChannel(triggerMessage);
 		switch (voiceStateResult) {
 		case JOINED:
+		  
 		  LoadingResult loadingResult = null;
 		  PlayInfo playInfo = new PlayInfo(playlist.getName(), playlist.getTracks().size(), true);
-
 		  for (AudioTrack track : playlist.getTracks()) {
 			LoadingResult currentResult = addTrack(track, triggerMessage, true);
 			if (loadingResult == null) {
@@ -98,12 +104,12 @@ public class GuildManager {
 		  }
 		  playResult.accept(new TrackChunk(playInfo, loadingResult), null);
 		  return;
-
 		case REJECTED:
+		  
 		  playResult.accept(new TrackChunk(null, LoadingResult.MISSING_PERMISSION), null);
 		  return;
-
 		case FAILED:
+		  
 		  playResult.accept(new TrackChunk(null, LoadingResult.MISSING_VOICE_CHANNEL), null);
 		  return;
 		}
@@ -158,18 +164,16 @@ public class GuildManager {
   }
 
   public void waitAndQuitIfNecessary(VoiceChannel channel) {
-	System.out.println("aguardando meu tempo ou alguem entrar novamente.");
 	presenceWaiter = new Timer("[" + getGuild().getIdLong() + "-waiter]");
 	getPresenceWaiter().schedule(new TimerTask() {
 	  public void run() {
 		synchronized (scheduler) {
 		  quitVoiceChannel();
 		  getSchedule().closeSchedule();
-		  System.out.println("closed> " + Thread.currentThread().getName());
 		  presenceWaiter = null;
 		}
 	  }
-	}, 10 * 1000);
+	}, 60 * 2 * 1000);
   }
 
   public void cancelWaiter() {

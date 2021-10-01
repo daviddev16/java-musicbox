@@ -1,4 +1,4 @@
-package org.musicbox.google;
+package org.musicbox.managing;
 
 import com.google.api.client.http.HttpRequest;
 import com.google.api.client.http.HttpRequestInitializer;
@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.util.List;
 
 import org.musicbox.MusicBox;
+import org.musicbox.google.Auth;
 
 public class YoutubeSearchManager {
 

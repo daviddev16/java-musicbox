@@ -1,6 +1,4 @@
-package org.musicbox.player;
-
-import org.musicbox.managing.LoadingResult;
+package org.musicbox.models;
 
 public final class TrackChunk {
 

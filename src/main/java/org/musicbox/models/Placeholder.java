@@ -1,11 +1,12 @@
-package org.musicbox.utils;
+package org.musicbox.models;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import org.musicbox.I18n;
+
 import org.musicbox.MusicBox;
-import org.musicbox.player.TrackChunk;
+import org.musicbox.utils.I18n;
+import org.musicbox.utils.Utils;
 
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 

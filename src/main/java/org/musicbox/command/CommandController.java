@@ -5,13 +5,17 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
 import org.musicbox.annotations.Command;
 import org.musicbox.annotations.DefaultDescription;
 import org.musicbox.annotations.Description;
-import org.musicbox.signature.MusicBoxMessages;
+import org.musicbox.annotations.Hidden;
+import org.musicbox.models.Placeholder;
+import org.musicbox.utils.I18n;
+import org.musicbox.utils.MusicBoxMessages;
 
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
@@ -76,35 +80,32 @@ public class CommandController {
 	}
 
 	String commandName = separated[0].substring(prefix.length());
-
 	CommandInfo commandInfo = get(commandName);
 
 	if (commandInfo == null) {
-	  MusicBoxMessages.commandNotFound(event.getTextChannel());
+	  /* just ignore for a while. */
 	  return;
 	}
 
 	if (!commandInfo.isAliasSplit() && separated.length > 1) {
 
 	  Object[] parsedObjects = new Object[2];
-	  parsedObjects[0] = event; /* setting the event at first parameter */
+	  parsedObjects[0] = event; /* setting the event at first index */
 	  parsedObjects[1] = getAsString(separated, 1);
-
-	  System.out.println(Arrays.deepToString(parsedObjects));
 
 	  try {
 		commandInfo.getCommandMethod().invoke(instance, parsedObjects);
 	  } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
-		MusicBoxMessages.internalError(event.getTextChannel(), e);
+		System.out.println("failed on processing command handlers.");
+		System.exit(-1);
 	  }
-
 	  return;
 	}
 
 	String[] arguments = Arrays.copyOfRange(separated, 1, separated.length);
 
 	if (arguments.length != commandInfo.getParameters().length) {
-	  MusicBoxMessages.commandWrongAlias(event.getTextChannel());
+	  wrongCommandAliasMessage(event, commandInfo.commandAnnotation);
 	  return;
 	}
 
@@ -116,14 +117,15 @@ public class CommandController {
 		parsedObjects[i + 1] = parseArgument(commandInfo.getParameters()[i].getType(), arguments[i]);
 	  }
 	} catch (IllegalArgumentException e) {
-	  MusicBoxMessages.commandWrongAlias(event.getTextChannel());
+	  wrongCommandAliasMessage(event, commandInfo.commandAnnotation);
 	  return;
 	}
 
 	try {
 	  commandInfo.getCommandMethod().invoke(instance, parsedObjects);
 	} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
-	  MusicBoxMessages.internalError(event.getTextChannel(), e);
+	  System.out.println("failed on processing command handlers.");
+	  System.exit(-1);
 	}
 
   }
@@ -190,9 +192,13 @@ public class CommandController {
   }
 
   public void handle(MessageReceivedEvent event, String prefix) {
-
 	processCommand(event, prefix);
+  }
 
+  private void wrongCommandAliasMessage(MessageReceivedEvent event, Command command) {
+	List<Placeholder> placeholders = Placeholder.of(Placeholder.defaultPlaceholders());
+	placeholders.add(Placeholder.create(I18n.COMMAND_USAGE, command.usage()));
+	MusicBoxMessages.send(event.getTextChannel(), "wrongCommandAlias", placeholders);
   }
 
   public Map<String[], CommandInfo> getCommandMap() {
@@ -216,6 +222,10 @@ public class CommandController {
 	  this.description = description;
 	}
 
+	public boolean isHidden() {
+	  return commandMethod.getAnnotation(Hidden.class) != null;
+	}
+	
 	public int getOrder() {
 	  return commandAnnotation.order();
 	}

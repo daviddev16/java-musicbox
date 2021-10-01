@@ -1,4 +1,4 @@
-package org.musicbox.managing;
+package org.musicbox.models;
 
 public enum VoiceStateResult {
 

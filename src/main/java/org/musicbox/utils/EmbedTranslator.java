@@ -3,7 +3,7 @@ package org.musicbox.utils;
 import java.awt.Color;
 import java.util.List;
 
-import org.musicbox.I18n;
+import org.musicbox.models.Placeholder;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
@@ -14,7 +14,6 @@ import net.dv8tion.jda.api.entities.MessageEmbed;
 public final class EmbedTranslator {
 
   public static MessageEmbed translate(JsonObject jsonObject, List<Placeholder> placeholders) {
-
 	EmbedBuilder builder = new EmbedBuilder();
 	if (jsonObject.has("author")) {
 	  builder.setAuthor(

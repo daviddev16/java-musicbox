@@ -1,8 +1,10 @@
-package org.musicbox.managing;
+package org.musicbox.listeners;
 
 import java.util.List;
 
 import org.musicbox.MusicBox;
+import org.musicbox.managing.GuildManager;
+
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.VoiceChannel;
@@ -11,7 +13,7 @@ import net.dv8tion.jda.api.events.guild.voice.GuildVoiceJoinEvent;
 import net.dv8tion.jda.api.events.guild.voice.GuildVoiceLeaveEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
-public class VoiceChannelWatcher extends ListenerAdapter {
+public class WatcherListener extends ListenerAdapter {
 
   @Override
   public void onGenericGuildVoice(GenericGuildVoiceEvent event) {

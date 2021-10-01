@@ -1,4 +1,4 @@
-package org.musicbox.signature;
+package org.musicbox.listeners;
 
 import net.dv8tion.jda.api.OnlineStatus;
 import net.dv8tion.jda.api.entities.Activity;
@@ -8,7 +8,7 @@ import net.dv8tion.jda.api.events.guild.GuildJoinEvent;
 import net.dv8tion.jda.api.events.guild.GuildLeaveEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
-public class MusicBoxPresence extends ListenerAdapter {
+public class PresenceListener extends ListenerAdapter {
 
   public static volatile int guildCount = 0;
 

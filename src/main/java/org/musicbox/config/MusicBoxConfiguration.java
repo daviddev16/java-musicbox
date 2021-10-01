@@ -1,10 +1,9 @@
-package org.musicbox.signature.configurations;
+package org.musicbox.config;
 
 import java.util.List;
 
-import org.musicbox.config.JsonConfiguration;
+import org.musicbox.models.Placeholder;
 import org.musicbox.utils.EmbedTranslator;
-import org.musicbox.utils.Placeholder;
 
 import com.google.gson.JsonObject;
 

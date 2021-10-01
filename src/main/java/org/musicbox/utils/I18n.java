@@ -1,6 +1,6 @@
-package org.musicbox;
+package org.musicbox.utils;
 
-import org.musicbox.managing.LoadingResult;
+import org.musicbox.models.LoadingResult;
 
 public final class I18n {
 
@@ -30,6 +30,7 @@ public final class I18n {
   public static final String COMMAND_LIST = "commandList";
   public static final String OWNER_TAG = "musicBoxOwner";
   public static final String USER_INPUT_TAG = "userInput";
+  public static final String COMMAND_USAGE = "commandUsage";
 
   /* fail reasons */
   public static final int MISSING_PERMISSION_REASON = 0;
