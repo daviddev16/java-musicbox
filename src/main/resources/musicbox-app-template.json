@@ -1,0 +1,129 @@
+{
+	"name": "MusicBox",
+	"version": "1.0.2 Alpha",
+	"owner": "Kernel#5096",
+	"commandPrefix": "!",
+	"authentication": {
+		"mainApplicationToken": "<release application token>",
+		"debugApplicationToken": "<debug application token>",
+		"youtubeApiKey": "<youtube api key>"
+	},
+	"debugMode": true,
+	"debugOptions": {
+		"commandPrefix": "!!"
+	},
+	"messageDeleteAfter": 30,
+	"musicBoxMessages": {
+		"failReasons": {
+			"pt_br": [
+				"O bot não possui permissão para entrar nesse canal :c",
+				"Não encontrei nada para '$[userInput]'.",
+				"Não foi possivel achar um canal de voz :(",
+				"Não foi possivel adicionar essa musica na lista de reprodução.",
+				"Não foi possivel carregar essa musica."
+			]
+		},
+		"pt_br": {
+			"trackAdded": {
+				"title": "$[trackTitle]",
+				"footer": {
+					"text": "Duração: $[trackTimestamp] | Adicionado por $[senderTag].",
+					"iconUrl": "$[senderAvatar]"
+				},
+				"description": "Música adicionada a lista de reprodução.",
+				"thumbnail": "$[trackAddedIcon]",
+				"color": "FFF9D0"
+			},
+			"playlistAdded": {
+				"title": "$[trackTitle]",
+				"footer": {
+					"text": "Adicionado por $[senderTag]",
+					"iconUrl": "$[senderAvatar]"
+				},
+				"description": "Playlist adicionada a lista de reprodução.",
+				"thumbnail": "$[trackAddedIcon]",
+				"color": "FFF9D0"
+			},
+			"trackSkipped": {
+				"title": "A música anterior foi passada.",
+				"footer": {
+					"text": "Passada por $[senderTag]",
+					"iconUrl": "$[senderAvatar]"
+				},
+				"description": "Uma nova música começou a tocar.",
+				"thumbnail": "$[trackSkippedIcon]",
+				"color": "E5F5FF"
+			},
+			"trackStopped": {
+				"title": "A lista de música foi encerrada.",
+				"footer": {
+					"text": "Encerrada por $[senderTag]",
+					"iconUrl": "$[senderAvatar]"
+				},
+				"description": "Para tocar novamente, use \"$[globalPrefix]play <url>\".",
+				"thumbnail": "$[trackStoppedIcon]",
+				"color": "C9FFED"
+			},
+			"trackPaused": {
+				"title": "Música atual pausada.",
+				"footer": {
+					"text": "Pausada por $[senderTag]",
+					"iconUrl": "$[senderAvatar]"
+				},
+				"description": "Para continuar use \"!resume\".",
+				"thumbnail": "$[trackPausedIcon]",
+				"color": "C7FFED"
+			},
+			"trackResumed": {
+				"title": "Música atual tocando novamente.",
+				"footer": {
+					"text": "Despausada por $[senderTag]",
+					"iconUrl": "$[senderAvatar]"
+				},
+				"description": "Para pausar use \"!pause\".",
+				"thumbnail": "$[trackResumedIcon]",
+				"color": "C7FFED"
+			},
+			"trackRepeatMode": {
+				"title": "Repetindo a música atual.",
+				"footer": {
+					"text": "Modo de repetição ativado por $[senderTag]",
+					"iconUrl": "$[senderAvatar]"
+				},
+				"description": "Para desativar use \"!repeat\" novamente.",
+				"thumbnail": "$[trackRepeatModeIcon]",
+				"color": "FFD5FC"
+			},
+			"trackRestarted": {
+				"title": "A música atual recomeçou.",
+				"footer": {
+					"text": "$[senderTag] recomeçou a música.",
+					"iconUrl": "$[senderAvatar]"
+				},
+				"description": "A música atual começará do zero.",
+				"thumbnail": "$[trackRestartedIcon]",
+				"color": "FFF7CB"
+			},
+			"failed": {
+				"title": "Falha ao usar o bot.",
+				"footer": {
+					"text": "Comando executado por $[senderTag]",
+					"iconUrl": "$[senderAvatar]"
+				},
+				"description": "$[failReason]",
+				"thumbnail": "$[failedIcon]",
+				"color": "FFEAED"
+			},
+			"helpCommand": {
+				"title": "Lista de comandos",
+				"footer": {
+					"text": "Feito por $[musicBoxOwner] | Lista requisitada por $[senderTag]",
+					"iconUrl": "$[senderAvatar]"
+				},
+				"description": "$[commandList]",
+				"thumbnail": "$[trackAddedIcon]",
+				"color": "FFF9D0"
+			}
+		}
+	}
+}

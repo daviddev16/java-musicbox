@@ -1,0 +1,1 @@
+worker: java $JAVA_OPTS -jar build/libs/java-musicbox-all.jar -Dspring.server.port=$PORT $JAR_OPTS
