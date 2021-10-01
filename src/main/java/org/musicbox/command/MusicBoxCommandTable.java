@@ -35,7 +35,7 @@ public class MusicBoxCommandTable extends CommandTable {
 
 	Guild guild = event.getGuild();
 
-	String url = userInput; /* ok let's just supposed the user typed an url lol */
+	String url = userInput; /* ok let's just suppose the user typed a valid url lol */
 	if (!Utils.isURL(url)) {
 	  url = MusicBox.getSearchManager().getUrlBaseOnText(url);
 	}
