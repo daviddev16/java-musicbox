@@ -27,12 +27,11 @@ public class WatcherListener extends ListenerAdapter {
 
 	  if (isBotPresent(channel) && isAlone(channel.getMembers())) {
 		if (guildManager.getPresenceWaiter() == null) {
-		  guildManager.waitAndQuitIfNecessary(channel);
+		  guildManager.waitToQuitIfNecessary(channel);
 		}
 	  }
 	} else if (event instanceof GuildVoiceJoinEvent) {
 	  channel = ((GuildVoiceJoinEvent) event).getChannelJoined();
-
 	  if (isBotPresent(channel) && !isAlone(channel.getMembers())) {
 		guildManager.cancelWaiter();
 	  }

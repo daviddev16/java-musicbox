@@ -66,22 +66,21 @@ public class GuildManager {
 
 		VoiceStateResult voiceStateResult = connectToVoiceChannel(triggerMessage);
 		switch (voiceStateResult) {
+
 		/* joined the voice channel */
 		case JOINED:
-		  
 		  LoadingResult loadingResult = addTrack(track, triggerMessage, false);
 		  PlayInfo playInfo = new PlayInfo(track.getInfo().title, track.getInfo().length, false);
-		  getSchedule().addToQueue(track);
 		  playResult.accept(new TrackChunk(playInfo, loadingResult), null);
 		  return;
-		/* denied */
+
+		  /* denied */
 		case REJECTED:
-		  
 		  playResult.accept(new TrackChunk(null, LoadingResult.MISSING_PERMISSION), null);
 		  return;
-		/* invalid voice channel */
+
+		  /* invalid voice channel */
 		case FAILED:
-		  
 		  playResult.accept(new TrackChunk(null, LoadingResult.MISSING_VOICE_CHANNEL), null);
 		  return;
 		}
@@ -92,7 +91,7 @@ public class GuildManager {
 		VoiceStateResult voiceStateResult = connectToVoiceChannel(triggerMessage);
 		switch (voiceStateResult) {
 		case JOINED:
-		  
+
 		  LoadingResult loadingResult = null;
 		  PlayInfo playInfo = new PlayInfo(playlist.getName(), playlist.getTracks().size(), true);
 		  for (AudioTrack track : playlist.getTracks()) {
@@ -100,16 +99,15 @@ public class GuildManager {
 			if (loadingResult == null) {
 			  loadingResult = currentResult;
 			}
-			getSchedule().addToQueue(track);
 		  }
 		  playResult.accept(new TrackChunk(playInfo, loadingResult), null);
 		  return;
 		case REJECTED:
-		  
+
 		  playResult.accept(new TrackChunk(null, LoadingResult.MISSING_PERMISSION), null);
 		  return;
 		case FAILED:
-		  
+
 		  playResult.accept(new TrackChunk(null, LoadingResult.MISSING_VOICE_CHANNEL), null);
 		  return;
 		}
@@ -163,7 +161,8 @@ public class GuildManager {
 	}
   }
 
-  public void waitAndQuitIfNecessary(VoiceChannel channel) {
+  /* wait until someone join the voice channel again */
+  public void waitToQuitIfNecessary(VoiceChannel channel) {
 	presenceWaiter = new Timer("[" + getGuild().getIdLong() + "-waiter]");
 	getPresenceWaiter().schedule(new TimerTask() {
 	  public void run() {

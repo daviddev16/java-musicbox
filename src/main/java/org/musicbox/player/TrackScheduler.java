@@ -73,4 +73,21 @@ public class TrackScheduler extends AudioEventAdapter {
 	this.lastTrack = lastTrack;
   }
 
+  public void select(int index) {
+	synchronized (queue) {
+	  int currentIndex = 0;
+	  for (AudioTrack track : queue) {
+		if (currentIndex == index) {
+		  player.startTrack(track, false);
+		  return;
+		}
+		currentIndex++;
+	  }
+	}
+  }
+
+  public boolean isValidIndex(int index) {
+	return index <= queue.size();
+  }
+
 }

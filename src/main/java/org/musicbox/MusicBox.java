@@ -10,13 +10,13 @@ import java.util.EnumSet;
 import java.util.logging.Level;
 
 import org.musicbox.command.CommandController;
+import org.musicbox.command.MusicBoxCommandTable;
 import org.musicbox.config.MusicBoxConfiguration;
 import org.musicbox.listeners.CommandListener;
 import org.musicbox.listeners.PresenceListener;
 import org.musicbox.listeners.WatcherListener;
 import org.musicbox.managing.GuildTrackerManager;
 import org.musicbox.managing.YoutubeSearchManager;
-import org.musicbox.models.MusicBoxCommandTable;
 import org.musicbox.player.soundcloud.SoundCloudAudioSourceManager;
 
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayerManager;

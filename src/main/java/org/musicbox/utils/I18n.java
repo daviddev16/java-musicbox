@@ -7,7 +7,7 @@ public final class I18n {
   /*
    * the reason why it's disabled: thumbnails are getting too much time on loading
    */
-  public static final boolean DISABLE_EMBED_THUMBNAILS = true;
+  public static final boolean ENABLE_EMBED_THUMBNAILS = false;
 
   /* lang */
   public static final String DEFAULT_LANGUAGE = "pt_br";
@@ -31,6 +31,8 @@ public final class I18n {
   public static final String OWNER_TAG = "musicBoxOwner";
   public static final String USER_INPUT_TAG = "userInput";
   public static final String COMMAND_USAGE = "commandUsage";
+  public static final String GLOBAL_PREFIX = "globalPrefix";
+
 
   /* fail reasons */
   public static final int MISSING_PERMISSION_REASON = 0;
@@ -51,6 +53,7 @@ public final class I18n {
   public static final String RESUMED = "https://cdn-icons-png.flaticon.com/64/5622/5622141.png";
   public static final String RESTARTED = "https://cdn-icons-png.flaticon.com/64/5622/5622235.png";
 
+  
   public static int getReason(LoadingResult loadingResult) {
 
 	if (loadingResult == LoadingResult.FAILED_LOAD) {

@@ -13,6 +13,7 @@ import net.dv8tion.jda.api.entities.MessageEmbed;
 
 public final class EmbedTranslator {
 
+  @SuppressWarnings("unused")
   public static MessageEmbed translate(JsonObject jsonObject, List<Placeholder> placeholders) {
 	EmbedBuilder builder = new EmbedBuilder();
 	if (jsonObject.has("author")) {
@@ -35,7 +36,7 @@ public final class EmbedTranslator {
 	if (jsonObject.has("image")) {
 	  builder.setImage(translateCodes(jsonObject.get("image").getAsString(), placeholders));
 	}
-	if (jsonObject.has("thumbnail") && I18n.DISABLE_EMBED_THUMBNAILS) {
+	if (jsonObject.has("thumbnail") && I18n.ENABLE_EMBED_THUMBNAILS) {
 	  builder.setThumbnail(translateCodes(jsonObject.get("thumbnail").getAsString(), placeholders));
 	}
 	if (jsonObject.has("title")) {

@@ -1,16 +1,20 @@
-package org.musicbox.models;
+package org.musicbox.command;
 
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Queue;
+import java.util.stream.Collectors;
 
 import org.musicbox.MusicBox;
 import org.musicbox.annotations.Command;
 import org.musicbox.annotations.Description;
-import org.musicbox.command.CommandCategory;
-import org.musicbox.command.CommandTable;
+import org.musicbox.command.CommandController.CommandInfo;
 import org.musicbox.managing.GuildManager;
+import org.musicbox.models.LoadingResult;
+import org.musicbox.models.Placeholder;
+import org.musicbox.models.Placeholders;
 import org.musicbox.utils.I18n;
-import org.musicbox.utils.MusicBoxMessages;
 import org.musicbox.utils.Utils;
 
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
@@ -26,7 +30,7 @@ public class MusicBoxCommandTable extends CommandTable {
 
   @Description(text = "Adiciona a musica na lista.")
   @Command(name = { "play",
-	  "p" }, usage = "play|p <url>", category = CommandCategory.MUSIC, aliasSplit = false, order = 0)
+  "p" }, usage = "play/p <url>", category = CommandCategory.MUSIC, aliasSplit = false, order = 0)
   private void commandPlay(MessageReceivedEvent event, final String userInput) {
 
 	Guild guild = event.getGuild();
@@ -39,28 +43,22 @@ public class MusicBoxCommandTable extends CommandTable {
 	Message triggerMessage = event.getMessage();
 	GuildManager guildManager = getGuildManager(guild);
 
-	List<Placeholder> placeholders = Placeholder.of(Placeholder.defaultPlaceholders(), Placeholder.owner());
-	Placeholder.messageEventPlaceholders(event, placeholders);
-	
 	guildManager.play(triggerMessage, url, (trackChunk, exception) -> {
 
-	  Placeholder.messageEventPlaceholders(event, placeholders);
-	  Placeholder.trackPlaceholder(trackChunk, placeholders);
-	  Placeholder.userInputPlaceholder(userInput, placeholders);
+	  List<Placeholder> placeholders = Placeholders.ofTrackAdded(event, userInput, trackChunk);
 
 	  if (trackChunk.getLoadingResult() == LoadingResult.QUEUED_SINGLE) {
-		MusicBoxMessages.send(event.getTextChannel(), "trackAdded", placeholders);
+		Utils.send(event.getTextChannel(), "trackAdded", placeholders);
 	  } else if (trackChunk.getLoadingResult() == LoadingResult.QUEUED_PLAYLIST) {
-		MusicBoxMessages.send(event.getTextChannel(), "playlistAdded", placeholders);
+		Utils.send(event.getTextChannel(), "playlistAdded", placeholders);
 	  } else {
 		System.out.println(trackChunk.getLoadingResult().name());
 
-		Placeholder.addReason(placeholders, MusicBox.getConfiguration().getFailedReason(I18n.DEFAULT_LANGUAGE,
-			I18n.getReason(trackChunk.getLoadingResult()), placeholders));
+		String reason = MusicBox.getConfiguration().getFailedReason(I18n.DEFAULT_LANGUAGE,
+			I18n.getReason(trackChunk.getLoadingResult()), placeholders);
 
-		MusicBoxMessages.send(event.getTextChannel(), "failed", placeholders);
+		Utils.send(event.getTextChannel(), "failed", Placeholders.ofFailed(event, reason));
 	  }
-
 	  if (exception != null) {
 		System.out.println(exception.getMessage());
 	  }
@@ -72,11 +70,11 @@ public class MusicBoxCommandTable extends CommandTable {
   private void commandStop(MessageReceivedEvent event) {
 
 	GuildManager guildManager = getGuildManager(event.getGuild());
-
 	guildManager.getSchedule().getQueue().clear();
 	guildManager.getAudioPlayer().stopTrack();
 	guildManager.getAudioPlayer().setPaused(false);
-	// MusicBoxMessages.trackStopped(event);
+	Utils.send(event.getTextChannel(), "trackStopped", Placeholders.ofTrackStopped(event));
+
   }
 
   @Description(text = "Passa para a proxima musica.")
@@ -85,8 +83,10 @@ public class MusicBoxCommandTable extends CommandTable {
 
 	GuildManager guildManager = getGuildManager(event.getGuild());
 	guildManager.getSchedule().nextTrack();
-	// MusicBoxMessages.trackSkipped(event);
+	Utils.send(event.getTextChannel(), "trackSkipped", Placeholders.ofTrackSkipped(event));
   }
+
+
 
   @Description(text = "Começa a musica do zero.")
   @Command(name = { "restart" }, usage = "restart", category = CommandCategory.MUSIC, aliasSplit = true, order = 3)
@@ -99,7 +99,7 @@ public class MusicBoxCommandTable extends CommandTable {
 	  track = guildManager.getSchedule().getLastTrack();
 
 	if (track != null) {
-	  // MusicBoxMessages.trackRestarted(event);
+	  Utils.send(event.getTextChannel(), "trackRestarted", Placeholders.ofTrackRestarted(event));
 	  guildManager.getAudioPlayer().playTrack(track.makeClone());
 	} else {
 	  event.getChannel().sendMessage("Não há musica para recomeçar!").queue();
@@ -117,7 +117,7 @@ public class MusicBoxCommandTable extends CommandTable {
 	  event.getMessage().addReaction("👍").queue();
 	  return;
 	}
-	// MusicBoxMessages.trackRepeatMode(event);
+	Utils.send(event.getTextChannel(), "trackRepeatMode", Placeholders.ofTrackRepeatMode(event));
 	guildManager.getSchedule().setRepeating(true);
   }
 
@@ -126,52 +126,31 @@ public class MusicBoxCommandTable extends CommandTable {
   private void commandQueue(MessageReceivedEvent event) {
 
 	GuildManager guildManager = getGuildManager(event.getGuild());
-
 	Queue<AudioTrack> songQueue = guildManager.getSchedule().getQueue();
+
 	synchronized (songQueue) {
 	  if (songQueue.isEmpty()) {
 		event.getChannel().sendMessage("a lista está vazia!").queue();
 	  } else {
 
-		int trackCount = 0;
 		long queueLength = 0;
+		int index = 0;
 		StringBuilder sb = new StringBuilder();
 		sb.append("Musica atual: " + guildManager.getAudioPlayer().getPlayingTrack().getInfo().title + " | Lista: ")
-			.append(songQueue.size()).append("\n");
+		.append(songQueue.size()).append("\n");
 		for (AudioTrack track : songQueue) {
-		  queueLength += track.getDuration();
-		  if (trackCount < 10) {
-			sb.append("`[").append(Utils.getTimestamp(track.getDuration())).append("]` ");
+		  if(index < 10) {
+			queueLength += track.getDuration();
+			sb.append(index + ": " + "`[").append(Utils.getTimestamp(track.getDuration())).append("]` ");
 			sb.append(track.getInfo().title).append("\n");
-			trackCount++;
 		  }
+		  index++;
 		}
 		sb.append("\n").append("Tempo total: ").append(Utils.getTimestamp(queueLength));
-		event.getChannel().sendMessage(sb.toString()).queue();
+		event.getChannel().sendMessage(sb.toString()).queue(Utils.deleteAfter(120L));
 	  }
 	}
   }
-
-  /*
-   * @Description(text = "Adiciona uma playlist.")
-   * 
-   * @Command(name = { "playlist", "pl" }, usage = "playlist|pl <url>", category =
-   * CommandCategory.MUSIC, aliasSplit = false, order = 6) private void
-   * commandPlaylist(MessageReceivedEvent event, String url) {
-   * 
-   * Guild guild = event.getGuild(); GuildManager guildManager =
-   * getGuildManager(guild); guildManager.play(event, url, true);
-   * 
-   * VoiceChannel voiceChannel = event.getMember().getVoiceState().getChannel();
-   * 
-   * if (voiceChannel != null) {
-   * guild.getAudioManager().setSendingHandler(guildManager.getSendHandler()); try
-   * { guild.getAudioManager().openAudioConnection(voiceChannel); } catch
-   * (PermissionException e) { if (e.getPermission() == Permission.VOICE_CONNECT)
-   * { event.getChannel().sendMessage(
-   * "Eu não tenho permissão de entrar nesse canal de voz :( [" +
-   * voiceChannel.getName() + "].") .queue(); } } } }
-   */
 
   @Description(text = "Pausa a musica atual.")
   @Command(name = { "pause" }, usage = "pause", category = CommandCategory.MUSIC, aliasSplit = true, order = 7)
@@ -185,13 +164,32 @@ public class MusicBoxCommandTable extends CommandTable {
 	}
 
 	guildManager.getAudioPlayer().setPaused(true);
-	// MusicBoxMessages.trackPaused(event);
+	Utils.send(event.getTextChannel(), "trackPaused", Placeholders.ofTrackPaused(event));
   }
 
   @Description(text = "Lista de comandos.")
   @Command(name = { "help" }, usage = "help", category = CommandCategory.MUSIC, aliasSplit = true, order = 8)
   private void commandHelp(MessageReceivedEvent event) {
-	MusicBoxMessages.help(event);
+
+	StringBuffer buffer = new StringBuffer();
+
+	List<CommandInfo> sortedCommands = MusicBox.getCommandController().getCommandMap().values().stream()
+		.collect(Collectors.toCollection(ArrayList::new));
+
+	sortedCommands.sort(new Comparator<CommandInfo>() {
+	  public int compare(CommandInfo o1, CommandInfo o2) {
+		return (o1.getOrder() == o2.getOrder()) ? 0 : (o1.getOrder() > o2.getOrder()) ? 1 : -1;
+	  }
+	});
+
+	sortedCommands.forEach((commandInfo) -> {
+	  buffer.append("**").append(Utils.getJoinedString(commandInfo.getNames())).append("**: ");
+	  buffer.append("`!" + commandInfo.getUsage() + "`").append(" **|** ");
+	  buffer.append("*").append(commandInfo.getDescription().text()).append("*").append('\n');
+	});
+
+	Utils.send(event.getTextChannel(), "helpCommand", Placeholders.ofHelpCommand(event, buffer.toString().trim()));
+
   }
 
   @Description(text = "Despausa a musica.")
@@ -204,17 +202,15 @@ public class MusicBoxCommandTable extends CommandTable {
 	if (guildManager.getAudioPlayer().getPlayingTrack() == null) {
 	  return;
 	}
-
 	guildManager.getAudioPlayer().setPaused(false);
-	// MusicBoxMessages.trackResumed(event);
+	Utils.send(event.getTextChannel(), "trackResumed", Placeholders.ofTrackResumed(event));
   }
 
   @Description(text = "Playlist do Kernel.")
   @Command(name = { "kernel" }, usage = "kernel", category = CommandCategory.MUSIC, aliasSplit = true, order = 10)
   private void commandKernel(MessageReceivedEvent event) {
-	// commandPlaylist(event,
-	// "https://soundcloud.com/musicbykernel/sets/only-bangers");
-	event.getTextChannel().sendMessage("enjoy 🙂 !").queue(MusicBoxMessages.deleteAfter(20L));
+	commandPlay(event, "https://soundcloud.com/musicbykernel/sets/only-bangers");
+	event.getTextChannel().sendMessage("enjoy 🙂 !").queue(Utils.deleteAfter(5L));
   }
 
   @Description(text = "Faz o bot entrar na sua call.")
@@ -232,11 +228,39 @@ public class MusicBoxCommandTable extends CommandTable {
 	  } catch (PermissionException e) {
 		if (e.getPermission() == Permission.VOICE_CONNECT) {
 		  event.getChannel()
-			  .sendMessage("Eu não tenho permissão de entrar nesse canal de voz :( [" + voiceChannel.getName() + "].")
-			  .queue();
+		  .sendMessage("Eu não tenho permissão de entrar nesse canal de voz :( [" + voiceChannel.getName() + "].")
+		  .queue();
 		}
 	  }
 	}
   }
-  
+
+  @Description(text = "Mostra a musica atual.")
+  @Command(name = { "playing", "pn" }, usage = "playing/pn", category = CommandCategory.MUSIC, aliasSplit = true, order = 12)
+  private void commandPlayingNow(MessageReceivedEvent event) {
+
+	GuildManager guildManager = getGuildManager(event.getGuild());
+
+	AudioTrack track = guildManager.getAudioPlayer().getPlayingTrack();
+	if (track != null) {
+	  Utils.send(event.getTextChannel(), "playingNow", Placeholders.ofPlayingNow(event, track.getInfo().title));
+	}
+  }
+
+  @Description(text = "Seleciona uma musica pelo numero na lista.")
+  @Command(name = { "select" }, usage = "select <index>", category = CommandCategory.MUSIC, aliasSplit = true, order = 12)
+  private void commandSelect(MessageReceivedEvent event, int index) {
+
+	GuildManager guildManager = getGuildManager(event.getGuild());
+
+	if(guildManager.getSchedule().isValidIndex(index)) {
+	  String name = "Indo para a musica " + index;
+	  Utils.send(event.getTextChannel(), "select", Placeholders.ofSelect(event, name));
+	  guildManager.getSchedule().select(index);
+	}
+	else {
+	  Utils.send(event.getTextChannel(), "failed", Placeholders.ofFailed(event, "Valor inválido."));
+	}
+  }
+
 }

@@ -1,7 +1,7 @@
 package org.musicbox.listeners;
 
 import org.musicbox.MusicBox;
-import org.musicbox.utils.MusicBoxMessages;
+import org.musicbox.utils.Utils;
 
 import net.dv8tion.jda.api.entities.ChannelType;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
@@ -22,7 +22,7 @@ public class CommandListener extends ListenerAdapter {
 	/* my id lol */
 	if (event.getMember().getUser().getIdLong() != 339978701297156098L) {
 	  event.getTextChannel().sendMessage("Você não tem permissão de usar o bot em modo de desenvolvimento.")
-		  .queue(MusicBoxMessages.deleteAfter(20L));
+		  .queue(Utils.deleteAfter(20L));
 	  return;
 	}
 

@@ -5,17 +5,14 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-
 import org.musicbox.annotations.Command;
 import org.musicbox.annotations.DefaultDescription;
 import org.musicbox.annotations.Description;
 import org.musicbox.annotations.Hidden;
-import org.musicbox.models.Placeholder;
-import org.musicbox.utils.I18n;
-import org.musicbox.utils.MusicBoxMessages;
+import org.musicbox.models.Placeholders;
+import org.musicbox.utils.Utils;
 
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
@@ -96,7 +93,7 @@ public class CommandController {
 	  try {
 		commandInfo.getCommandMethod().invoke(instance, parsedObjects);
 	  } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
-		System.out.println("failed on processing command handlers.");
+		System.out.println("failed on processing command handlers. [1]");
 		System.exit(-1);
 	  }
 	  return;
@@ -105,7 +102,7 @@ public class CommandController {
 	String[] arguments = Arrays.copyOfRange(separated, 1, separated.length);
 
 	if (arguments.length != commandInfo.getParameters().length) {
-	  wrongCommandAliasMessage(event, commandInfo.commandAnnotation);
+	  Utils.send(event.getTextChannel(), "wrongCommandAlias", Placeholders.ofWrongCommandAlias(event, commandInfo.getUsage()));
 	  return;
 	}
 
@@ -117,14 +114,15 @@ public class CommandController {
 		parsedObjects[i + 1] = parseArgument(commandInfo.getParameters()[i].getType(), arguments[i]);
 	  }
 	} catch (IllegalArgumentException e) {
-	  wrongCommandAliasMessage(event, commandInfo.commandAnnotation);
+	  Utils.send(event.getTextChannel(), "wrongCommandAlias", Placeholders.ofWrongCommandAlias(event, commandInfo.getUsage()));
 	  return;
 	}
 
 	try {
 	  commandInfo.getCommandMethod().invoke(instance, parsedObjects);
 	} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
-	  System.out.println("failed on processing command handlers.");
+	  e.printStackTrace();
+	  System.out.println("failed on processing command handlers. [2]");
 	  System.exit(-1);
 	}
 
@@ -195,12 +193,6 @@ public class CommandController {
 	processCommand(event, prefix);
   }
 
-  private void wrongCommandAliasMessage(MessageReceivedEvent event, Command command) {
-	List<Placeholder> placeholders = Placeholder.of(Placeholder.defaultPlaceholders());
-	placeholders.add(Placeholder.create(I18n.COMMAND_USAGE, command.usage()));
-	MusicBoxMessages.send(event.getTextChannel(), "wrongCommandAlias", placeholders);
-  }
-
   public Map<String[], CommandInfo> getCommandMap() {
 	return commandMap;
   }
@@ -225,7 +217,7 @@ public class CommandController {
 	public boolean isHidden() {
 	  return commandMethod.getAnnotation(Hidden.class) != null;
 	}
-	
+
 	public int getOrder() {
 	  return commandAnnotation.order();
 	}
