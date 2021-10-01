@@ -21,32 +21,32 @@ import java.util.List;
 
 public class Auth {
 
-    public static final HttpTransport HTTP_TRANSPORT = new NetHttpTransport();
-    public static final JsonFactory JSON_FACTORY = new GsonFactory();
-    private static final String CREDENTIALS_DIRECTORY = ".oauth-credentials";
+  public static final HttpTransport HTTP_TRANSPORT = new NetHttpTransport();
+  public static final JsonFactory JSON_FACTORY = new GsonFactory();
+  private static final String CREDENTIALS_DIRECTORY = ".oauth-credentials";
 
-    public static Credential authorize(List<String> scopes, String credentialDatastore) throws IOException {
+  public static Credential authorize(List<String> scopes, String credentialDatastore) throws IOException {
 
-        Reader clientSecretReader = new InputStreamReader(Auth.class.getResourceAsStream("/client_secrets.json"));
-        GoogleClientSecrets clientSecrets = GoogleClientSecrets.load(JSON_FACTORY, clientSecretReader);
+	Reader clientSecretReader = new InputStreamReader(Auth.class.getResourceAsStream("/client_secrets.json"));
+	GoogleClientSecrets clientSecrets = GoogleClientSecrets.load(JSON_FACTORY, clientSecretReader);
 
-        if (clientSecrets.getDetails().getClientId().startsWith("Enter")
-                || clientSecrets.getDetails().getClientSecret().startsWith("Enter ")) {
-            System.out.println(
-                    "Enter Client ID and Secret from https://console.developers.google.com/project/_/apiui/credential "
-                            + "into src/main/resources/client_secrets.json");
-            System.exit(1);
-        }
+	if (clientSecrets.getDetails().getClientId().startsWith("Enter")
+		|| clientSecrets.getDetails().getClientSecret().startsWith("Enter ")) {
+	  System.out
+		  .println("Enter Client ID and Secret from https://console.developers.google.com/project/_/apiui/credential "
+			  + "into src/main/resources/client_secrets.json");
+	  System.exit(1);
+	}
 
-        FileDataStoreFactory fileDataStoreFactory = new FileDataStoreFactory(new File(System.getProperty("user.home") + "/" + CREDENTIALS_DIRECTORY));
-        DataStore<StoredCredential> datastore = fileDataStoreFactory.getDataStore(credentialDatastore);
+	FileDataStoreFactory fileDataStoreFactory = new FileDataStoreFactory(
+		new File(System.getProperty("user.home") + "/" + CREDENTIALS_DIRECTORY));
+	DataStore<StoredCredential> datastore = fileDataStoreFactory.getDataStore(credentialDatastore);
 
-        GoogleAuthorizationCodeFlow flow = new GoogleAuthorizationCodeFlow.Builder(
-                HTTP_TRANSPORT, JSON_FACTORY, clientSecrets, scopes).setCredentialDataStore(datastore)
-                .build();
+	GoogleAuthorizationCodeFlow flow = new GoogleAuthorizationCodeFlow.Builder(HTTP_TRANSPORT, JSON_FACTORY,
+		clientSecrets, scopes).setCredentialDataStore(datastore).build();
 
-        LocalServerReceiver localReceiver = new LocalServerReceiver.Builder().setPort(8080).build();
+	LocalServerReceiver localReceiver = new LocalServerReceiver.Builder().setPort(8080).build();
 
-        return new AuthorizationCodeInstalledApp(flow, localReceiver).authorize("user");
-    }
+	return new AuthorizationCodeInstalledApp(flow, localReceiver).authorize("user");
+  }
 }

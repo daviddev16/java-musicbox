@@ -13,36 +13,37 @@ import org.musicbox.MusicBox;
 
 public class YoutubeSearchManager {
 
-	private final YouTube youtube;
+  private final YouTube youtube;
 
-	public YoutubeSearchManager() {
-		youtube = new YouTube.Builder(Auth.HTTP_TRANSPORT, Auth.JSON_FACTORY, new HttpRequestInitializer() {
-			public void initialize(HttpRequest request) throws IOException {}
-		}).setApplicationName("musicbox-java-search").build();
+  public YoutubeSearchManager() {
+	youtube = new YouTube.Builder(Auth.HTTP_TRANSPORT, Auth.JSON_FACTORY, new HttpRequestInitializer() {
+	  public void initialize(HttpRequest request) throws IOException {
+	  }
+	}).setApplicationName("musicbox-java-search").build();
+  }
+
+  public String getUrlBaseOnText(String text) {
+	try {
+	  YouTube.Search.List search = youtube.search().list("id,snippet");
+	  search.setKey(MusicBox.getConfiguration().getYoutubeAPIKey());
+	  search.setQ(text);
+	  search.setType("video");
+
+	  search.setFields("items(id/videoId)");
+	  search.setMaxResults(2L);
+
+	  SearchListResponse searchResponse = search.execute();
+	  List<SearchResult> searchResultList = searchResponse.getItems();
+	  if (searchResultList != null) {
+		SearchResult singleVideo = searchResultList.get(0);
+		ResourceId rId = singleVideo.getId();
+		String url = "youtube.com/watch?v=" + rId.getVideoId();
+		return url;
+	  }
+	} catch (Exception e) {
+	  return "invalid";
 	}
-
-	public String getUrlBaseOnText(String text) {
-		try {
-			YouTube.Search.List search = youtube.search().list("id,snippet");
-			search.setKey(MusicBox.getConfiguration().getYoutubeAPIKey());
-			search.setQ(text);
-			search.setType("video");
-
-			search.setFields("items(id/videoId)");
-			search.setMaxResults(2L);
-
-			SearchListResponse searchResponse = search.execute();
-			List<SearchResult> searchResultList = searchResponse.getItems();
-			if (searchResultList != null) {
-				SearchResult singleVideo = searchResultList.get(0);
-				ResourceId rId = singleVideo.getId();
-				String url = "youtube.com/watch?v=" + rId.getVideoId();
-				return url;
-			}
-		} catch (Exception e) {
-			return "invalid";
-		}
-		return "invalid";
-	}
+	return "invalid";
+  }
 
 }

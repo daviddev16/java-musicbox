@@ -12,62 +12,63 @@ import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
 public class CommandExecutor {
 
-	private String[] command;
-	private Class<?>[] parameterClasses;
+  private String[] command;
+  private Class<?>[] parameterClasses;
 
-	public CommandExecutor(String[] command, Class<?>[] parameterClasses) {
-		this.setCommand(command);
-		this.setParameterClasses(parameterClasses);
+  public CommandExecutor(String[] command, Class<?>[] parameterClasses) {
+	this.setCommand(command);
+	this.setParameterClasses(parameterClasses);
+  }
+
+  public void execute(MessageReceivedEvent event, Object[] arguments) {
+  }
+
+  public boolean validateArguments(Object[] arguments) {
+	if (parameterClasses == null) {
+	  return true;
 	}
-
-	public void execute(MessageReceivedEvent event, Object[] arguments) {}
-
-	public boolean validateArguments(Object[] arguments) {
-		if(parameterClasses == null) {
-			return true;
+	if (arguments.length == parameterClasses.length) {
+	  for (int i = 0; i < parameterClasses.length; i++) {
+		if (!arguments[i].getClass().isAssignableFrom(parameterClasses[i])) {
+		  return false;
 		}
-		if(arguments.length == parameterClasses.length) {
-			for(int i = 0; i < parameterClasses.length; i++) {
-				if(!arguments[i].getClass().isAssignableFrom(parameterClasses[i])) {
-					return false;
-				}
-			}
-		}else {
-			return false;
-		}
-		return true;
+	  }
+	} else {
+	  return false;
 	}
-	
-	public GuildManager getGuildManager(Guild guild) {
-		return MusicBox.getTrackerManager().getGuildManager(guild);
-	}
-	
-	public TrackScheduler getSchedule(Guild guild) {
-		return getGuildManager(guild).getSchedule();
-	}
-	
-	public AudioPlayer getAudioPlayer(Guild guild) {
-		return getGuildManager(guild).getAudioPlayer();
-	}
-	
-	public AudioPlayerSendHandler getAudioSendHandler(Guild guild) {
-		return getGuildManager(guild).getSendHandler();
-	}
+	return true;
+  }
 
-	public Class<?>[] getParameterClasses() {
-		return parameterClasses;
-	}
+  public GuildManager getGuildManager(Guild guild) {
+	return MusicBox.getTrackerManager().getGuildManager(guild);
+  }
 
-	public String[] getCommand() {
-		return command;
-	}
-	
-	public void setParameterClasses(Class<?>[] parameterClasses) {
-		this.parameterClasses = parameterClasses;
-	}
+  public TrackScheduler getSchedule(Guild guild) {
+	return getGuildManager(guild).getSchedule();
+  }
 
-	public void setCommand(String[] command) {
-		this.command = command;
-	}
+  public AudioPlayer getAudioPlayer(Guild guild) {
+	return getGuildManager(guild).getAudioPlayer();
+  }
+
+  public AudioPlayerSendHandler getAudioSendHandler(Guild guild) {
+	return getGuildManager(guild).getSendHandler();
+  }
+
+  public Class<?>[] getParameterClasses() {
+	return parameterClasses;
+  }
+
+  public String[] getCommand() {
+	return command;
+  }
+
+  public void setParameterClasses(Class<?>[] parameterClasses) {
+	this.parameterClasses = parameterClasses;
+  }
+
+  public void setCommand(String[] command) {
+	this.command = command;
+  }
 
 }

@@ -11,67 +11,66 @@ import java.util.List;
 import java.util.Queue;
 
 public class TrackScheduler extends AudioEventAdapter {
-	
-	private boolean repeating = false;
-	final AudioPlayer player;
-	private final Queue<AudioTrack> queue;
-	private AudioTrack lastTrack;
-	
-	public TrackScheduler(AudioPlayer player) {
-		this.player = player;
-		this.queue = new LinkedList<>();
-	}
 
+  private boolean repeating = false;
+  final AudioPlayer player;
+  private final Queue<AudioTrack> queue;
+  private AudioTrack lastTrack;
 
-	public void addToQueue(AudioTrack track) {
-		if (!player.startTrack(track, true)) {
-			queue.offer(track);
-		}
-	}
-	
-	public void nextTrack() {
-		player.startTrack(queue.poll(), false);
-	}
+  public TrackScheduler(AudioPlayer player) {
+	this.player = player;
+	this.queue = new LinkedList<>();
+  }
 
-	@Override
-	public void onTrackEnd(AudioPlayer player, AudioTrack track, AudioTrackEndReason endReason) {
-		this.lastTrack = track;
-		if (endReason.mayStartNext) {
-			if (repeating)
-				player.startTrack(lastTrack.makeClone(), false);
-			else
-				nextTrack();
-		}
+  public void addToQueue(AudioTrack track) {
+	if (!player.startTrack(track, true)) {
+	  queue.offer(track);
 	}
+  }
 
-	public void closeSchedule() {
-		queue.clear();
-		lastTrack = null;
-		repeating = false;
-	}
+  public void nextTrack() {
+	player.startTrack(queue.poll(), false);
+  }
 
-	public boolean isRepeating() {
-		return repeating;
+  @Override
+  public void onTrackEnd(AudioPlayer player, AudioTrack track, AudioTrackEndReason endReason) {
+	this.lastTrack = track;
+	if (endReason.mayStartNext) {
+	  if (repeating)
+		player.startTrack(lastTrack.makeClone(), false);
+	  else
+		nextTrack();
 	}
+  }
 
-	public void setRepeating(boolean repeating) {
-		this.repeating = repeating;
-	}
+  public void closeSchedule() {
+	queue.clear();
+	lastTrack = null;
+	repeating = false;
+  }
 
-	public void shuffle() {
-		Collections.shuffle((List<?>) queue);
-	}
+  public boolean isRepeating() {
+	return repeating;
+  }
 
-	public Queue<AudioTrack> getQueue() {
-		return queue;
-	}
+  public void setRepeating(boolean repeating) {
+	this.repeating = repeating;
+  }
 
-	public AudioTrack getLastTrack() {
-		return lastTrack;
-	}
+  public void shuffle() {
+	Collections.shuffle((List<?>) queue);
+  }
 
-	public void setLastTrack(AudioTrack lastTrack) {
-		this.lastTrack = lastTrack;
-	}
+  public Queue<AudioTrack> getQueue() {
+	return queue;
+  }
+
+  public AudioTrack getLastTrack() {
+	return lastTrack;
+  }
+
+  public void setLastTrack(AudioTrack lastTrack) {
+	this.lastTrack = lastTrack;
+  }
 
 }

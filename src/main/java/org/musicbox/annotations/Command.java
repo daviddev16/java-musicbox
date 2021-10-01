@@ -11,9 +11,13 @@ import org.musicbox.command.CommandCategory;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Command {
 
-	String[] name();
-	String usage();
-	CommandCategory category();
-	boolean aliasSplit();
-	int order();
+  String[] name();
+
+  String usage();
+
+  CommandCategory category();
+
+  boolean aliasSplit();
+
+  int order();
 }

@@ -10,28 +10,28 @@ import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
 public class MusicBoxPresence extends ListenerAdapter {
 
-	public static volatile int guildCount = 0;
+  public static volatile int guildCount = 0;
 
-	public void onReady(ReadyEvent event) {
+  public void onReady(ReadyEvent event) {
 
-		guildCount = event.getGuildTotalCount();
+	guildCount = event.getGuildTotalCount();
 
-		event.getJDA().getPresence().setPresence(OnlineStatus.ONLINE,
-				Activity.of(ActivityType.LISTENING, "musica em " + guildCount + " servidores."));
-	}
+	event.getJDA().getPresence().setPresence(OnlineStatus.ONLINE,
+		Activity.of(ActivityType.LISTENING, "musica em " + guildCount + " servidores."));
+  }
 
-	@Override
-	public void onGuildJoin(GuildJoinEvent event) {
-		guildCount++;
-		event.getJDA().getPresence().setPresence(OnlineStatus.ONLINE,
-				Activity.of(ActivityType.LISTENING, "musica em " + guildCount + " servidores."));
-	}
-	
-	@Override
-	public void onGuildLeave(GuildLeaveEvent event) {
-		guildCount--;
-		event.getJDA().getPresence().setPresence(OnlineStatus.ONLINE,
-				Activity.of(ActivityType.LISTENING, "musica em " + guildCount + " servidores."));
-	}
+  @Override
+  public void onGuildJoin(GuildJoinEvent event) {
+	guildCount++;
+	event.getJDA().getPresence().setPresence(OnlineStatus.ONLINE,
+		Activity.of(ActivityType.LISTENING, "musica em " + guildCount + " servidores."));
+  }
+
+  @Override
+  public void onGuildLeave(GuildLeaveEvent event) {
+	guildCount--;
+	event.getJDA().getPresence().setPresence(OnlineStatus.ONLINE,
+		Activity.of(ActivityType.LISTENING, "musica em " + guildCount + " servidores."));
+  }
 
 }
