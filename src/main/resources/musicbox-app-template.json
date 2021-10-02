@@ -4,11 +4,11 @@
 	"owner": "Kernel#5096",
 	"commandPrefix": "!",
 	"authentication": {
-		"mainApplicationToken": "<release application token>",
-		"debugApplicationToken": "<debug application token>",
-		"youtubeApiKey": "<youtube api key>"
+		"mainApplicationToken": "<main app token>",
+		"debugApplicationToken": "<debug app token>",
+		"youtubeApiKey": "<youtube data api key>"
 	},
-	"debugMode": true,
+	"debugMode": false,
 	"debugOptions": {
 		"commandPrefix": "!!"
 	},
@@ -17,10 +17,10 @@
 		"failReasons": {
 			"pt_br": [
 				"O bot não possui permissão para entrar nesse canal :c",
-				"Não encontrei nada para '$[userInput]'.",
+				"Não encontrei nada para '$[userInput]'",
 				"Não foi possivel achar um canal de voz :(",
-				"Não foi possivel adicionar essa musica na lista de reprodução.",
-				"Não foi possivel carregar essa musica."
+				"Não foi possivel adicionar essa musica na lista de reprodução",
+				"Não foi possivel carregar essa musica"
 			]
 		},
 		"pt_br": {
@@ -45,7 +45,7 @@
 				"color": "FFF9D0"
 			},
 			"trackSkipped": {
-				"title": "A música anterior foi passada.",
+				"title": "A música anterior foi passada",
 				"footer": {
 					"text": "Passada por $[senderTag]",
 					"iconUrl": "$[senderAvatar]"
@@ -55,7 +55,7 @@
 				"color": "E5F5FF"
 			},
 			"trackStopped": {
-				"title": "A lista de música foi encerrada.",
+				"title": "A lista de música foi encerrada",
 				"footer": {
 					"text": "Encerrada por $[senderTag]",
 					"iconUrl": "$[senderAvatar]"
@@ -65,37 +65,37 @@
 				"color": "C9FFED"
 			},
 			"trackPaused": {
-				"title": "Música atual pausada.",
+				"title": "Música atual pausada",
 				"footer": {
 					"text": "Pausada por $[senderTag]",
 					"iconUrl": "$[senderAvatar]"
 				},
-				"description": "Para continuar use \"!resume\".",
+				"description": "Para continuar use \"$[globalPrefix]resume\".",
 				"thumbnail": "$[trackPausedIcon]",
 				"color": "C7FFED"
 			},
 			"trackResumed": {
-				"title": "Música atual tocando novamente.",
+				"title": "Música atual tocando novamente",
 				"footer": {
 					"text": "Despausada por $[senderTag]",
 					"iconUrl": "$[senderAvatar]"
 				},
-				"description": "Para pausar use \"!pause\".",
+				"description": "Para pausar use \"$[globalPrefix]pause\".",
 				"thumbnail": "$[trackResumedIcon]",
 				"color": "C7FFED"
 			},
 			"trackRepeatMode": {
-				"title": "Repetindo a música atual.",
+				"title": "Repetindo a música atual",
 				"footer": {
 					"text": "Modo de repetição ativado por $[senderTag]",
 					"iconUrl": "$[senderAvatar]"
 				},
-				"description": "Para desativar use \"!repeat\" novamente.",
+				"description": "Para desativar use \"$[globalPrefix]repeat\" novamente.",
 				"thumbnail": "$[trackRepeatModeIcon]",
 				"color": "FFD5FC"
 			},
 			"trackRestarted": {
-				"title": "A música atual recomeçou.",
+				"title": "A música atual recomeçou",
 				"footer": {
 					"text": "$[senderTag] recomeçou a música.",
 					"iconUrl": "$[senderAvatar]"
@@ -105,7 +105,7 @@
 				"color": "FFF7CB"
 			},
 			"failed": {
-				"title": "Falha ao usar o bot.",
+				"title": "Falha ao usar o bot",
 				"footer": {
 					"text": "Comando executado por $[senderTag]",
 					"iconUrl": "$[senderAvatar]"
@@ -113,6 +113,30 @@
 				"description": "$[failReason]",
 				"thumbnail": "$[failedIcon]",
 				"color": "FFEAED"
+			},
+			"wrongCommandAlias": {
+				"title": "Comando errado",
+				"footer": {
+					"text": "Comando executado por $[senderTag]",
+					"iconUrl": "$[senderAvatar]"
+				},
+				"description": "Uso: $[commandUsage]",
+				"thumbnail": "$[failedIcon]",
+				"color": "FFEAED"
+			},
+			"playingNow": {
+				"title": "$[trackTitle]",
+				"thumbnail": "$[trackAddedIcon]",
+				"color": "FFF7CB"
+			},
+			"select": {
+				"title": "Indo para $[trackTitle]",
+				"footer": {
+					"text": "Comando executado por $[senderTag]",
+					"iconUrl": "$[senderAvatar]"
+				},
+				"thumbnail": "$[trackRepeatModeIcon]",
+				"color": "FFD5FC"
 			},
 			"helpCommand": {
 				"title": "Lista de comandos",
