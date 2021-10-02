@@ -18,6 +18,7 @@ public class YoutubeSearchManager {
 
   public YoutubeSearchManager() {
 	youtube = new YouTube.Builder(Auth.HTTP_TRANSPORT, Auth.JSON_FACTORY, new HttpRequestInitializer() {
+	  @Override
 	  public void initialize(HttpRequest request) throws IOException {
 	  }
 	}).setApplicationName("musicbox-java-search").build();

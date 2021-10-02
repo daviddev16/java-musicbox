@@ -62,6 +62,7 @@ public class GuildManager {
 	final String trackUrl = stripUrl(url);
 	MusicBox.getAudioPlayerManager().loadItemOrdered(this, trackUrl, new AudioLoadResultHandler() {
 
+	  @Override
 	  public void trackLoaded(AudioTrack track) {
 
 		VoiceStateResult voiceStateResult = connectToVoiceChannel(triggerMessage);
@@ -86,6 +87,7 @@ public class GuildManager {
 		}
 	  }
 
+	  @Override
 	  public void playlistLoaded(AudioPlaylist playlist) {
 
 		VoiceStateResult voiceStateResult = connectToVoiceChannel(triggerMessage);
@@ -113,10 +115,12 @@ public class GuildManager {
 		}
 	  }
 
+	  @Override
 	  public void noMatches() {
 		playResult.accept(new TrackChunk(null, LoadingResult.NO_MATCHES), null);
 	  }
 
+	  @Override
 	  public void loadFailed(FriendlyException exception) {
 		playResult.accept(new TrackChunk(null, LoadingResult.FAILED_LOAD), exception);
 	  }
@@ -165,6 +169,7 @@ public class GuildManager {
   public void waitToQuitIfNecessary(VoiceChannel channel) {
 	presenceWaiter = new Timer("[" + getGuild().getIdLong() + "-waiter]");
 	getPresenceWaiter().schedule(new TimerTask() {
+	  @Override
 	  public void run() {
 		synchronized (scheduler) {
 		  quitVoiceChannel();

@@ -12,10 +12,9 @@ public class PresenceListener extends ListenerAdapter {
 
   public static volatile int guildCount = 0;
 
+  @Override
   public void onReady(ReadyEvent event) {
-
 	guildCount = event.getGuildTotalCount();
-
 	event.getJDA().getPresence().setPresence(OnlineStatus.ONLINE,
 		Activity.of(ActivityType.LISTENING, "musica em " + guildCount + " servidores."));
   }

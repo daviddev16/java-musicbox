@@ -177,6 +177,7 @@ public class MusicBoxCommandTable extends CommandTable {
 		.collect(Collectors.toCollection(ArrayList::new));
 
 	sortedCommands.sort(new Comparator<CommandInfo>() {
+	  @Override
 	  public int compare(CommandInfo o1, CommandInfo o2) {
 		return (o1.getOrder() == o2.getOrder()) ? 0 : (o1.getOrder() > o2.getOrder()) ? 1 : -1;
 	  }
