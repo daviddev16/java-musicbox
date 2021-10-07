@@ -1,4 +1,4 @@
-package org.musicbox.utils;
+package org.musicbox.core.utils;
 
 public final class Constants {
 

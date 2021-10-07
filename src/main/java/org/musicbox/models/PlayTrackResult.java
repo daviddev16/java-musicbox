@@ -4,10 +4,11 @@ import java.util.List;
 
 import org.musicbox.core.GuildInstance;
 import org.musicbox.core.models.IAudioLoadResult;
+import org.musicbox.core.utils.Constants;
 import org.musicbox.core.utils.Messages;
 import org.musicbox.core.utils.Placeholder;
-import org.musicbox.utils.Constants;
 
+import com.sedmelluq.discord.lavaplayer.tools.FriendlyException;
 import com.sedmelluq.discord.lavaplayer.track.AudioPlaylist;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 
@@ -34,6 +35,11 @@ public class PlayTrackResult implements IAudioLoadResult {
   public void onFailed(Exception e) {
 	placeholders.add(Placeholder.create(Constants.KEY_EXCEPTION_MESSAGE, e.getMessage()));
 	Messages.translatedMessage(getEvent(), Messages.COMMAND_FAILED, placeholders);
+
+	if(!(e instanceof FriendlyException)) {
+	  /* report to owner */
+	}
+	
   }
 
   @Override

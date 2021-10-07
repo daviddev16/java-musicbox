@@ -1,4 +1,4 @@
-package org.musicbox.tables;
+package org.musicbox.commands;
 
 import org.musicbox.core.GuildInstance;
 import org.musicbox.core.command.CommandCategory;
@@ -6,14 +6,15 @@ import org.musicbox.core.command.Link;
 import org.musicbox.core.command.Usage;
 import org.musicbox.core.managers.GuildManager;
 import org.musicbox.core.managers.YoutubeSearchManager;
+import org.musicbox.core.utils.Constants;
 import org.musicbox.core.utils.Messages;
 import org.musicbox.core.utils.Placeholder;
 import org.musicbox.core.utils.PlaceholderBuilder;
+import org.musicbox.core.utils.Utils;
 import org.musicbox.models.PlayTrackResult;
-import org.musicbox.utils.Constants;
-import org.musicbox.utils.Utils;
 
-import net.dv8tion.jda.api.entities.Guild;
+import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
+
 import net.dv8tion.jda.api.entities.VoiceChannel;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
@@ -27,14 +28,13 @@ public class MusicCommands {
   @Link(commandId = 0, names = { "play", "p" }, category = CommandCategory.MUSIC, argumentsSplit = false)
   private void play(MessageReceivedEvent event, String content) {
 
-	Guild guild = event.getGuild();
-	GuildInstance guildInstance = GuildManager.getGuildManager().getGuildInstance(guild);
+	GuildInstance guildInstance = GuildManager.getGuildManager().getGuildInstance(event.getGuild());
 	
 	List<Placeholder> placeholders = PlaceholderBuilder.createBy(event, true)
 		.add(Constants.KEY_USER_INPUT, content).build();
 	
 	/* check if the bot is in any voice channel */
-	if (!Utils.isPresentOnGuild(guild)) {
+	if (!Utils.isPresentOnGuild(event.getGuild())) {
 	  
 	  /* check if the member is on voice channel */
 	  if (!Utils.isOnVoiceChannel(event.getMember())) {
@@ -48,7 +48,7 @@ public class MusicCommands {
 	} 
 
 	/* check if the member is present in the same voice channel channel */
-	else if (!Utils.isTogetherWith(event.getMember(), guild)) { 
+	else if (!Utils.isTogetherWith(event.getMember(), event.getGuild())) { 
 	  translatedMessage(event, Messages.NOT_SAME_VOICE_CHANNEL, placeholders);
 	  return;
 	}
@@ -59,6 +59,30 @@ public class MusicCommands {
 
 	/* load and play track if is not already playing */
 	guildInstance.load(content, new PlayTrackResult(event, guildInstance, placeholders));
+  }
+  
+  @Usage(usage = "queue/q")
+  @Link(commandId = 1, names = { "queue", "q" }, category = CommandCategory.MUSIC, argumentsSplit = true)
+  private void queue(MessageReceivedEvent event) {
+	
+	GuildInstance guildInstance = GuildManager.getGuildManager().getGuildInstance(event.getGuild());
+	
+	StringBuffer buffer = new StringBuffer();
+	for(AudioTrack track : guildInstance.getSchedule().getTracklist()) {
+	  buffer.append(track.getInfo().title).append("\n");
+	}
+
+	event.getTextChannel().sendMessage(buffer.toString().trim()).queue();
+	
+  }
+  
+  @Usage(usage = "stop")
+  @Link(commandId = 2, names = { "stop" }, category = CommandCategory.MUSIC, argumentsSplit = true)
+  private void stop(MessageReceivedEvent event) {
+	
+	GuildInstance guildInstance = GuildManager.getGuildManager().getGuildInstance(event.getGuild());
+	guildInstance.getSchedule().stop();
+	
   }
 
 

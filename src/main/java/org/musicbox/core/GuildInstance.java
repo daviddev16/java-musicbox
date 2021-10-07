@@ -6,7 +6,7 @@ import java.util.TimerTask;
 import org.musicbox.core.managers.BotAudioManager;
 import org.musicbox.core.models.IAudioLoadResult;
 import org.musicbox.core.player.TrackScheduleManager;
-import org.musicbox.utils.Constants;
+import org.musicbox.core.utils.Constants;
 
 import com.sedmelluq.discord.lavaplayer.player.AudioLoadResultHandler;
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayer;

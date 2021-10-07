@@ -1,9 +1,7 @@
-package org.musicbox.utils;
+package org.musicbox.core.utils;
 
 import java.awt.Color;
 import java.util.List;
-
-import org.musicbox.core.utils.Placeholder;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
@@ -11,7 +9,7 @@ import com.google.gson.JsonObject;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 
-public final class EmbedTranslator {
+public final class EmbedUtils {
 
   @SuppressWarnings("unused")
   public static MessageEmbed translate(JsonObject jsonObject, List<Placeholder> placeholders) {

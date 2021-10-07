@@ -20,10 +20,10 @@ public class TrackScheduleManager extends AudioEventAdapter implements AudioSend
   private final AudioPlayer player;
   private final List<AudioTrack> tracklist;
   private final GuildInstance guildInstance;
-  private AudioFrame lastFrame;
-  
+
   private int currentPosition = -1;
   private RepeatMode repeatMode;
+  private AudioFrame lastFrame;
   
   public TrackScheduleManager(AudioPlayer player, GuildInstance guildInstance) {
 	this.player = player;
@@ -102,6 +102,8 @@ public class TrackScheduleManager extends AudioEventAdapter implements AudioSend
    }
   
   public synchronized void stop() {
+	setPauseState(true);
+	player.stopTrack();
 	tracklist.clear();
 	currentPosition = -1;
   }
@@ -147,7 +149,7 @@ public class TrackScheduleManager extends AudioEventAdapter implements AudioSend
 	return guildInstance;
   }
 
-  public List<AudioTrack> getTracklist() {
+  public synchronized List<AudioTrack> getTracklist() {
 	return tracklist;
   }
   

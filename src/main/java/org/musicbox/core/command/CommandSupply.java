@@ -4,7 +4,7 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
 import java.util.Arrays;
 
-import org.musicbox.config.Configs;
+import org.musicbox.config.DefaultConfig;
 
 public final class CommandSupply {
 
@@ -30,7 +30,7 @@ public final class CommandSupply {
   }
   
   public String getUsage() {
- 	return usage == null ? "Não informado" : Configs.PREFIX + usage.usage();
+ 	return usage == null ? "Não informado" : DefaultConfig.PREFIX + usage.usage();
    }
   
   public Parameter[] getArguments() {

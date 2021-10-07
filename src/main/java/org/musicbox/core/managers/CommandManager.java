@@ -5,13 +5,13 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.musicbox.core.command.CommandHelpers;
 import org.musicbox.core.command.CommandSupply;
 import org.musicbox.core.command.Link;
 import org.musicbox.core.command.Received;
 import org.musicbox.core.command.Usage;
 import org.musicbox.core.exceptions.ParameterException;
-import org.musicbox.utils.Utils;
+import org.musicbox.core.utils.Utils;
+import org.musicbox.models.CommandFailHandler;
 
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
@@ -98,10 +98,10 @@ public class CommandManager {
 	} catch(ParameterException e) {
 	  switch(e.getExceptionType()) {
 	  	case ParameterException.TYPE_MISSMATCH:
-	  	  CommandHelpers.getHelpers().onTypeMissmatch(received.getEvent(), received, commandSupply);
+	  	  CommandFailHandler.getFailHandler().onTypeMissmatch(received.getEvent(), received, commandSupply);
 	  	  break;
 	  	case ParameterException.OUT_OF_BOUNDS:
-	  	  CommandHelpers.getHelpers().onWrongArgumentCount(received.getEvent(), received, commandSupply);
+	  	CommandFailHandler.getFailHandler().onWrongArgumentCount(received.getEvent(), received, commandSupply);
 	  	  break;
 	  }
 	}
@@ -109,7 +109,7 @@ public class CommandManager {
   }
 
   private void commandException(Received received, CommandSupply commandSupply, Exception exception) {
-	CommandHelpers.getHelpers().onThrowException(received.getEvent(), received, commandSupply, exception);
+	CommandFailHandler.getFailHandler().onThrowException(received.getEvent(), received, commandSupply, exception);
 	System.out.println("error while processing a command [" + commandSupply.getCommandId() + "]");
   }
 
@@ -155,7 +155,7 @@ public class CommandManager {
 	  processCommandSupply(received, commandSupply);
 	  return;
 	}
-	CommandHelpers.getHelpers().onNotFound(event, received, commandSupply);
+	CommandFailHandler.getFailHandler().onNotFound(event, received, commandSupply);
   }
 
   private CommandSupply findCommandSupply(String name) {

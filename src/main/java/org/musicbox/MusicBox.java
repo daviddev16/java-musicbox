@@ -17,8 +17,8 @@ import java.util.EnumSet;
 
 import javax.security.auth.login.LoginException;
 
-import org.musicbox.config.Configs;
-import org.musicbox.core.command.CommandHelpers;
+import org.musicbox.commands.MusicCommands;
+import org.musicbox.config.DefaultConfig;
 import org.musicbox.core.managers.BotAudioManager;
 import org.musicbox.core.managers.CommandManager;
 import org.musicbox.core.managers.GuildManager;
@@ -28,28 +28,26 @@ import org.musicbox.core.models.Listeners;
 import org.musicbox.listeners.CommandListener;
 import org.musicbox.listeners.PresenceListener;
 import org.musicbox.listeners.WatcherListener;
-import org.musicbox.tables.MusicCommands;
+import org.musicbox.models.CommandFailHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class MusicBox {
 
-  private static MusicBox musicBox;
-
   private static Logger logger = LoggerFactory.getLogger(MusicBox.class);
-
+  private static MusicBox musicBox;
+  
   private final ShardManager shardManager;
 
   public MusicBox() throws LoginException {
 
-	
-	Configs.setup("musicbox-app");
+	DefaultConfig.setup("musicbox-app");
 
 	LanguageManager.setup();
 	BotAudioManager.setup();
 	GuildManager.setup();
 	YoutubeSearchManager.setup();
-	CommandHelpers.setup();
+	CommandFailHandler.setup();
 	
 	CommandManager.setup();
 	CommandManager.getCommandManager().handle(MusicCommands.class);
@@ -63,14 +61,12 @@ public class MusicBox {
 
 	RestAction.setDefaultFailure(null);
 
-	/* application intents */
 	EnumSet<GatewayIntent> intents = EnumSet.of(
 		GatewayIntent.GUILD_MESSAGES, 
 		GatewayIntent.GUILD_EMOJIS,
 		GatewayIntent.GUILD_VOICE_STATES
 		);
 
-	/* cache flags*/
 	Collection<CacheFlag> cacheFlags = Arrays.asList(
 		CacheFlag.MEMBER_OVERRIDES,
 		CacheFlag.ROLE_TAGS,
@@ -80,7 +76,7 @@ public class MusicBox {
 		);
 
 	shardManager = DefaultShardManagerBuilder.create(
-		Configs.TOKEN, intents)
+		DefaultConfig.TOKEN, intents)
 		.disableCache(cacheFlags)
 		.setGatewayEncoding(GatewayEncoding.ETF)
 		.setChunkingFilter(ChunkingFilter.NONE)

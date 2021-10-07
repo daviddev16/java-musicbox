@@ -1,4 +1,4 @@
-package org.musicbox.utils;
+package org.musicbox.core.utils;
 
 import java.net.URL;
 import java.util.List;

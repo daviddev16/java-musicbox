@@ -9,7 +9,7 @@ import com.google.api.services.youtube.model.SearchResult;
 import java.io.IOException;
 import java.util.List;
 
-import org.musicbox.config.Configs;
+import org.musicbox.config.DefaultConfig;
 import org.musicbox.core.google.Auth;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -33,7 +33,7 @@ public final class YoutubeSearchManager {
   public String getUrlBasedOnText(String text) {
 	try {
 	  YouTube.Search.List search = youtube.search().list("id,snippet");
-	  search.setKey(Configs.YOUTUBE_API_KEY);
+	  search.setKey(DefaultConfig.YOUTUBE_API_KEY);
 	  search.setQ(text);
 	  search.setType("video");
 

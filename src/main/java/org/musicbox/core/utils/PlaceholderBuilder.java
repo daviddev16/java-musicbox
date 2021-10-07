@@ -3,10 +3,8 @@ package org.musicbox.core.utils;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.musicbox.config.Configs;
+import org.musicbox.config.DefaultConfig;
 import org.musicbox.core.Permissions;
-import org.musicbox.utils.Constants;
-import org.musicbox.utils.Utils;
 
 import net.dv8tion.jda.api.events.GenericEvent;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
@@ -18,8 +16,8 @@ public final class PlaceholderBuilder {
   public PlaceholderBuilder(boolean setupDefaults) {
 	this.placeholders = new ArrayList<Placeholder>();
 	if (setupDefaults) {
-	  add(Constants.KEY_GLOBAL_PREFIX, Configs.PREFIX);
-	  add(Constants.KEY_OWNER, Configs.OWNER);
+	  add(Constants.KEY_GLOBAL_PREFIX, DefaultConfig.PREFIX);
+	  add(Constants.KEY_OWNER, DefaultConfig.OWNER);
 	}
   }
 

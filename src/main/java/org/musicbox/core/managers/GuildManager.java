@@ -3,7 +3,7 @@ package org.musicbox.core.managers;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.musicbox.config.Configs;
+import org.musicbox.config.DefaultConfig;
 import org.musicbox.core.GuildInstance;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,7 +31,7 @@ public final class GuildManager {
 		guildManager = guildManagers.get(guildId);
 		if (guildManager == null) {
 		  guildManager = new GuildInstance(BotAudioManager.getBotAudioManager().getAudioPlayerManager(), guild);
-		  guildManager.getAudioPlayer().setVolume(Configs.VOLUME);
+		  guildManager.getAudioPlayer().setVolume(DefaultConfig.VOLUME);
 		  guildManagers.put(guildId, guildManager);
 		}
 	  }

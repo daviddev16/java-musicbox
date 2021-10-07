@@ -5,7 +5,6 @@ import java.util.List;
 import org.musicbox.core.GuildInstance;
 import org.musicbox.core.managers.GuildManager;
 import org.musicbox.core.managers.LanguageManager;
-import org.musicbox.utils.EmbedTranslator;
 
 import com.google.gson.JsonObject;
 
@@ -29,7 +28,7 @@ public final class Messages {
 
   private static void send(TextChannel channel, String languageId, int messageId, List<Placeholder> placeholders) {
 	JsonObject jsonMessage = LanguageManager.getLanguageManager().getMessage(languageId, messageId);
-	channel.sendMessage(EmbedTranslator.translate(jsonMessage, placeholders)).queue();
+	channel.sendMessage(EmbedUtils.translate(jsonMessage, placeholders)).queue();
   }
 
   public static void translatedMessage(MessageReceivedEvent event, int messageId, List<Placeholder> placeholders) {

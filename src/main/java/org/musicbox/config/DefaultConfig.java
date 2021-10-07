@@ -2,9 +2,9 @@ package org.musicbox.config;
 
 import org.musicbox.core.config.JsonConfiguration;
 
-public class Configs extends JsonConfiguration {
+public class DefaultConfig extends JsonConfiguration {
 
-  private static Configs configs;
+  private static DefaultConfig defaultConfig;
   
   public static final int VOLUME = 150/2;
   public static String YOUTUBE_API_KEY;
@@ -17,7 +17,7 @@ public class Configs extends JsonConfiguration {
   public static String PREFIX;
   public static String LANGUAGE;
 
-  public Configs(String name) {
+  public DefaultConfig(String name) {
 	super(name);
 	NAME = getString("name");
 	VERSION = getString("version");
@@ -28,15 +28,15 @@ public class Configs extends JsonConfiguration {
 	YOUTUBE_API_KEY = getString("youtubeApiKey");
 	DELETE_MESSAGE_AFTER = getInt("deleteMessageAfter");
 	LANGUAGE = getString("language"); /* default debug language */
-	configs = this;
+	defaultConfig = this;
   }
   
   public static void setup(String name) {
-	new Configs(name);
+	new DefaultConfig(name);
   }
 
-  public static Configs getConfigs() {
-	return configs;
+  public static DefaultConfig getConfig() {
+	return defaultConfig;
   }
 
 }
