@@ -4,8 +4,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.musicbox.config.Configs;
+import org.musicbox.core.Permissions;
 import org.musicbox.utils.Constants;
+import org.musicbox.utils.Utils;
 
+import net.dv8tion.jda.api.events.GenericEvent;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
 public final class PlaceholderBuilder {
@@ -14,12 +17,10 @@ public final class PlaceholderBuilder {
 
   public PlaceholderBuilder(boolean setupDefaults) {
 	this.placeholders = new ArrayList<Placeholder>();
-	
 	if (setupDefaults) {
 	  add(Constants.KEY_GLOBAL_PREFIX, Configs.PREFIX);
 	  add(Constants.KEY_OWNER, Configs.OWNER);
 	}
-	
   }
 
   public PlaceholderBuilder add(Placeholder placeholder) {
@@ -27,9 +28,23 @@ public final class PlaceholderBuilder {
 	return this;
   }
 
-  public PlaceholderBuilder event(MessageReceivedEvent event) {
-	add(Constants.KEY_SENDER_NAME, event.getAuthor().getAsTag());
-	add(Constants.KEY_SENDER_AVATAR, event.getAuthor().getEffectiveAvatarUrl());
+  /**
+   * add all placeholder tags by event
+   * */
+  public PlaceholderBuilder event(GenericEvent event) {
+	if (event instanceof MessageReceivedEvent) {
+	  add(Constants.KEY_SENDER_NAME, ((MessageReceivedEvent) event).getAuthor().getAsTag());
+	  add(Constants.KEY_SENDER_AVATAR, ((MessageReceivedEvent) event).getAuthor().getEffectiveAvatarUrl());
+	}
+	return this;
+  }
+
+  /**
+   * add all permissions placeholders
+   * */
+  public PlaceholderBuilder permission() {
+	add(Constants.KEY_MISSING_WRITING_PERMISSIONS, Utils.toString(Permissions.WRITING_PERMISSIONS));
+	add(Constants.KEY_MISSING_VOICE_CHANNEL_PERMISSIONS, Utils.toString(Permissions.VOICE_CHANNEL_PERMISSIONS));
 	return this;
   }
 
@@ -42,7 +57,7 @@ public final class PlaceholderBuilder {
 	return placeholders;
   }
 
-  public static PlaceholderBuilder createBy(MessageReceivedEvent event, boolean setupDefaults) {
+  public static PlaceholderBuilder createBy(GenericEvent event, boolean setupDefaults) {
 	return new PlaceholderBuilder(setupDefaults).event(event);
   }
 }

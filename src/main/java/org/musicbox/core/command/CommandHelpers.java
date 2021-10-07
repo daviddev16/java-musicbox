@@ -1,8 +1,9 @@
 package org.musicbox.core.command;
 
+import org.musicbox.core.utils.Messages;
 import org.musicbox.core.utils.PlaceholderBuilder;
 import org.musicbox.utils.Constants;
-import org.musicbox.utils.Messages;
+
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
 public final class CommandHelpers implements IFallible {

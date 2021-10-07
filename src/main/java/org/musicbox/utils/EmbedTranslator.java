@@ -18,29 +18,29 @@ public final class EmbedTranslator {
 	EmbedBuilder builder = new EmbedBuilder();
 	if (jsonObject.has("author")) {
 	  builder.setAuthor(
-		  translateCodes(jsonObject.get("author").getAsJsonObject().get("name").getAsString(), placeholders),
-		  translateCodes(jsonObject.get("author").getAsJsonObject().get("url").getAsString(), placeholders),
-		  translateCodes(jsonObject.get("author").getAsJsonObject().get("iconUrl").getAsString(), placeholders));
+		  translatePlaceholders(jsonObject.get("author").getAsJsonObject().get("name").getAsString(), placeholders),
+		  translatePlaceholders(jsonObject.get("author").getAsJsonObject().get("url").getAsString(), placeholders),
+		  translatePlaceholders(jsonObject.get("author").getAsJsonObject().get("iconUrl").getAsString(), placeholders));
 	}
 	if (jsonObject.has("footer")) {
 	  builder.setFooter(
-		  translateCodes(jsonObject.get("footer").getAsJsonObject().get("text").getAsString(), placeholders),
-		  translateCodes(jsonObject.get("footer").getAsJsonObject().get("iconUrl").getAsString(), placeholders));
+		  translatePlaceholders(jsonObject.get("footer").getAsJsonObject().get("text").getAsString(), placeholders),
+		  translatePlaceholders(jsonObject.get("footer").getAsJsonObject().get("iconUrl").getAsString(), placeholders));
 	}
 	if (jsonObject.has("description")) {
-	  builder.setDescription(translateCodes(jsonObject.get("description").getAsString(), placeholders));
+	  builder.setDescription(translatePlaceholders(jsonObject.get("description").getAsString(), placeholders));
 	}
 	if (jsonObject.has("color")) {
-	  builder.setColor(Color.decode("#" + translateCodes(jsonObject.get("color").getAsString(), placeholders)));
+	  builder.setColor(Color.decode("#" + translatePlaceholders(jsonObject.get("color").getAsString(), placeholders)));
 	}
 	if (jsonObject.has("image")) {
-	  builder.setImage(translateCodes(jsonObject.get("image").getAsString(), placeholders));
+	  builder.setImage(translatePlaceholders(jsonObject.get("image").getAsString(), placeholders));
 	}
 	if (jsonObject.has("thumbnail") && Constants.ENABLE_EMBED_THUMBNAILS) {
-	  builder.setThumbnail(translateCodes(jsonObject.get("thumbnail").getAsString(), placeholders));
+	  builder.setThumbnail(translatePlaceholders(jsonObject.get("thumbnail").getAsString(), placeholders));
 	}
 	if (jsonObject.has("title")) {
-	  builder.setTitle(translateCodes(jsonObject.get("title").getAsString(), placeholders));
+	  builder.setTitle(translatePlaceholders(jsonObject.get("title").getAsString(), placeholders));
 	}
 	if (jsonObject.has("fields")) {
 	  JsonArray fieldArray = jsonObject.get("fields").getAsJsonArray();
@@ -49,8 +49,8 @@ public final class EmbedTranslator {
 		if (fieldObject.has("#blank")) {
 		  builder.addBlankField(fieldObject.get("#black").getAsBoolean());
 		} else {
-		  builder.addField(translateCodes(fieldObject.get("name").getAsString(), placeholders),
-			  translateCodes(fieldObject.get("value").getAsString(), placeholders),
+		  builder.addField(translatePlaceholders(fieldObject.get("name").getAsString(), placeholders),
+			  translatePlaceholders(fieldObject.get("value").getAsString(), placeholders),
 			  fieldObject.get("inline").getAsBoolean());
 		}
 	  });
@@ -59,7 +59,7 @@ public final class EmbedTranslator {
 	return builder.build();
   }
 
-  public static String translateCodes(String text, List<Placeholder> placeholders) {
+  public static String translatePlaceholders(String text, List<Placeholder> placeholders) {
 	String translatedCode = text;
 	for (Placeholder placeholder : placeholders) {
 	  translatedCode = translatedCode.replace(placeholder.getCode(), placeholder.getReplacement());

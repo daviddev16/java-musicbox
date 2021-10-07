@@ -11,6 +11,7 @@ import org.musicbox.core.command.Link;
 import org.musicbox.core.command.Received;
 import org.musicbox.core.command.Usage;
 import org.musicbox.core.exceptions.ParameterException;
+import org.musicbox.utils.Utils;
 
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
@@ -162,7 +163,10 @@ public class CommandManager {
   }
 
   private boolean parseBoolean(String value) {
-	return Boolean.parseBoolean(value);
+	if(Utils.isBoolean(value)) {
+	  return Utils.getBoolean(value);
+	}
+	throw new IllegalArgumentException("Not a boolean value.");
   }
 
   private boolean matchCommandSupply(Received received, CommandSupply commandSupply) {

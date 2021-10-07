@@ -6,17 +6,18 @@ import org.musicbox.core.command.Link;
 import org.musicbox.core.command.Usage;
 import org.musicbox.core.managers.GuildManager;
 import org.musicbox.core.managers.YoutubeSearchManager;
+import org.musicbox.core.utils.Messages;
 import org.musicbox.core.utils.Placeholder;
 import org.musicbox.core.utils.PlaceholderBuilder;
 import org.musicbox.models.PlayTrackResult;
 import org.musicbox.utils.Constants;
-import org.musicbox.utils.Messages;
 import org.musicbox.utils.Utils;
 
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.VoiceChannel;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
-import static org.musicbox.utils.Messages.translatedMessage;
+
+import static org.musicbox.core.utils.Messages.translatedMessage;
 
 import java.util.List;
 

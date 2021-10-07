@@ -1,11 +1,11 @@
-package org.musicbox.utils;
+package org.musicbox.core.utils;
 
 import java.util.List;
 
 import org.musicbox.core.GuildInstance;
 import org.musicbox.core.managers.GuildManager;
 import org.musicbox.core.managers.LanguageManager;
-import org.musicbox.core.utils.Placeholder;
+import org.musicbox.utils.EmbedTranslator;
 
 import com.google.gson.JsonObject;
 
@@ -26,8 +26,6 @@ public final class Messages {
   
   public static final int TRACK_ADDED = 8;
   public static final int PLAYLIST_ADDED = 9;
-
-
 
   private static void send(TextChannel channel, String languageId, int messageId, List<Placeholder> placeholders) {
 	JsonObject jsonMessage = LanguageManager.getLanguageManager().getMessage(languageId, messageId);

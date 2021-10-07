@@ -47,7 +47,6 @@ public class PresenceListener extends Listener {
 	  guildInstance.getGuild().getAudioManager().closeAudioConnection();
 	  
 	});
-	
   }
   
 }

@@ -22,7 +22,8 @@ public final class Constants {
   public static final String KEY_COMMAND_USAGE = "commandUsage";
   public static final String KEY_GLOBAL_PREFIX = "globalPrefix";
   public static final String KEY_EXCEPTION_MESSAGE = "exceptionMessage";
-  public static final String KEY_MISSING_PERMISSIONS = "missingPermissions";
+  public static final String KEY_MISSING_WRITING_PERMISSIONS = "missingWritingPermissions";
+  public static final String KEY_MISSING_VOICE_CHANNEL_PERMISSIONS = "missingVoiceChannelPermissions";
 
   /* CDN icons */
   public static final String VALUE_ADDED = "https://cdn-icons-png.flaticon.com/64/5622/5622170.png";

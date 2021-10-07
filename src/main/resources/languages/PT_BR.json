@@ -43,7 +43,7 @@
       "fields": [
         {
           "name": "Permissões faltando: ",
-          "value": "$[missingPermissions]",
+          "value": "$[missingWritingPermissions]",
           "inline": false
         }
       ],

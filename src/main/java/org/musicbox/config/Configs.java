@@ -27,7 +27,7 @@ public class Configs extends JsonConfiguration {
 	PREFIX = getString(DEBUG_MODE ? "debugCommandPrefix" : "commandPrefix");
 	YOUTUBE_API_KEY = getString("youtubeApiKey");
 	DELETE_MESSAGE_AFTER = getInt("deleteMessageAfter");
-	LANGUAGE = getString("language");
+	LANGUAGE = getString("language"); /* default debug language */
 	configs = this;
   }
   
@@ -38,59 +38,5 @@ public class Configs extends JsonConfiguration {
   public static Configs getConfigs() {
 	return configs;
   }
-
-  /*public String getName() {
-	return get("name").getAsString();
-  }
-
-  public String getVersion() {
-	return get("version").getAsString();
-  }
-
-  public boolean isDebugMode() {
-	return get("debugMode").getAsBoolean();
-  }
-
-  public JsonObject getAuthentication() {
-	return get("authentication").getAsJsonObject();
-  }
-
-  public String getDebugToken() {
-	return getAuthentication().get("debugApplicationToken").getAsString();
-  }
-
-  public String getMainToken() {
-	return getAuthentication().get("mainApplicationToken").getAsString();
-  }
-
-  public String getYoutubeAPIKey() {
-	return getAuthentication().get("youtubeApiKey").getAsString();
-  }
-
-  public JsonObject getMessages(String language) {
-	return getJsonObject("musicBoxMessages").get(language).getAsJsonObject();
-  }
-
-  public JsonObject getMessages(String language, String key) {
-	return getJsonObject("musicBoxMessages").get(language).getAsJsonObject().get(key).getAsJsonObject();
-  }
-
-  // it applies the placeholders into the failed message
-  public String getFailedReason(String language, int select, List<Placeholder> placeholders) {
-	return EmbedTranslator.translateCodes(getJsonObject("musicBoxMessages").get("failReasons").getAsJsonObject()
-		.get(language).getAsJsonArray().get(select).getAsString(), placeholders);
-  }
-
-  public String getDefaultCommandPrefix() {
-	return get("commandPrefix").getAsString();
-  }
-
-  public String getDebugCommandPrefix() {
-	return getJsonObject("debugOptions").get("commandPrefix").getAsString();
-  }
-
-  public String getOwnerTag() {
-	return get("owner").getAsString();
-  }*/
 
 }
