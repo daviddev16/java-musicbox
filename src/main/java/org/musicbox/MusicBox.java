@@ -18,17 +18,17 @@ import java.util.EnumSet;
 import javax.security.auth.login.LoginException;
 
 import org.musicbox.config.Configs;
-import org.musicbox.core.LanguageManager;
+import org.musicbox.core.command.CommandHelpers;
 import org.musicbox.core.managers.BotAudioManager;
 import org.musicbox.core.managers.CommandManager;
 import org.musicbox.core.managers.GuildManager;
+import org.musicbox.core.managers.LanguageManager;
 import org.musicbox.core.managers.YoutubeSearchManager;
-import org.musicbox.core.models.CommandHelpers;
 import org.musicbox.core.models.Listeners;
 import org.musicbox.listeners.CommandListener;
 import org.musicbox.listeners.PresenceListener;
 import org.musicbox.listeners.WatcherListener;
-import org.musicbox.tables.MusicCommandTable;
+import org.musicbox.tables.MusicCommands;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -52,7 +52,7 @@ public class MusicBox {
 	CommandHelpers.setup();
 	
 	CommandManager.setup();
-	CommandManager.getCommandManager().handle(new MusicCommandTable());
+	CommandManager.getCommandManager().handle(MusicCommands.class);
 	
 	Listeners.setup();
 

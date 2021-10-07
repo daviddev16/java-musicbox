@@ -30,7 +30,7 @@ public final class YoutubeSearchManager {
 	logger.info("YoutubeSearchManager loaded.");
   }
 
-  public String getUrlBaseOnText(String text) {
+  public String getUrlBasedOnText(String text) {
 	try {
 	  YouTube.Search.List search = youtube.search().list("id,snippet");
 	  search.setKey(Configs.YOUTUBE_API_KEY);

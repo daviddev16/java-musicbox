@@ -24,7 +24,7 @@ public class CommandListener extends Listener {
 	  return;
 
 	if(!Permissions.canWrite(event.getTextChannel(), event.getMember())) {
-	  Messages.translatedMessage(event, Messages.COMMAND_MISSING_PERMISSION, new PlaceholderBuilder()
+	  Messages.translatedMessage(event, Messages.COMMAND_MISSING_PERMISSION, new PlaceholderBuilder(false)
 		  .event(event)
 		  .add(Constants.KEY_MISSING_PERMISSIONS, toString(Permissions.WRITING_PERMISSION))
 		  .build());

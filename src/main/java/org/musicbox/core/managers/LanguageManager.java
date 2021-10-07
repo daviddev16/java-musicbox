@@ -1,4 +1,4 @@
-package org.musicbox.core;
+package org.musicbox.core.managers;
 
 import java.util.HashMap;
 import java.util.Map;

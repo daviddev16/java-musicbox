@@ -3,7 +3,7 @@ package org.musicbox.utils;
 import java.awt.Color;
 import java.util.List;
 
-import org.musicbox.core.models.Placeholder;
+import org.musicbox.core.utils.Placeholder;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;

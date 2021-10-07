@@ -1,4 +1,4 @@
-package org.musicbox.core.models;
+package org.musicbox.core.utils;
 
 import java.util.ArrayList;
 import java.util.Arrays;

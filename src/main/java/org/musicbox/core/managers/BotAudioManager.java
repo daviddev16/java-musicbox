@@ -1,6 +1,6 @@
 package org.musicbox.core.managers;
 
-import org.musicbox.player.soundcloud.SoundCloudAudioSourceManager;
+import org.musicbox.core.player.soundcloud.SoundCloudAudioSourceManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -25,10 +25,6 @@ public final class BotAudioManager {
 	botAudioManager = this;
   }
 
-  public static void setup() {
-	new BotAudioManager();
-  }
-
   public AudioPlayerManager getAudioPlayerManager() {
 	return playerManager;
   }
@@ -37,5 +33,8 @@ public final class BotAudioManager {
 	return botAudioManager;
   }
 
+  public static void setup() {
+	new BotAudioManager();
+  }
 
 }

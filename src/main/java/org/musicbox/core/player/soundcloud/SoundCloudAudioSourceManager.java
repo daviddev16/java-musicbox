@@ -1,4 +1,4 @@
-package org.musicbox.player.soundcloud;
+package org.musicbox.core.player.soundcloud;
 
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayerManager;
 import com.sedmelluq.discord.lavaplayer.source.AudioSourceManager;

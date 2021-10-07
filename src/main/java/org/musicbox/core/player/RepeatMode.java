@@ -1,4 +1,4 @@
-package org.musicbox.player;
+package org.musicbox.core.player;
 
 public enum RepeatMode {
 

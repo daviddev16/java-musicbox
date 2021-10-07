@@ -4,8 +4,8 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import org.musicbox.core.managers.BotAudioManager;
-import org.musicbox.player.AudioPlayerSendHandler;
-import org.musicbox.player.TrackScheduler;
+import org.musicbox.core.models.IAudioLoadResult;
+import org.musicbox.core.player.TrackScheduleManager;
 import org.musicbox.utils.Constants;
 
 import com.sedmelluq.discord.lavaplayer.player.AudioLoadResultHandler;
@@ -16,72 +16,58 @@ import com.sedmelluq.discord.lavaplayer.track.AudioPlaylist;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 
 import net.dv8tion.jda.api.entities.Guild;
-import net.dv8tion.jda.api.entities.TextChannel;
 import net.dv8tion.jda.api.entities.VoiceChannel;
 
 public final class GuildInstance {
 
   private final AudioPlayer player;
-  private final TrackScheduler scheduler;
-  private final AudioPlayerSendHandler sendHandler;
+  private final TrackScheduleManager scheduleManager;
   private volatile Timer presenceWaiter;
   private final Guild guild;
 
   public GuildInstance(AudioPlayerManager manager, Guild guild) {
 	this.guild = guild;
 	player = manager.createPlayer();
-	scheduler = new TrackScheduler(player, this);
-	sendHandler = new AudioPlayerSendHandler(player);
-	player.addListener(scheduler);
-	guild.getAudioManager().setSendingHandler(getSendHandler());
+	scheduleManager = new TrackScheduleManager(player, this);
+	player.addListener(scheduleManager);
+	guild.getAudioManager().setSendingHandler(scheduleManager);
   }
 
-  public TrackScheduler getSchedule() {
-	return scheduler;
+ 
+
+  public void load(final String url, IAudioLoadResult result) {
+	BotAudioManager.getBotAudioManager().getAudioPlayerManager().loadItemOrdered(this, stripUrl(url),
+		new AudioLoadResultHandler() {
+		  public void trackLoaded(AudioTrack track) {
+			try {
+			  getSchedule().queue(track);
+			  result.onQueuedSingle(track);
+			} catch (Exception e) {
+			  result.onFailed(e);
+			}
+		  }
+
+		  public void playlistLoaded(AudioPlaylist playlist) {
+			try {
+			  for (AudioTrack audioTrack : playlist.getTracks()) {
+				getSchedule().queue(audioTrack);
+			  }
+			  result.onQueuedPlaylist(playlist);
+			} catch (Exception e) {
+			  result.onFailed(e);
+			}
+		  }
+
+		  public void noMatches() {
+			result.noMatches();
+		  }
+
+		  public void loadFailed(FriendlyException exception) {
+			result.onFailed(exception);
+		  }
+		});
   }
 
-  public AudioPlayer getAudioPlayer() {
-	return player;
-  }
-
-  public AudioPlayerSendHandler getSendHandler() {
-	return sendHandler;
-  }
-
-  public Guild getGuild() {
-	return guild;
-  }
-
-  public String getUsedLanguage() {
-	return Constants.PT_BR;
-  }
-  
-  public void load(final String url, TextChannel channel) {
-	
-	BotAudioManager.getBotAudioManager().getAudioPlayerManager().loadItemOrdered(this, url, new AudioLoadResultHandler() {
-	  
-	  public void trackLoaded(AudioTrack track) {
-		channel.sendMessage("playing>" + track.getInfo().title).queue();
-		getSchedule().queue(track);
-	  }
-	  
-	  public void playlistLoaded(AudioPlaylist playlist) {
-	  }
-	  
-	  public void noMatches() {
-		System.out.println("soso");
-	  }
-	  
-	  @Override
-	  public void loadFailed(FriendlyException exception) {
-		System.out.println("failed");
-		
-	  }
-	});
-	
-  }
-
-  @SuppressWarnings("unused")
   private String stripUrl(String url) {
 	if (url.startsWith("<") && url.endsWith(">")) {
 	  return url.substring(1, url.length() - 1);
@@ -96,8 +82,8 @@ public final class GuildInstance {
 	getPresenceWaiter().schedule(new TimerTask() {
 	  @Override
 	  public void run() {
-		synchronized (scheduler) {
-		  quitVoiceChannel();
+		synchronized (scheduleManager) {
+		  getGuild().getAudioManager().closeAudioConnection();
 		  getSchedule().stop();
 		  presenceWaiter = null;
 		}
@@ -107,15 +93,26 @@ public final class GuildInstance {
 
   public void cancelWaiter() {
 	if (getPresenceWaiter() != null) {
-	  System.out.println("waiter cancelado");
 	  getPresenceWaiter().cancel();
 	  presenceWaiter = null;
 	}
   }
 
-  public void quitVoiceChannel() {
-	guild.getAudioManager().closeAudioConnection();
-  }
+  public TrackScheduleManager getSchedule() {
+ 	return scheduleManager;
+   }
+
+   public AudioPlayer getAudioPlayer() {
+ 	return player;
+   }
+
+   public Guild getGuild() {
+ 	return guild;
+   }
+
+   public String getUsedLanguage() {
+ 	return Constants.PT_BR;
+   }
 
   public Timer getPresenceWaiter() {
 	return presenceWaiter;

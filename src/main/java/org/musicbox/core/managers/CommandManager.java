@@ -5,12 +5,12 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.musicbox.core.command.CommandHelpers;
 import org.musicbox.core.command.CommandSupply;
 import org.musicbox.core.command.Link;
 import org.musicbox.core.command.Received;
 import org.musicbox.core.command.Usage;
 import org.musicbox.core.exceptions.ParameterException;
-import org.musicbox.core.models.CommandHelpers;
 
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
@@ -28,14 +28,23 @@ public class CommandManager {
 	new CommandManager();
   }
 
-  public void handle(Object handledObject) {
+  public void handle(Class<?> handleClass) {
 
-	if (handledObject == null)
+	if (handleClass == null)
 	  throw new NullPointerException("Unabled to handle a null object.");
 
-	Class<?> handledObjectType = handledObject.getClass();
+	Object handledObject = null;
 	
-	for (Method method : handledObjectType.getDeclaredMethods()) {
+	try {
+	  handledObject = handleClass.newInstance();
+	} catch (InstantiationException | IllegalAccessException e) {
+	  System.out.println(e.getMessage());
+	}
+	
+	if(handledObject == null)
+	  return;
+	
+	for (Method method : handleClass.getDeclaredMethods()) {
 	  if (isValidCommand(method, MessageReceivedEvent.class)) {
 		Link link = method.getAnnotation(Link.class);
 		Usage usage = method.getAnnotation(Usage.class);
