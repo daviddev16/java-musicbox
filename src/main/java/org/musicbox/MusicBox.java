@@ -1,142 +1,107 @@
 package org.musicbox;
 
-import net.dv8tion.jda.api.JDA;
-import net.dv8tion.jda.api.JDABuilder;
+import net.dv8tion.jda.api.GatewayEncoding;
 import net.dv8tion.jda.api.requests.GatewayIntent;
-import net.dv8tion.jda.api.entities.SelfUser;
+import net.dv8tion.jda.api.requests.RestAction;
+import net.dv8tion.jda.api.sharding.DefaultShardManagerBuilder;
+import net.dv8tion.jda.api.sharding.ShardManager;
+import net.dv8tion.jda.api.utils.ChunkingFilter;
+import net.dv8tion.jda.api.utils.MemberCachePolicy;
+import net.dv8tion.jda.api.utils.cache.CacheFlag;
+import net.dv8tion.jda.internal.utils.config.ThreadingConfig;
+import okhttp3.OkHttpClient;
 
-import java.io.IOException;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.EnumSet;
-import java.util.logging.Level;
 
+import javax.security.auth.login.LoginException;
 
-import org.musicbox.command.CommandController;
-import org.musicbox.command.MusicBoxCommandTable;
-import org.musicbox.config.MusicBoxConfiguration;
+import org.musicbox.config.Configs;
+import org.musicbox.core.LanguageManager;
+import org.musicbox.core.managers.BotAudioManager;
+import org.musicbox.core.managers.CommandManager;
+import org.musicbox.core.managers.GuildManager;
+import org.musicbox.core.managers.YoutubeSearchManager;
+import org.musicbox.core.models.CommandHelpers;
+import org.musicbox.core.models.Listeners;
 import org.musicbox.listeners.CommandListener;
 import org.musicbox.listeners.PresenceListener;
 import org.musicbox.listeners.WatcherListener;
-import org.musicbox.managing.GuildTrackerManager;
-import org.musicbox.managing.YoutubeSearchManager;
-import org.musicbox.player.soundcloud.SoundCloudAudioSourceManager;
-
-import com.sedmelluq.discord.lavaplayer.player.AudioPlayerManager;
-import com.sedmelluq.discord.lavaplayer.player.DefaultAudioPlayerManager;
-import com.sedmelluq.discord.lavaplayer.source.bandcamp.BandcampAudioSourceManager;
-import com.sedmelluq.discord.lavaplayer.source.http.HttpAudioSourceManager;
-import com.sedmelluq.discord.lavaplayer.source.local.LocalAudioSourceManager;
-import com.sedmelluq.discord.lavaplayer.source.twitch.TwitchStreamAudioSourceManager;
-import com.sedmelluq.discord.lavaplayer.source.vimeo.VimeoAudioSourceManager;
-import com.sedmelluq.discord.lavaplayer.source.youtube.YoutubeAudioSourceManager;
+import org.musicbox.tables.MusicCommandTable;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class MusicBox {
 
-  private volatile static MusicBox instance;
+  private static MusicBox musicBox;
 
-  private MusicBoxConfiguration musicBoxConfiguration;
-  private YoutubeSearchManager youtubeSearchManager;
-  private GuildTrackerManager guildTrackerManager;
-  private CommandController commandController;
+  private static Logger logger = LoggerFactory.getLogger(MusicBox.class);
 
-  private AudioPlayerManager playerManager;
+  private final ShardManager shardManager;
 
-  private final int volume = 150 / 2;
-  private SelfUser selfUser;
+  public MusicBox() throws LoginException {
 
-  public static void main(String[] args) throws IOException {
-	new MusicBox();
+	
+	Configs.setup("musicbox-app");
+
+	LanguageManager.setup();
+	BotAudioManager.setup();
+	GuildManager.setup();
+	YoutubeSearchManager.setup();
+	CommandHelpers.setup();
+	
+	CommandManager.setup();
+	CommandManager.getCommandManager().handle(new MusicCommandTable());
+	
+	Listeners.setup();
+
+	Listeners.register(
+		new WatcherListener(), 
+		new CommandListener(), 
+		new PresenceListener());
+
+	RestAction.setDefaultFailure(null);
+
+	/* application intents */
+	EnumSet<GatewayIntent> intents = EnumSet.of(
+		GatewayIntent.GUILD_MESSAGES, 
+		GatewayIntent.GUILD_EMOJIS,
+		GatewayIntent.GUILD_VOICE_STATES
+		);
+
+	/* cache flags*/
+	Collection<CacheFlag> cacheFlags = Arrays.asList(
+		CacheFlag.MEMBER_OVERRIDES,
+		CacheFlag.ROLE_TAGS,
+		CacheFlag.CLIENT_STATUS,
+		CacheFlag.ACTIVITY,
+		CacheFlag.EMOTE
+		);
+
+	shardManager = DefaultShardManagerBuilder.create(
+		Configs.TOKEN, intents)
+		.disableCache(cacheFlags)
+		.setGatewayEncoding(GatewayEncoding.ETF)
+		.setChunkingFilter(ChunkingFilter.NONE)
+		.setMemberCachePolicy(MemberCachePolicy.VOICE)
+		.addEventListeners(Listeners.getAllListeners())
+		.setRawEventsEnabled(true)
+		.setBulkDeleteSplittingEnabled(false)
+		.setEventPool(ThreadingConfig.newScheduler(1, () -> "MusicBox", "EventPool"), true)
+		.setHttpClient(new OkHttpClient())
+		.build();
+
+	logger.info("MusicBox is ready to be used.");
+	musicBox = this;
   }
 
-  public MusicBox() {
-
-	instance = this;
-	java.util.logging.Logger.getLogger("org.apache.http.client.protocol.ResponseProcessCookies").setLevel(Level.OFF);
-
-	try {
-	  /* bot json configurations */
-	  musicBoxConfiguration = new MusicBoxConfiguration("musicbox-app");
-
-	  /* setup managers */
-	  youtubeSearchManager = new YoutubeSearchManager();
-	  guildTrackerManager = new GuildTrackerManager();
-	  playerManager = new DefaultAudioPlayerManager();
-	  commandController = new CommandController();
-
-	  commandController.register(MusicBoxCommandTable.class);
-
-	  /* LavaPlayer register all source managers */
-	  playerManager.registerSourceManager(SoundCloudAudioSourceManager.createDefault());
-	  playerManager.registerSourceManager(new TwitchStreamAudioSourceManager());
-	  playerManager.registerSourceManager(new BandcampAudioSourceManager());
-	  playerManager.registerSourceManager(new YoutubeAudioSourceManager());
-	  playerManager.registerSourceManager(new VimeoAudioSourceManager());
-	  playerManager.registerSourceManager(new HttpAudioSourceManager());
-	  playerManager.registerSourceManager(new LocalAudioSourceManager());
-
-	  /* bot intents */
-	  EnumSet<GatewayIntent> intents = EnumSet.of(GatewayIntent.GUILD_MESSAGES, GatewayIntent.GUILD_EMOJIS,
-		  GatewayIntent.GUILD_VOICE_STATES, GatewayIntent.GUILD_PRESENCES);
-
-	  String token = null;
-
-	  if (getConfiguration().isDebugMode())
-		token = getConfiguration().getDebugToken(); /* the 2nd bot application for debugging stuff */
-	  else
-		token = getConfiguration().getMainToken();
-
-	  /* loading JDA */
-	  JDA jda = JDABuilder.create(token, intents)
-		  .addEventListeners(new CommandListener(), new PresenceListener(), new WatcherListener()).build();
-
-	  selfUser = jda.getSelfUser();
-
-	  System.out.println("MusicBox application is ready to be used.");
-	  System.gc();
-
-	} catch (Exception e) {
-	  e.printStackTrace();
-	  // System.exit(-1);
-	}
+  public ShardManager getShardManager() {
+	return shardManager;
   }
 
-  public static AudioPlayerManager getAudioPlayerManager() {
-	return getInstance().playerManager;
-  }
-
-  public static GuildTrackerManager getTrackerManager() {
-	return getInstance().guildTrackerManager;
-  }
-
-  public static YoutubeSearchManager getSearchManager() {
-	return getInstance().youtubeSearchManager;
-  }
-
-  public static CommandController getCommandController() {
-	return getInstance().commandController;
-  }
-
-  public static MusicBoxConfiguration getConfiguration() {
-	return getInstance().musicBoxConfiguration;
-  }
-
-  public static int getMainVolume() {
-	return getInstance().getVolume();
-  }
-
-  public static MusicBox getInstance() {
-	return instance;
-  }
-
-  public SelfUser getSelfUser() {
-	return selfUser;
-  }
-
-  public JDA getJDA() {
-	return getSelfUser().getJDA();
-  }
-
-  public int getVolume() {
-	return volume;
+  public static MusicBox getMusicBox() {
+	return musicBox;
   }
 
 }

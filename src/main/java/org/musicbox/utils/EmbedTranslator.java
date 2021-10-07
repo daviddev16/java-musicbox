@@ -3,7 +3,7 @@ package org.musicbox.utils;
 import java.awt.Color;
 import java.util.List;
 
-import org.musicbox.models.Placeholder;
+import org.musicbox.core.models.Placeholder;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
@@ -36,7 +36,7 @@ public final class EmbedTranslator {
 	if (jsonObject.has("image")) {
 	  builder.setImage(translateCodes(jsonObject.get("image").getAsString(), placeholders));
 	}
-	if (jsonObject.has("thumbnail") && I18n.ENABLE_EMBED_THUMBNAILS) {
+	if (jsonObject.has("thumbnail") && Constants.ENABLE_EMBED_THUMBNAILS) {
 	  builder.setThumbnail(translateCodes(jsonObject.get("thumbnail").getAsString(), placeholders));
 	}
 	if (jsonObject.has("title")) {

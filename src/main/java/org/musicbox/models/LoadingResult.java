@@ -1,7 +1,0 @@
-package org.musicbox.models;
-
-public enum LoadingResult {
-
-  QUEUED_SINGLE, QUEUED_PLAYLIST, MISSING_VOICE_CHANNEL, MISSING_PERMISSION, NO_MATCHES, FAILED_LOAD, FAILED_QUEUE;
-
-}

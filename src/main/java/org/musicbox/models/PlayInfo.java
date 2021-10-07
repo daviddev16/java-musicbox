@@ -1,5 +1,7 @@
 package org.musicbox.models;
 
+import org.musicbox.utils.Utils;
+
 public final class PlayInfo {
 
   private final String title;
@@ -23,6 +25,14 @@ public final class PlayInfo {
 
   public boolean isPlaylist() {
 	return isPlaylist;
+  }
+
+  public String getTiming() {
+	if (isPlaylist()) {
+	  return Long.toString(getLength());
+	} else {
+	  return Utils.getTimestamp(getLength());
+	}
   }
 
 }

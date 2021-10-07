@@ -1,18 +1,14 @@
 package org.musicbox.utils;
 
 import java.net.URL;
-import java.util.List;
 import java.util.StringJoiner;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
 
-import org.musicbox.MusicBox;
-import org.musicbox.models.Placeholder;
-
-import com.google.gson.JsonObject;
-
+import net.dv8tion.jda.api.entities.Guild;
+import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Message;
-import net.dv8tion.jda.api.entities.TextChannel;
+import net.dv8tion.jda.api.entities.VoiceChannel;
 
 public final class Utils {
 
@@ -26,12 +22,26 @@ public final class Utils {
 	else
 	  return String.format("%02d:%02d", minutes, seconds);
   }
-
-  public static void send(TextChannel channel, String key, List<Placeholder> placeholders) {
-	JsonObject jsonMessage = MusicBox.getConfiguration().getMessages(I18n.DEFAULT_LANGUAGE, key);
-	channel.sendMessage(EmbedTranslator.translate(jsonMessage, placeholders)).queue();
+  
+  public static boolean isTogetherWith(Member member, Guild guild) {
+	VoiceChannel voiceChannel = guild.getSelfMember().getVoiceState().getChannel();
+	for(Member connectedMember : voiceChannel.getMembers()) {
+	  if(connectedMember.getIdLong() == member.getIdLong()) {
+		return true;
+	  }
+	}
+	
+	return false;
   }
-
+  
+  public static boolean isOnVoiceChannel(Member member) {
+	return member.getVoiceState().getChannel() != null;
+  }
+  
+  public static boolean isPresentOnGuild(Guild guild) {
+	return guild.getSelfMember().getVoiceState().inVoiceChannel();
+  }
+  
   public static String getJoinedString(String[] strs) {
 	StringJoiner joiner = new StringJoiner(",");
 	for (String str : strs) {
