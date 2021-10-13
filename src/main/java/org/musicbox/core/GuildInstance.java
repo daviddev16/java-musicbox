@@ -20,102 +20,100 @@ import net.dv8tion.jda.api.entities.VoiceChannel;
 
 public final class GuildInstance {
 
-  private final AudioPlayer player;
-  private final TrackScheduleManager scheduleManager;
-  private volatile Timer presenceWaiter;
-  private final Guild guild;
+	private final AudioPlayer player;
+	private final TrackScheduleManager scheduleManager;
+	private volatile Timer presenceWaiter;
+	private final Guild guild;
 
-  public GuildInstance(AudioPlayerManager manager, Guild guild) {
-	this.guild = guild;
-	player = manager.createPlayer();
-	scheduleManager = new TrackScheduleManager(player, this);
-	player.addListener(scheduleManager);
-	guild.getAudioManager().setSendingHandler(scheduleManager);
-  }
+	public GuildInstance(AudioPlayerManager manager, Guild guild) {
+		this.guild = guild;
+		player = manager.createPlayer();
+		scheduleManager = new TrackScheduleManager(player, this);
+		player.addListener(scheduleManager);
+		guild.getAudioManager().setSendingHandler(scheduleManager);
+	}
 
- 
-
-  public void load(final String url, IAudioLoadResult result) {
-	BotAudioManager.getBotAudioManager().getAudioPlayerManager().loadItemOrdered(this, stripUrl(url),
-		new AudioLoadResultHandler() {
-		  public void trackLoaded(AudioTrack track) {
-			try {
-			  getSchedule().queue(track);
-			  result.onQueuedSingle(track);
-			} catch (Exception e) {
-			  result.onFailed(e);
+	public void load(final String url, IAudioLoadResult result) {
+		BotAudioManager.getBotAudioManager().getAudioPlayerManager().loadItemOrdered(this, stripUrl(url),
+				new AudioLoadResultHandler() {
+			public void trackLoaded(AudioTrack track) {
+				try {
+					getSchedule().queue(track);
+					result.onQueuedSingle(track);
+				} catch (Exception e) {
+					result.onFailed(e);
+				}
 			}
-		  }
 
-		  public void playlistLoaded(AudioPlaylist playlist) {
-			try {
-			  for (AudioTrack audioTrack : playlist.getTracks()) {
-				getSchedule().queue(audioTrack);
-			  }
-			  result.onQueuedPlaylist(playlist);
-			} catch (Exception e) {
-			  result.onFailed(e);
+			public void playlistLoaded(AudioPlaylist playlist) {
+				try {
+					for (AudioTrack audioTrack : playlist.getTracks()) {
+						getSchedule().queue(audioTrack);
+					}
+					result.onQueuedPlaylist(playlist);
+				} catch (Exception e) {
+					result.onFailed(e);
+				}
 			}
-		  }
 
-		  public void noMatches() {
-			result.noMatches();
-		  }
+			public void noMatches() {
+				result.noMatches();
+			}
 
-		  public void loadFailed(FriendlyException exception) {
-			result.onFailed(exception);
-		  }
+			public void loadFailed(FriendlyException exception) {
+				result.onFailed(exception);
+			}
 		});
-  }
-
-  private String stripUrl(String url) {
-	if (url.startsWith("<") && url.endsWith(">")) {
-	  return url.substring(1, url.length() - 1);
-	} else {
-	  return url;
 	}
-  }
 
-  /* wait until someone join the voice channel again */
-  public void waitToQuitIfNecessary(VoiceChannel channel) {
-	presenceWaiter = new Timer("[" + getGuild().getIdLong() + "-waiter]");
-	getPresenceWaiter().schedule(new TimerTask() {
-	  @Override
-	  public void run() {
-		synchronized (scheduleManager) {
-		  getGuild().getAudioManager().closeAudioConnection();
-		  getSchedule().stop();
-		  presenceWaiter = null;
+	private String stripUrl(String url) {
+		if (url.startsWith("<") && url.endsWith(">")) {
+			return url.substring(1, url.length() - 1);
+		} else {
+			return url;
 		}
-	  }
-	}, 60 * 2 * 1000);
-  }
-
-  public void cancelWaiter() {
-	if (getPresenceWaiter() != null) {
-	  getPresenceWaiter().cancel();
-	  presenceWaiter = null;
 	}
-  }
 
-  public TrackScheduleManager getSchedule() {
- 	return scheduleManager;
-   }
+	/* wait until someone join the voice channel again */
+	public void waitToQuitIfNecessary(VoiceChannel channel) {
+		presenceWaiter = new Timer("[" + getGuild().getIdLong() + "-waiter]");
+		getPresenceWaiter().schedule(new TimerTask() {
+			@Override
+			public void run() {
+				synchronized (scheduleManager) {
+					getGuild().getAudioManager().closeAudioConnection();
+					getSchedule().stop();
+					presenceWaiter = null;
+				}
+			}
+		}, 60 * 2 * 1000);
+	}
 
-   public AudioPlayer getAudioPlayer() {
- 	return player;
-   }
+	public void cancelWaiter() {
+		if (getPresenceWaiter() != null) {
+			getPresenceWaiter().cancel();
+			presenceWaiter = null;
+		}
+	}
 
-   public Guild getGuild() {
- 	return guild;
-   }
+	public TrackScheduleManager getSchedule() {
+		return scheduleManager;
+	}
 
-   public String getUsedLanguage() {
- 	return Constants.PT_BR;
-   }
+	public AudioPlayer getAudioPlayer() {
+		return player;
+	}
 
-  public Timer getPresenceWaiter() {
-	return presenceWaiter;
-  }
+	public Guild getGuild() {
+		return guild;
+	}
+
+	public String getUsedLanguage() {
+		return Constants.PT_BR;
+	}
+
+	public Timer getPresenceWaiter() {
+		return presenceWaiter;
+	}
 
 }

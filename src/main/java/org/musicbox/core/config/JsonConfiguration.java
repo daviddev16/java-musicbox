@@ -12,42 +12,42 @@ import com.google.gson.stream.JsonReader;
 
 public class JsonConfiguration {
 
-  private JsonObject map;
+	private JsonObject map;
 
-  public JsonConfiguration(String name) {
-	InputStream configStream = JsonConfiguration.class.getResourceAsStream("/" + name + ".json");
-	JsonReader reader = new JsonReader(new InputStreamReader(configStream));
-	map = new Gson().fromJson(reader, JsonObject.class);
-	try {
-	  configStream.close();
-	  reader.close();
-	} catch (IOException e) {
-	  e.printStackTrace();
+	public JsonConfiguration(String name) {
+		InputStream configStream = JsonConfiguration.class.getResourceAsStream("/" + name + ".json");
+		JsonReader reader = new JsonReader(new InputStreamReader(configStream));
+		map = new Gson().fromJson(reader, JsonObject.class);
+		try {
+			configStream.close();
+			reader.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
-  }
 
-  public JsonElement get(String memberName) {
-	return map.get(memberName);
-  }
+	public JsonElement get(String memberName) {
+		return map.get(memberName);
+	}
 
-  public JsonObject getJsonObject(String memberName) {
-	return get(memberName).getAsJsonObject();
-  }
-  
-  public JsonArray getJsonArray(String memberName) {
- 	return get(memberName).getAsJsonArray();
-   }
+	public JsonObject getJsonObject(String memberName) {
+		return get(memberName).getAsJsonObject();
+	}
 
-  public String getString(String memberName) {
-	return get(memberName).getAsString();
-  }
+	public JsonArray getJsonArray(String memberName) {
+		return get(memberName).getAsJsonArray();
+	}
 
-  public boolean getBoolean(String memberName) {
-	return get(memberName).getAsBoolean();
-  }
-  
-  public int getInt(String memberName) {
-	return get(memberName).getAsInt();
-  }
+	public String getString(String memberName) {
+		return get(memberName).getAsString();
+	}
+
+	public boolean getBoolean(String memberName) {
+		return get(memberName).getAsBoolean();
+	}
+
+	public int getInt(String memberName) {
+		return get(memberName).getAsInt();
+	}
 
 }

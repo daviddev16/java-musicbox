@@ -15,36 +15,36 @@ import net.dv8tion.jda.api.events.guild.voice.GuildVoiceLeaveEvent;
 
 public class WatcherListener extends Listener {
 
-  @Override
-  public void onGenericGuildVoice(GenericGuildVoiceEvent event) {
+	@Override
+	public void onGenericGuildVoice(GenericGuildVoiceEvent event) {
 
-	Guild guild = event.getGuild();
-	VoiceChannel channel = null;
-	GuildInstance guildInstance = GuildManager.getGuildManager().getGuildInstance(guild);
+		Guild guild = event.getGuild();
+		VoiceChannel channel = null;
+		GuildInstance guildInstance = GuildManager.getGuildManager().getGuildInstance(guild);
 
-	if (event instanceof GuildVoiceLeaveEvent) {
-	  channel = ((GuildVoiceLeaveEvent) event).getChannelLeft();
+		if (event instanceof GuildVoiceLeaveEvent) {
+			channel = ((GuildVoiceLeaveEvent) event).getChannelLeft();
 
-	  if (isBotPresent(channel) && isAlone(channel.getMembers())) {
-		if (guildInstance.getPresenceWaiter() == null) {
-		  guildInstance.waitToQuitIfNecessary(channel);
+			if (isBotPresent(channel) && isAlone(channel.getMembers())) {
+				if (guildInstance.getPresenceWaiter() == null) {
+					guildInstance.waitToQuitIfNecessary(channel);
+				}
+			}
+		} else if (event instanceof GuildVoiceJoinEvent) {
+			channel = ((GuildVoiceJoinEvent) event).getChannelJoined();
+			if (isBotPresent(channel) && !isAlone(channel.getMembers())) {
+				guildInstance.cancelWaiter();
+			}
 		}
-	  }
-	} else if (event instanceof GuildVoiceJoinEvent) {
-	  channel = ((GuildVoiceJoinEvent) event).getChannelJoined();
-	  if (isBotPresent(channel) && !isAlone(channel.getMembers())) {
-		guildInstance.cancelWaiter();
-	  }
 	}
-  }
 
-  public boolean isBotPresent(VoiceChannel voiceChannel) {
-	return voiceChannel.getMembers().stream()
-		.filter(member -> member.getUser().getIdLong() == voiceChannel.getJDA().getSelfUser().getIdLong()).findFirst()
-		.isPresent();
-  }
+	public boolean isBotPresent(VoiceChannel voiceChannel) {
+		return voiceChannel.getMembers().stream()
+				.filter(member -> member.getUser().getIdLong() == voiceChannel.getJDA().getSelfUser().getIdLong()).findFirst()
+				.isPresent();
+	}
 
-  public static boolean isAlone(List<Member> member) {
-	return member.size() == 1;
-  }
+	public static boolean isAlone(List<Member> member) {
+		return member.size() == 1;
+	}
 }
