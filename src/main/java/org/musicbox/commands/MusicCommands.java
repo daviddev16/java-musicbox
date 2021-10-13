@@ -38,7 +38,7 @@ public class MusicCommands {
 
 			/* check if the member is on voice channel */
 			if (!Utils.isOnVoiceChannel(event.getMember())) {
-				translatedMessage(event, Messages.ABSENT_ON_VOICE_CHANNEL, placeholders);
+				translatedMessage(event, Messages.ABSENT_FROM_VOICE_CHANNEL, placeholders);
 				return;
 			}
 

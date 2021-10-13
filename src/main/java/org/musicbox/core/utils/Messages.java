@@ -19,7 +19,7 @@ public final class Messages {
 	public static final int COMMAND_TYPE_MISSMATCH = 3;
 	public static final int COMMAND_MISSING_PERMISSION = 4;
 
-	public static final int ABSENT_ON_VOICE_CHANNEL = 5;
+	public static final int ABSENT_FROM_VOICE_CHANNEL = 5;
 	public static final int NOT_SAME_VOICE_CHANNEL = 6;
 	public static final int NO_MATCHES = 7;
 
