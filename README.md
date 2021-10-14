@@ -2,6 +2,8 @@
 
 _version: 1.0.2 Alpha_
 
+[next version branch](https://github.com/daviddev16/java-musicbox/tree/1.0.3v)
+
 Supported: _Youtube (no link)_, _Soundcloud (by URL)_
 
 ![list](https://i.imgur.com/T2ldUwI.png)
