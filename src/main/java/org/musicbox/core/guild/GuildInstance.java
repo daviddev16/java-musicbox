@@ -26,20 +26,17 @@ public final class GuildInstance {
 
    @SuppressWarnings("unchecked")
    public <M extends GuildModule> M getModule(Class<M> moduleClass) {
-      return (M) getModules().stream()
-            .takeWhile(module -> module.getClass().isAssignableFrom(moduleClass))
-            .findFirst()
+      return (M) getModules().stream().filter(module -> module.getClass().isAssignableFrom(moduleClass)).findAny()
             .orElse(null);
    }
 
    public boolean containsModule(Class<? extends GuildModule> moduleClass) {
-      return getModules().stream(
-            ).anyMatch(module -> module.getClass().isAssignableFrom(moduleClass));
+      return getModules().stream().anyMatch(module -> module.getClass().isAssignableFrom(moduleClass));
    }
 
    public void addModule(GuildModule... modules) {
-      for(GuildModule module : modules) {
-         if(module != null) {
+      for (GuildModule module : modules) {
+         if (module != null) {
             injectGuildInstance(module);
             getModules().add(module);
             module.load();
@@ -49,7 +46,7 @@ public final class GuildInstance {
 
    public void injectGuildInstance(GuildModule guildModule) {
       try {
-         Field guildInstanceField = GuildModule.class.getField("guildInstance");
+         Field guildInstanceField = GuildModule.class.getDeclaredField("guildInstance");
          guildInstanceField.setAccessible(true);
          guildInstanceField.set(guildModule, this);
       } catch (Exception e) {
