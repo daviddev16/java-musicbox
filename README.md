@@ -15,10 +15,10 @@
      <img src="https://img.shields.io/static/v1?label=&message=Development+version+(1.0.3+alpha)&color=bb72da&style=flat-badge&logo=Bandcamp&logoColor=white&logoWidth=10">
    </a><br>
    <a href="https://discord.com/api/oauth2/authorize?client_id=892542872811884584&permissions=3459136&scope=bot">
-     <img src="https://img.shields.io/static/v1?label=&message=Invite+to+your+server&color=7289da&style=flat-badge&logo=discord&logoColor=white&logoWidth=10">
+     <img src="https://img.shields.io/static/v1?label=&message=Invite+to+your+server&color=bb72da&style=flat-badge&logo=discord&logoColor=white&logoWidth=10">
    </a>
    <a href="https://discord.gg/RjxMwhMwwF">
-     <img src="https://img.shields.io/static/v1?label=&message=Join+the+community!&color=7289da&style=flat-badge&logo=discord&logoColor=white&logoWidth=10">
+     <img src="https://img.shields.io/static/v1?label=&message=Join+the+community!&color=bb72da&style=flat-badge&logo=discord&logoColor=white&logoWidth=10">
    </a>
 </p>
 
