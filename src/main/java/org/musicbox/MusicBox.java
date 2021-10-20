@@ -34,70 +34,70 @@ import org.slf4j.LoggerFactory;
 
 public class MusicBox {
 
-  private static Logger logger = LoggerFactory.getLogger(MusicBox.class);
-  private static MusicBox musicBox;
+   private static Logger logger = LoggerFactory.getLogger(MusicBox.class);
+   private static MusicBox musicBox;
 
-  private final ShardManager shardManager;
+   private final ShardManager shardManager;
 
-  public MusicBox() throws LoginException {
+   public MusicBox() throws LoginException {
 
-    DefaultConfig.setup("musicbox-app");
+      DefaultConfig.setup("musicbox-app");
 
-    LanguageManager.setup();
-    BotAudioManager.setup();
-    GuildManager.setup();
-    YoutubeSearchManager.setup();
-    CommandFailHandler.setup();
+      LanguageManager.setup();
+      BotAudioManager.setup();
+      GuildManager.setup();
+      YoutubeSearchManager.setup();
+      CommandFailHandler.setup();
 
-    CommandManager.setup();
-    CommandManager.getCommandManager().handle(MusicCommands.class);
+      CommandManager.setup();
+      CommandManager.getCommandManager().handle(MusicCommands.class);
 
-    Listeners.setup();
+      Listeners.setup();
 
-    Listeners.register(
-        new WatcherListener(), 
-        new CommandListener(), 
-        new PresenceListener());
+      Listeners.register(
+            new WatcherListener(), 
+            new CommandListener(), 
+            new PresenceListener());
 
-    RestAction.setDefaultFailure(null);
+      RestAction.setDefaultFailure(null);
 
-    EnumSet<GatewayIntent> intents = EnumSet.of(
-        GatewayIntent.GUILD_MESSAGES, 
-        GatewayIntent.GUILD_EMOJIS,
-        GatewayIntent.GUILD_VOICE_STATES
-        );
+      EnumSet<GatewayIntent> intents = EnumSet.of(
+            GatewayIntent.GUILD_MESSAGES, 
+            GatewayIntent.GUILD_EMOJIS,
+            GatewayIntent.GUILD_VOICE_STATES
+            );
 
-    Collection<CacheFlag> cacheFlags = Arrays.asList(
-        CacheFlag.MEMBER_OVERRIDES,
-        CacheFlag.ROLE_TAGS,
-        CacheFlag.CLIENT_STATUS,
-        CacheFlag.ACTIVITY,
-        CacheFlag.EMOTE
-        );
+      Collection<CacheFlag> cacheFlags = Arrays.asList(
+            CacheFlag.MEMBER_OVERRIDES,
+            CacheFlag.ROLE_TAGS,
+            CacheFlag.CLIENT_STATUS,
+            CacheFlag.ACTIVITY,
+            CacheFlag.EMOTE
+            );
 
-    shardManager = DefaultShardManagerBuilder.create(
-        DefaultConfig.TOKEN, intents)
-        .disableCache(cacheFlags)
-        .setGatewayEncoding(GatewayEncoding.ETF)
-        .setChunkingFilter(ChunkingFilter.NONE)
-        .setMemberCachePolicy(MemberCachePolicy.VOICE)
-        .addEventListeners(Listeners.getAllListeners())
-        .setRawEventsEnabled(true)
-        .setBulkDeleteSplittingEnabled(false)
-        .setEventPool(ThreadingConfig.newScheduler(1, () -> "MusicBox", "EventPool"), true)
-        .setHttpClient(new OkHttpClient())
-        .build();
+      shardManager = DefaultShardManagerBuilder.create(
+            DefaultConfig.TOKEN, intents)
+            .disableCache(cacheFlags)
+            .setGatewayEncoding(GatewayEncoding.ETF)
+            .setChunkingFilter(ChunkingFilter.NONE)
+            .setMemberCachePolicy(MemberCachePolicy.VOICE)
+            .addEventListeners(Listeners.getAllListeners())
+            .setRawEventsEnabled(true)
+            .setBulkDeleteSplittingEnabled(false)
+            .setEventPool(ThreadingConfig.newScheduler(1, () -> "MusicBox", "EventPool"), true)
+            .setHttpClient(new OkHttpClient())
+            .build();
 
-    logger.info("MusicBox is ready to be used.");
-    musicBox = this;
-  }
+      logger.info("MusicBox is ready to be used.");
+      musicBox = this;
+   }
 
-  public ShardManager getShardManager() {
-    return shardManager;
-  }
+   public ShardManager getShardManager() {
+      return shardManager;
+   }
 
-  public static MusicBox getMusicBox() {
-    return musicBox;
-  }
+   public static MusicBox getMusicBox() {
+      return musicBox;
+   }
 
 }
