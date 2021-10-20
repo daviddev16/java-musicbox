@@ -80,8 +80,8 @@ public class MusicCommands {
    @Link(commandId = 2, names = { "stop" }, category = CommandCategory.MUSIC, argumentsSplit = true)
    private void stop(MessageReceivedEvent event) {
 
-		GuildInstance guildInstance = GuildManager.getGuildManager().getGuildInstance(event.getGuild());
-		guildInstance.getSchedule().stop();
+      GuildInstance guildInstance = GuildManager.getGuildManager().getGuildInstance(event.getGuild());
+      guildInstance.getSchedule().stop();
 
    }
 
