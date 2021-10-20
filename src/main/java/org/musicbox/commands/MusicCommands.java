@@ -56,7 +56,6 @@ public class MusicCommands {
       if (!Utils.isURL(content)) {
          content = YoutubeSearchManager.getSearchManager().getUrlBasedOnText(content);
       }
-
       /* load and play track if is not already playing */
       guildInstance.load(content, new PlayTrackResult(event, guildInstance, placeholders));
    }
