@@ -11,7 +11,7 @@
     },
     {
       "id": 1,
-      "title": "Comando n√£o encontrado.",
+      "title": "Comando n„o encontrado.",
       "description": "Veja a lista de comandos em $[globalPrefix]help.",
       "footer": {
         "text": "Requisitado por $[senderTag]",
@@ -29,7 +29,7 @@
     },
     {
       "id": 3,
-      "title": "Comando inv√°lido.",
+      "title": "Comando inv·lido.",
       "description": "Tente: $[commandUsage]",
       "footer": {
         "text": "Requisitado por $[senderTag]",
@@ -38,12 +38,12 @@
     },
     {
       "id": 4,
-      "title": "O MusicBox n√£o pode ser usado aqui.",
-      "description": "MusicBox n√£o possui as permiss√µes necess√°rias para enviar mensagem aqui.",
+      "title": "O MusicBox n„o pode ser usado aqui.",
+      "description": "MusicBox n„o possui as permissıes necessarias para enviar mensagem aqui.",
       "fields": [
         {
-          "name": "Permiss√µes faltando: ",
-          "value": "$[missingWritingPermissions]",
+          "name": "Permissıes faltando: ",
+          "value": "$[missingPermissions]",
           "inline": false
         }
       ],
@@ -54,8 +54,8 @@
     },
     {
       "id": 5,
-      "title": "N√£o foi poss√≠vel usar o bot.",
-      "description": "Voc√™ precisa conectar em um canal de voz.",
+      "title": "N„o foi PossÌvel usar o bot.",
+      "description": "VocÍ precisa conectar em um canal de voz.",
       "footer": {
         "text": "Requisitado por $[senderTag]",
         "iconUrl": "$[senderAvatar]"
@@ -63,8 +63,8 @@
     },
     {
       "id": 6,
-      "title": "N√£o foi poss√≠vel usar o bot.",
-      "description": "Voc√™ precisa est√° no mesmo canal de voz do bot.",
+      "title": "N„o foi PossÌvel usar o bot.",
+      "description": "VocÍ precisa estar no mesmo canal de voz do bot.",
       "footer": {
         "text": "Requisitado por $[senderTag]",
         "iconUrl": "$[senderAvatar]"
@@ -72,7 +72,7 @@
     },
     {
       "id": 7,
-      "title": "N√£o encontrei nada :(",
+      "title": "N„o encontrei nada :(",
       "description": "Nada encontrado para '$[userInput]'",
       "footer": {
         "text": "Requisitado por $[senderTag]",
@@ -82,7 +82,7 @@
     {
       "id": 8,
       "title": "$[trackTitle]",
-      "description": "Uma nova m√∫sica foi adicionada.\nVeja a lista de reprodu√ß√£o em $[globalPrefix]queue.",
+      "description": "Uma nova m˙sica foi adicionada.\nVeja a lista de reproduÁ„o em $[globalPrefix]queue.",
       "footer": {
         "text": "Requisitado por $[senderTag]",
         "iconUrl": "$[senderAvatar]"
@@ -91,7 +91,7 @@
     {
       "id": 9,
       "title": "$[trackTitle]",
-      "description": "Uma nova Playlist foi adicionada.\nVeja a lista de reprodu√ß√£o em $[globalPrefix]queue.",
+      "description": "Uma nova Playlist foi adicionada.\nVeja a lista de reproduÁ„o em $[globalPrefix]queue.",
       "footer": {
         "text": "Requisitado por $[senderTag]",
         "iconUrl": "$[senderAvatar]"

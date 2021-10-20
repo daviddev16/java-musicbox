@@ -6,6 +6,7 @@ import org.musicbox.config.DefaultConfig;
 import org.musicbox.core.Permissions;
 import org.musicbox.core.managers.CommandManager;
 import org.musicbox.core.models.Listener;
+import org.musicbox.core.utils.Constants;
 import org.musicbox.core.utils.Messages;
 import org.musicbox.core.utils.Placeholder;
 import org.musicbox.core.utils.PlaceholderBuilder;
@@ -23,23 +24,22 @@ public class CommandListener extends Listener {
          return;
 
       List<Placeholder> placeholders = PlaceholderBuilder.createBy(event, true)
-            .permission().build();
+            .add(Constants.KEY_MISSING_PERMISSIONS, Utils.toString(Permissions.WRITING_PERMISSIONS)).build();
 
       /* check if the bot can send embeds in the text channel */
-      if(!Permissions.canWrite(event.getTextChannel(), event.getMember())) {
+      if (!Permissions.canWrite(event.getTextChannel(), event.getMember())) {
          Messages.translatedMessage(event, Messages.COMMAND_MISSING_PERMISSION, placeholders);
          return;
       }
 
       /* kernel's id */
       if (event.getMember().getUser().getIdLong() != 339978701297156098L) {
-         event.getTextChannel().sendMessage("VocÃª nÃ£o tem permissÃ£o de usar o bot em modo de desenvolvimento.")
-         .queue(Utils.deleteAfter(20L));
+         event.getTextChannel().sendMessage("Você não tem permissão de usar o bot em modo de desenvolvimento.")
+               .queue(Utils.deleteAfter(20L));
          return;
       }
 
       CommandManager.getCommandManager().perform(DefaultConfig.PREFIX, event);
    }
-
 
 }

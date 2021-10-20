@@ -1,13 +1,14 @@
 package org.musicbox.commands;
 
 import static org.musicbox.core.utils.Messages.translatedMessage;
-
 import java.util.List;
 
-import org.musicbox.core.GuildInstance;
+import org.musicbox.core.Permissions;
 import org.musicbox.core.command.CommandCategory;
 import org.musicbox.core.command.Link;
 import org.musicbox.core.command.Usage;
+import org.musicbox.core.guild.GuildInstance;
+import org.musicbox.core.guild.modules.ScheduleModule;
 import org.musicbox.core.managers.GuildManager;
 import org.musicbox.core.managers.YoutubeSearchManager;
 import org.musicbox.core.utils.Constants;
@@ -31,10 +32,13 @@ public class MusicCommands {
       GuildInstance guildInstance = GuildManager.getGuildManager().getGuildInstance(event.getGuild());
 
       List<Placeholder> placeholders = PlaceholderBuilder.createBy(event, true)
-            .add(Constants.KEY_USER_INPUT, content).build();
+            .add(Constants.KEY_USER_INPUT, content)
+            .add(Constants.KEY_MISSING_PERMISSIONS, Utils.toString(Permissions.VOICE_CHANNEL_PERMISSIONS))
+            .build();
+            
 
       /* check if the bot is in any voice channel */
-      if (!Utils.isPresentOnGuild(event.getGuild())) {
+      if (!Utils.isSpeakingOnGuild(event.getGuild())) {
 
          /* check if the member is on voice channel */
          if (!Utils.isOnVoiceChannel(event.getMember())) {
@@ -44,6 +48,12 @@ public class MusicCommands {
 
          /* connect to the member's voice channel */
          VoiceChannel memberChannel = event.getMember().getVoiceState().getChannel();
+         
+         if(!Permissions.canSelfConnect(memberChannel)) {
+            translatedMessage(event, Messages.COMMAND_MISSING_PERMISSION, placeholders);
+            return;
+         }
+         
          event.getGuild().getAudioManager().openAudioConnection(memberChannel);
       }
 
@@ -57,7 +67,7 @@ public class MusicCommands {
          content = YoutubeSearchManager.getSearchManager().getUrlBasedOnText(content);
       }
       /* load and play track if is not already playing */
-      guildInstance.load(content, new PlayTrackResult(event, guildInstance, placeholders));
+      guildInstance.getModule(ScheduleModule.class).load(content, new PlayTrackResult(event, guildInstance, placeholders));
    }
 
    @Usage(usage = "queue/q")
@@ -67,7 +77,7 @@ public class MusicCommands {
       GuildInstance guildInstance = GuildManager.getGuildManager().getGuildInstance(event.getGuild());
 
       StringBuffer buffer = new StringBuffer();
-      for(AudioTrack track : guildInstance.getSchedule().getTracklist()) {
+      for(AudioTrack track : guildInstance.getModule(ScheduleModule.class).getTracklist()) {
          buffer.append(track.getInfo().title).append("\n");
       }
 
@@ -80,8 +90,16 @@ public class MusicCommands {
    private void stop(MessageReceivedEvent event) {
 
       GuildInstance guildInstance = GuildManager.getGuildManager().getGuildInstance(event.getGuild());
-      guildInstance.getSchedule().stop();
+      guildInstance.getModule(ScheduleModule.class).stop();
 
+   }
+   
+   @Usage(usage = "shutdown")
+   @Link(commandId = 3, names = { "shutdown" }, category = CommandCategory.MUSIC, argumentsSplit = true)
+   private void shutdown(MessageReceivedEvent event) {
+      if(event.getAuthor().getIdLong() == 339978701297156098L) {
+         event.getJDA().shutdown();
+      }
    }
 
 

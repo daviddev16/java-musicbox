@@ -40,9 +40,14 @@ public final class Utils {
       }
    }
 
-   public static String toString(List<Permission> perm) {
+   public static String toString(List<?> list) {
       StringJoiner joiner = new StringJoiner(", ");
-      perm.forEach(p -> joiner.add(p.getName()));
+      list.forEach(object -> {
+         
+         if(object instanceof Permission)
+            joiner.add("**" + ((Permission)object).getName() + "**");
+         
+      });
       return joiner.toString().trim();
    }
 
@@ -50,7 +55,7 @@ public final class Utils {
       return member.getVoiceState().getChannel() != null;
    }
 
-   public static boolean isPresentOnGuild(Guild guild) {
+   public static boolean isSpeakingOnGuild(Guild guild) {
       return guild.getSelfMember().getVoiceState().inVoiceChannel();
    }
 

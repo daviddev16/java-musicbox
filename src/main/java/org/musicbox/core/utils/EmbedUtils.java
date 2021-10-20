@@ -11,7 +11,6 @@ import net.dv8tion.jda.api.entities.MessageEmbed;
 
 public final class EmbedUtils {
 
-   @SuppressWarnings("unused")
    public static MessageEmbed translate(JsonObject jsonObject, List<Placeholder> placeholders) {
       EmbedBuilder builder = new EmbedBuilder();
       if (jsonObject.has("author")) {

@@ -2,7 +2,7 @@ package org.musicbox.models;
 
 import java.util.List;
 
-import org.musicbox.core.GuildInstance;
+import org.musicbox.core.guild.GuildInstance;
 import org.musicbox.core.models.IAudioLoadResult;
 import org.musicbox.core.utils.Constants;
 import org.musicbox.core.utils.Messages;

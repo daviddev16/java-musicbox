@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.musicbox.config.DefaultConfig;
-import org.musicbox.core.Permissions;
 
 import net.dv8tion.jda.api.events.GenericEvent;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
@@ -27,22 +26,13 @@ public final class PlaceholderBuilder {
    }
 
    /**
-    * add all placeholder tags by event
+    * add all placeholders from event
     * */
    public PlaceholderBuilder event(GenericEvent event) {
       if (event instanceof MessageReceivedEvent) {
          add(Constants.KEY_SENDER_NAME, ((MessageReceivedEvent) event).getAuthor().getAsTag());
          add(Constants.KEY_SENDER_AVATAR, ((MessageReceivedEvent) event).getAuthor().getEffectiveAvatarUrl());
       }
-      return this;
-   }
-
-   /**
-    * add all permissions placeholders
-    * */
-   public PlaceholderBuilder permission() {
-      add(Constants.KEY_MISSING_WRITING_PERMISSIONS, Utils.toString(Permissions.WRITING_PERMISSIONS));
-      add(Constants.KEY_MISSING_VOICE_CHANNEL_PERMISSIONS, Utils.toString(Permissions.VOICE_CHANNEL_PERMISSIONS));
       return this;
    }
 
