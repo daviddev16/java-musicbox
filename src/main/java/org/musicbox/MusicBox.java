@@ -81,7 +81,7 @@ public class MusicBox {
             .setGatewayEncoding(GatewayEncoding.ETF)
             .setChunkingFilter(ChunkingFilter.NONE)
             .setMemberCachePolicy(MemberCachePolicy.VOICE)
-            .addEventListeners(Listeners.getAllListeners())
+            .addEventListeners(Arrays.asList(Listeners.getAllListeners()))
             .setRawEventsEnabled(true)
             .setBulkDeleteSplittingEnabled(false)
             .setEventPool(ThreadingConfig.newScheduler(1, () -> "MusicBox", "EventPool"), true)
