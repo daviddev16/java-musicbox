@@ -8,9 +8,6 @@ jobs:
   build:
     docker:
       - image: cimg/openjdk:16.0.2
-    steps:
-      - checkout
-      - run: java --version
 
     working_directory: ~/repo
 
