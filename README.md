@@ -8,11 +8,17 @@
 <p align="center">
    MusicBox is a brand new discord bot for music purpose.<br><br>
    <img width="700" alt="banner" src="https://i.imgur.com/Bkg5eAz.gif"><br><br>
-  <a href="https://circleci.com/gh/daviddev16/java-musicbox/tree/Development">
+  <a href="https://github.com/daviddev16/java-musicbox">
      <img src="https://img.shields.io/static/v1?label=&message=Online+version+(1.0.2+alpha)&color=bb72da&style=flat-badge&logo=Bandcamp&logoColor=white&logoWidth=10">
    </a>
    <a href="https://circleci.com/gh/daviddev16/java-musicbox/tree/Development">
      <img src="https://img.shields.io/static/v1?label=&message=Development+version+(1.0.3+alpha)&color=bb72da&style=flat-badge&logo=Bandcamp&logoColor=white&logoWidth=10">
+   </a><br>
+   <a href="https://discord.com/api/oauth2/authorize?client_id=892542872811884584&permissions=3459136&scope=bot">
+     <img src="https://img.shields.io/static/v1?label=&message=Invite+to+your+server&color=7289da&style=flat-badge&logo=discord&logoColor=white&logoWidth=10">
+   </a>
+   <a href="https://discord.gg/RjxMwhMwwF">
+     <img src="https://img.shields.io/static/v1?label=&message=Join+the+community!&color=7289da&style=flat-badge&logo=discord&logoColor=white&logoWidth=10">
    </a>
 </p>
 
@@ -24,10 +30,6 @@
  - Supports search query for Youtube.
  - Playlist support (Youtube only)
 
-## Links
-
-[![Bot Invite](https://img.shields.io/static/v1?label=&message=Invite+to+your+server&color=7289da&style=flat-badge&logo=discord&logoColor=white&logoWidth=10)](https://circleci.com/gh/daviddev16/java-musicbox/tree/Development)
-[![Community Invite](https://img.shields.io/static/v1?label=&message=Join+the+community!&color=7289da&style=flat-badge&logo=discord&logoColor=white&logoWidth=10)](https://circleci.com/gh/daviddev16/java-musicbox/tree/Development)
 
 ## Warning
 
