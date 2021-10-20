@@ -1,7 +1,7 @@
 # Music Box (Java Discord Bot)
 
 [![License](https://img.shields.io/github/license/jagrosh/MusicBot.svg)](https://github.com/daviddev16/java-musicbox/blob/master/LICENSE)
-[![CircleCI](https://circleci.com/gh/daviddev16/java-musicbox/tree/circleci-project-setup.svg?style=shield)](https://circleci.com/gh/daviddev16/java-musicbox/tree/circleci-project-setup)
+[![CircleCI](https://circleci.com/gh/daviddev16/java-musicbox.svg?style=shield&circle-token=a6bb4f4cd40a7a07ecc1f693ac93d773ff15b2d2)](https://app.circleci.com/pipelines/github/daviddev16/java-musicbox)
 [![Discord](https://discordapp.com/api/guilds/893011039468273705/widget.png)](https://discord.gg/RjxMwhMwwF)<br>
 
 MusicBox is a new bot that can be used on your discord server.
