@@ -1,4 +1,14 @@
-# Music Box (Discord Bot)
+# Music Box (Java Discord Bot)
+
+[![License](https://img.shields.io/github/license/jagrosh/MusicBot.svg)](https://github.com/daviddev16/java-musicbox/blob/master/LICENSE)
+[![CircleCI](https://circleci.com/gh/daviddev16/java-musicbox/tree/circleci-project-setup.svg?style=shield)](https://circleci.com/gh/daviddev16/java-musicbox/tree/circleci-project-setup)
+[![Discord](https://discordapp.com/api/guilds/893011039468273705/widget.png)](https://discord.gg/RjxMwhMwwF)<br>
+
+MusicBox is a new bot that can be used on your discord server.
+
+Currently this bot is on developmement mode, therefore the bot can show up some issues that will be fixed in the next versions.
+
+## Features
 
 _version: 1.0.3 Alpha_
 
