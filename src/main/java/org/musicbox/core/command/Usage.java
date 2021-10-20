@@ -10,6 +10,6 @@ import java.lang.annotation.Target;
 @Target(METHOD)
 public @interface Usage {
 
-  String usage();
-  
+   String usage();
+
 }

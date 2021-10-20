@@ -10,9 +10,9 @@ import java.lang.annotation.Target;
 @Target(METHOD)
 public @interface Link {
 
-  int commandId();
-  String[] names();
-  CommandCategory category();
-  boolean argumentsSplit() default true;
+   int commandId();
+   String[] names();
+   CommandCategory category();
+   boolean argumentsSplit() default true;
 
 }

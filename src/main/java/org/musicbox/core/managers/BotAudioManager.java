@@ -11,30 +11,30 @@ import com.sedmelluq.discord.lavaplayer.source.youtube.YoutubeAudioSourceManager
 
 public final class BotAudioManager {
 
-	private static Logger logger = LoggerFactory.getLogger(BotAudioManager.class);
-	private static BotAudioManager botAudioManager;
+   private static Logger logger = LoggerFactory.getLogger(BotAudioManager.class);
+   private static BotAudioManager botAudioManager;
 
-	private AudioPlayerManager playerManager;
+   private AudioPlayerManager playerManager;
 
-	private BotAudioManager() {
-		playerManager = new DefaultAudioPlayerManager();
-		playerManager.registerSourceManager(SoundCloudAudioSourceManager.createDefault());
-		playerManager.registerSourceManager(new YoutubeAudioSourceManager());
-		playerManager.registerSourceManager(new HttpAudioSourceManager());
-		logger.info("BotAudioManager loaded.");
-		botAudioManager = this;
-	}
+   private BotAudioManager() {
+      playerManager = new DefaultAudioPlayerManager();
+      playerManager.registerSourceManager(SoundCloudAudioSourceManager.createDefault());
+      playerManager.registerSourceManager(new YoutubeAudioSourceManager());
+      playerManager.registerSourceManager(new HttpAudioSourceManager());
+      logger.info("BotAudioManager loaded.");
+      botAudioManager = this;
+   }
 
-	public AudioPlayerManager getAudioPlayerManager() {
-		return playerManager;
-	}
+   public AudioPlayerManager getAudioPlayerManager() {
+      return playerManager;
+   }
 
-	public static BotAudioManager getBotAudioManager() {
-		return botAudioManager;
-	}
+   public static BotAudioManager getBotAudioManager() {
+      return botAudioManager;
+   }
 
-	public static void setup() {
-		new BotAudioManager();
-	}
+   public static void setup() {
+      new BotAudioManager();
+   }
 
 }

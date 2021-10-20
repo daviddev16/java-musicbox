@@ -5,12 +5,12 @@ import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 
 public interface IAudioLoadResult {
 
-	public void noMatches();
+   public void noMatches();
 
-	public void onFailed(Exception e);
+   public void onFailed(Exception e);
 
-	public void onQueuedSingle(AudioTrack track);
+   public void onQueuedSingle(AudioTrack track);
 
-	public void onQueuedPlaylist(AudioPlaylist playlist);
+   public void onQueuedPlaylist(AudioPlaylist playlist);
 
 }

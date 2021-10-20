@@ -1,7 +1,7 @@
 package org.musicbox.core.player;
 
 public enum RepeatMode {
-  ALL,
-  SINGLE,
-  NONE;
+   ALL,
+   SINGLE,
+   NONE;
 }

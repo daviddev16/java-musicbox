@@ -16,30 +16,30 @@ import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
 public class CommandListener extends Listener {
 
-	@Override
-	public void onMessageReceived(MessageReceivedEvent event) {
+   @Override
+   public void onMessageReceived(MessageReceivedEvent event) {
 
-		if (!event.isFromType(ChannelType.TEXT) || event.getAuthor().isBot())
-			return;
+      if (!event.isFromType(ChannelType.TEXT) || event.getAuthor().isBot())
+         return;
 
-		List<Placeholder> placeholders = PlaceholderBuilder.createBy(event, true)
-				.permission().build();
+      List<Placeholder> placeholders = PlaceholderBuilder.createBy(event, true)
+            .permission().build();
 
-		/* check if the bot can send embeds in the text channel */
-		if(!Permissions.canWrite(event.getTextChannel(), event.getMember())) {
-			Messages.translatedMessage(event, Messages.COMMAND_MISSING_PERMISSION, placeholders);
-			return;
-		}
+      /* check if the bot can send embeds in the text channel */
+      if(!Permissions.canWrite(event.getTextChannel(), event.getMember())) {
+         Messages.translatedMessage(event, Messages.COMMAND_MISSING_PERMISSION, placeholders);
+         return;
+      }
 
-		/* kernel's id */
-		if (event.getMember().getUser().getIdLong() != 339978701297156098L) {
-			event.getTextChannel().sendMessage("Você não tem permissão de usar o bot em modo de desenvolvimento.")
-			.queue(Utils.deleteAfter(20L));
-			return;
-		}
+      /* kernel's id */
+      if (event.getMember().getUser().getIdLong() != 339978701297156098L) {
+         event.getTextChannel().sendMessage("Você não tem permissão de usar o bot em modo de desenvolvimento.")
+         .queue(Utils.deleteAfter(20L));
+         return;
+      }
 
-		CommandManager.getCommandManager().perform(DefaultConfig.PREFIX, event);
-	}
+      CommandManager.getCommandManager().perform(DefaultConfig.PREFIX, event);
+   }
 
 
 }

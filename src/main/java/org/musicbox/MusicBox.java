@@ -1,16 +1,5 @@
 package org.musicbox;
 
-import net.dv8tion.jda.api.GatewayEncoding;
-import net.dv8tion.jda.api.requests.GatewayIntent;
-import net.dv8tion.jda.api.requests.RestAction;
-import net.dv8tion.jda.api.sharding.DefaultShardManagerBuilder;
-import net.dv8tion.jda.api.sharding.ShardManager;
-import net.dv8tion.jda.api.utils.ChunkingFilter;
-import net.dv8tion.jda.api.utils.MemberCachePolicy;
-import net.dv8tion.jda.api.utils.cache.CacheFlag;
-import net.dv8tion.jda.internal.utils.config.ThreadingConfig;
-import okhttp3.OkHttpClient;
-
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.EnumSet;
@@ -31,6 +20,17 @@ import org.musicbox.listeners.WatcherListener;
 import org.musicbox.models.CommandFailHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import net.dv8tion.jda.api.GatewayEncoding;
+import net.dv8tion.jda.api.requests.GatewayIntent;
+import net.dv8tion.jda.api.requests.RestAction;
+import net.dv8tion.jda.api.sharding.DefaultShardManagerBuilder;
+import net.dv8tion.jda.api.sharding.ShardManager;
+import net.dv8tion.jda.api.utils.ChunkingFilter;
+import net.dv8tion.jda.api.utils.MemberCachePolicy;
+import net.dv8tion.jda.api.utils.cache.CacheFlag;
+import net.dv8tion.jda.internal.utils.config.ThreadingConfig;
+import okhttp3.OkHttpClient;
 
 public class MusicBox {
 
@@ -55,14 +55,14 @@ public class MusicBox {
       Listeners.setup();
 
       Listeners.register(
-            new WatcherListener(), 
-            new CommandListener(), 
+            new WatcherListener(),
+            new CommandListener(),
             new PresenceListener());
 
       RestAction.setDefaultFailure(null);
 
       EnumSet<GatewayIntent> intents = EnumSet.of(
-            GatewayIntent.GUILD_MESSAGES, 
+            GatewayIntent.GUILD_MESSAGES,
             GatewayIntent.GUILD_EMOJIS,
             GatewayIntent.GUILD_VOICE_STATES
             );
