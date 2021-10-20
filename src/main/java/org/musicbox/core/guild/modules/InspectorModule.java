@@ -11,7 +11,7 @@ public final class InspectorModule extends GuildModule {
 
    @Override
    public void load() {}
-   
+
    /* wait until someone join the voice channel again */
    public void waitToQuitIfNecessary(VoiceChannel channel) {
 
@@ -20,6 +20,7 @@ public final class InspectorModule extends GuildModule {
 
       waitingStateTimer = new Timer("[" + getGuild().getIdLong() + "-timer]", true);
       waitingStateTimer.schedule(new TimerTask() {
+         @Override
          public void run() {
 
             synchronized (getModule(ScheduleModule.class)) {
@@ -44,7 +45,7 @@ public final class InspectorModule extends GuildModule {
    private void destroyWaitingStateTimer() {
       waitingStateTimer = null;
    }
-   
+
    public boolean isWaiting() {
       return waitingStateTimer != null;
    }

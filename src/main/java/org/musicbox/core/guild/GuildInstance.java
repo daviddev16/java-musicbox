@@ -14,7 +14,7 @@ import net.dv8tion.jda.api.entities.Guild;
 public final class GuildInstance {
 
    private static Logger logger = LoggerFactory.getLogger(GuildInstance.class);
-   
+
    private final Guild guild;
 
    private Set<GuildModule> modules;
@@ -46,11 +46,11 @@ public final class GuildInstance {
          }
       }
    }
-   
+
    public void injectGuildInstance(GuildModule guildModule) {
       try {
          Field guildInstanceField = GuildModule.class.getField("guildInstance");
-         guildInstanceField.setAccessible(true); 
+         guildInstanceField.setAccessible(true);
          guildInstanceField.set(guildModule, this);
       } catch (Exception e) {
          logger.info("guildInstance field not found.");

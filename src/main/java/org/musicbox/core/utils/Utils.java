@@ -43,10 +43,10 @@ public final class Utils {
    public static String toString(List<?> list) {
       StringJoiner joiner = new StringJoiner(", ");
       list.forEach(object -> {
-         
+
          if(object instanceof Permission)
             joiner.add("**" + ((Permission)object).getName() + "**");
-         
+
       });
       return joiner.toString().trim();
    }

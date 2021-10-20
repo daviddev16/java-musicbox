@@ -1,6 +1,7 @@
 package org.musicbox.commands;
 
 import static org.musicbox.core.utils.Messages.translatedMessage;
+
 import java.util.List;
 
 import org.musicbox.core.Permissions;
@@ -35,7 +36,7 @@ public class MusicCommands {
             .add(Constants.KEY_USER_INPUT, content)
             .add(Constants.KEY_MISSING_PERMISSIONS, Utils.toString(Permissions.VOICE_CHANNEL_PERMISSIONS))
             .build();
-            
+
 
       /* check if the bot is in any voice channel */
       if (!Utils.isSpeakingOnGuild(event.getGuild())) {
@@ -48,12 +49,12 @@ public class MusicCommands {
 
          /* connect to the member's voice channel */
          VoiceChannel memberChannel = event.getMember().getVoiceState().getChannel();
-         
+
          if(!Permissions.canSelfConnect(memberChannel)) {
             translatedMessage(event, Messages.COMMAND_MISSING_PERMISSION, placeholders);
             return;
          }
-         
+
          event.getGuild().getAudioManager().openAudioConnection(memberChannel);
       }
 
@@ -93,7 +94,7 @@ public class MusicCommands {
       guildInstance.getModule(ScheduleModule.class).stop();
 
    }
-   
+
    @Usage(usage = "shutdown")
    @Link(commandId = 3, names = { "shutdown" }, category = CommandCategory.MUSIC, argumentsSplit = true)
    private void shutdown(MessageReceivedEvent event) {

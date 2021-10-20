@@ -23,7 +23,7 @@ public class WatcherListener extends Listener {
       VoiceChannel channel = null;
       GuildInstance guildInstance = GuildManager.getGuildManager().getGuildInstance(guild);
       InspectorModule inspector = guildInstance.getModule(InspectorModule.class);
-      
+
       if (event instanceof GuildVoiceLeaveEvent) {
          channel = ((GuildVoiceLeaveEvent) event).getChannelLeft();
          if (isBotPresent(channel) && isAlone(channel.getMembers())) {
