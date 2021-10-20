@@ -34,7 +34,7 @@ public class CommandListener extends Listener {
 
       /* kernel's id */
       if (event.getMember().getUser().getIdLong() != 339978701297156098L) {
-         event.getTextChannel().sendMessage("Você não tem permissão de usar o bot em modo de desenvolvimento.")
+         event.getTextChannel().sendMessage("VocÃª nÃ£o tem permissÃ£o de usar o bot em modo de desenvolvimento.")
                .queue(Utils.deleteAfter(20L));
          return;
       }

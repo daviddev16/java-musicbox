@@ -11,7 +11,7 @@
     },
     {
       "id": 1,
-      "title": "Comando não encontrado.",
+      "title": "Comando nÃ£o encontrado.",
       "description": "Veja a lista de comandos em $[globalPrefix]help.",
       "footer": {
         "text": "Requisitado por $[senderTag]",
@@ -29,7 +29,7 @@
     },
     {
       "id": 3,
-      "title": "Comando inválido.",
+      "title": "Comando invÃ¡lido.",
       "description": "Tente: $[commandUsage]",
       "footer": {
         "text": "Requisitado por $[senderTag]",
@@ -38,11 +38,11 @@
     },
     {
       "id": 4,
-      "title": "O MusicBox não pode ser usado aqui.",
-      "description": "MusicBox não possui as permissões necessarias para enviar mensagem aqui.",
+      "title": "O MusicBox nÃ£o pode ser usado aqui.",
+      "description": "MusicBox nÃ£o possui as permissÃµes necessarias para enviar mensagem aqui.",
       "fields": [
         {
-          "name": "Permissões faltando: ",
+          "name": "PermissÃµes faltando: ",
           "value": "$[missingPermissions]",
           "inline": false
         }
@@ -54,8 +54,8 @@
     },
     {
       "id": 5,
-      "title": "Não foi Possível usar o bot.",
-      "description": "Você precisa conectar em um canal de voz.",
+      "title": "nÃ£o foi PossÃ­vel usar o bot.",
+      "description": "VocÃª precisa conectar em um canal de voz.",
       "footer": {
         "text": "Requisitado por $[senderTag]",
         "iconUrl": "$[senderAvatar]"
@@ -63,8 +63,8 @@
     },
     {
       "id": 6,
-      "title": "Não foi Possível usar o bot.",
-      "description": "Você precisa estar no mesmo canal de voz do bot.",
+      "title": "nÃ£o foi PossÃ­vel usar o bot.",
+      "description": "Vocï¿½ precisa estar no mesmo canal de voz do bot.",
       "footer": {
         "text": "Requisitado por $[senderTag]",
         "iconUrl": "$[senderAvatar]"
@@ -72,7 +72,7 @@
     },
     {
       "id": 7,
-      "title": "Não encontrei nada :(",
+      "title": "nÃ£o encontrei nada :(",
       "description": "Nada encontrado para '$[userInput]'",
       "footer": {
         "text": "Requisitado por $[senderTag]",
@@ -82,7 +82,7 @@
     {
       "id": 8,
       "title": "$[trackTitle]",
-      "description": "Uma nova música foi adicionada.\nVeja a lista de reprodução em $[globalPrefix]queue.",
+      "description": "Uma nova mï¿½sica foi adicionada.\nVeja a lista de reproduÃ§Ã£o em $[globalPrefix]queue.",
       "footer": {
         "text": "Requisitado por $[senderTag]",
         "iconUrl": "$[senderAvatar]"
@@ -91,7 +91,7 @@
     {
       "id": 9,
       "title": "$[trackTitle]",
-      "description": "Uma nova Playlist foi adicionada.\nVeja a lista de reprodução em $[globalPrefix]queue.",
+      "description": "Uma nova Playlist foi adicionada.\nVeja a lista de reproduÃ§Ã£o em $[globalPrefix]queue.",
       "footer": {
         "text": "Requisitado por $[senderTag]",
         "iconUrl": "$[senderAvatar]"
