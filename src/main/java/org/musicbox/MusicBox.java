@@ -18,6 +18,7 @@ import org.musicbox.listeners.CommandListener;
 import org.musicbox.listeners.PresenceListener;
 import org.musicbox.listeners.InspectorListener;
 import org.musicbox.models.FailHandler;
+import org.musicbox.playground.Playground;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -42,6 +43,10 @@ public class MusicBox {
    public MusicBox() throws LoginException {
 
       DefaultConfig.setup("musicbox-app");
+
+      if(DefaultConfig.ENABLE_PLAYGROUND) {
+         Playground.setupPlayground();
+      }
 
       LanguageManager.setup();
       BotAudioManager.setup();

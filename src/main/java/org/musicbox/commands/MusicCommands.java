@@ -43,10 +43,9 @@ public class MusicCommands {
             translatedMessage(event, Messages.NOT_SAME_VOICE_CHANNEL, placeholders);
             return;
          }
-         else if(event.getMember().getVoiceState().inVoiceChannel()) {
-            translatedMessage(event, Messages.ABSENT_FROM_VOICE_CHANNEL, placeholders);  
-            return;
-         }
+      } else if(!event.getMember().getVoiceState().inVoiceChannel()) {
+         translatedMessage(event, Messages.ABSENT_FROM_VOICE_CHANNEL, placeholders);
+         return;
       }
 
       VoiceChannel memberChannel = event.getMember().getVoiceState().getChannel();
@@ -55,7 +54,11 @@ public class MusicCommands {
          translatedMessage(event, Messages.COMMAND_MISSING_PERMISSION, placeholders);
          return;
       }
-      guildWrapper.getInspector().connect(memberChannel);
+
+      if(!SelfPermissions.getSelfMember(memberChannel).getVoiceState().inVoiceChannel()) {
+         guildWrapper.getInspector().connect(memberChannel);
+      }
+      
       guildWrapper.getScheduler().queue(content, new QueuedTrackResult(event, guildWrapper, placeholders));
    }
 
@@ -79,7 +82,6 @@ public class MusicCommands {
 
       guildWrapper.getScheduler().stopSchedule();
    }
-
 
 
 
@@ -169,6 +171,51 @@ public class MusicCommands {
       event.getTextChannel().sendMessage(buffer.toString()).queue();
 
    }
+
+   @Usage(usage = "skip")
+   @Link(commandId = 3, names = { "skip" }, category = CommandCategory.MUSIC, argumentsSplit = true)
+   private void skip(MessageReceivedEvent event) {
+
+      GuildWrapper guildWrapper = GuildManager.getGuildManager().getWrapper(event.getGuild());
+
+      List<Placeholder> placeholders = PlaceholderBuilder.createBy(event, true)
+            .add(Constants.KEY_USER_INPUT, event.getMessage().getContentDisplay())
+            .add(Constants.KEY_MISSING_PERMISSIONS, Utilities.toString(SelfPermissions.VOICE_PERMISSIONS))
+            .build();
+
+      if (SelfPermissions.isAlreadyConnect(guildWrapper)) {
+         if (!SelfPermissions.isTogether(event.getMember())) {
+            translatedMessage(event, Messages.NOT_SAME_VOICE_CHANNEL, placeholders);
+            return;
+         }
+
+         guildWrapper.getScheduler().nextTrack();
+      }
+
+   }
+
+   @Usage(usage = "back")
+   @Link(commandId = 3, names = { "back" }, category = CommandCategory.MUSIC, argumentsSplit = true)
+   private void back(MessageReceivedEvent event) {
+
+      GuildWrapper guildWrapper = GuildManager.getGuildManager().getWrapper(event.getGuild());
+
+      List<Placeholder> placeholders = PlaceholderBuilder.createBy(event, true)
+            .add(Constants.KEY_USER_INPUT, event.getMessage().getContentDisplay())
+            .add(Constants.KEY_MISSING_PERMISSIONS, Utilities.toString(SelfPermissions.VOICE_PERMISSIONS))
+            .build();
+
+      if (SelfPermissions.isAlreadyConnect(guildWrapper)) {
+         if (!SelfPermissions.isTogether(event.getMember())) {
+            translatedMessage(event, Messages.NOT_SAME_VOICE_CHANNEL, placeholders);
+            return;
+         }
+
+         guildWrapper.getScheduler().previousTrack();
+      }
+
+   }
+
 
    @Usage(usage = "shutdown")
    @Link(commandId = 3, names = { "shutdown" }, category = CommandCategory.MUSIC, argumentsSplit = true)

@@ -28,116 +28,53 @@ import net.dv8tion.jda.api.audio.AudioSendHandler;
 public final class TrackScheduler extends AudioEventAdapter implements AudioSendHandler, GuildWrapperPart {
 
    private final GuildWrapper guildWrapper;
-
-   private final List<AudioTrack> tracklist;
-
-   private int currentPosition = -1;
-
    private final AudioPlayer player;
 
-   private AudioTrack lastTrack;
+   private final List<AudioTrack> tracklist;
+   private int currentPosition = -1;
 
    private RepeatMode repeatMode;
    private AudioFrame lastFrame;
 
-   public TrackScheduler(GuildWrapper guildWrapper) {
 
+   public TrackScheduler(GuildWrapper guildWrapper) {
       this.player = BotAudioManager.getBotAudioManager().getAudioPlayerManager().createPlayer();
       this.tracklist = Collections.synchronizedList(new LinkedList<>());
       this.player.setVolume(DefaultConfig.VOLUME);
       this.player.addListener(this);
-      this.repeatMode = RepeatMode.ALL;
+      this.repeatMode = RepeatMode.NONE;
       this.guildWrapper = guildWrapper;
-
       getGuild().getAudioManager().setSendingHandler(this);
    }
 
    @Override
-   public void onTrackStart(AudioPlayer player, AudioTrack track) {
-   }
-
-   @Override
    public void onTrackEnd(AudioPlayer player, AudioTrack track, AudioTrackEndReason endReason) {
-      lastTrack = track;
       if (repeatMode == RepeatMode.SINGLE) {
-         play(track.makeClone(), true);
+         player.startTrack(track.makeClone(), true);
          return;
       }
-      if (endReason.mayStartNext) {
-         skip();
+      else if (endReason.mayStartNext) {
+         nextTrack();
       }
-   }
-
-   public void skip() {
-      nextTrack(getRepeatMode() == RepeatMode.ALL ? true : false);
-   }
-
-   public void nextTrack(boolean keepGoing) {
-      currentPosition++;
-      if (currentPosition >= tracklist.size()) {
-         if (keepGoing)
-            currentPosition = 0;
-         else
-            stopSchedule();
-      }
-      select(currentPosition, true);
    }
 
    public void select(int selectedPosition, boolean now) {
-
-      if (selectedPosition < 0 && selectedPosition >= getTracklist().size())
+      if (selectedPosition < 0 && selectedPosition >= getTracklist().size()) {
          return;
-
+      }
       AudioTrack selectedTrack = getValidTrackState(selectedPosition);
       play(selectedTrack, now);
    }
 
-   public void setPauseState(boolean paused) {
-      player.setPaused(paused);
-   }
-
-   public void stopSchedule() {
-      tracklist.clear();
-      player.stopTrack();
-      lastTrack = null;
-      currentPosition = 0;
-   }
-
-   public boolean validPosition(int position) {
-      return tracklist.get(position) != null;
-   }
-
    public AudioTrack getValidTrackState(int position) {
       AudioTrack audioTrack = getTracklist().get(position);
-
       if (audioTrack != null && (audioTrack.getState() != AudioTrackState.INACTIVE
             || audioTrack.getState() != AudioTrackState.STOPPING)) {
 
          audioTrack = audioTrack.makeClone();
          getTracklist().set(position, audioTrack);
       }
-
       return audioTrack;
-   }
-
-   public void play(AudioTrack track, boolean now) {
-      if (player.startTrack(track, !now))
-         currentPosition = getTracklist().indexOf(track);
-   }
-
-   public void queue(String content, final QueuedTrackResult result) {
-      if (!Utilities.isURL(content)) {
-         content = YoutubeSearchManager.getSearchManager().getUrlBasedOnText(content);
-      }
-      load(content, result);
-   }
-   
-   public void queue(AudioTrack track) {
-      if (getTracklist().contains(track))
-         return;
-      getTracklist().add(track);
-      if(player.getPlayingTrack() == null)
-         play(track, true);
    }
 
    public void load(final String url, QueuedTrackResult result) {
@@ -163,15 +100,91 @@ public final class TrackScheduler extends AudioEventAdapter implements AudioSend
                }
             })
             .build();
-      manager.loadItemOrdered(this, stripUrl(url), loadResultHandler);
+      manager.loadItemOrdered(this, Utilities.stripUrl(url), loadResultHandler);
    }
 
-   private String stripUrl(String url) {
-      if (url.startsWith("<") && url.endsWith(">")) {
-         return url.substring(1, url.length() - 1);
-      } else {
-         return url;
+   public void queue(String content, final QueuedTrackResult result) {
+      if (!Utilities.isURL(content)) {
+         content = YoutubeSearchManager.getSearchManager().getUrlBasedOnText(content);
       }
+      load(content, result);
+   }
+
+   public void play(AudioTrack track, boolean now) {
+      if (player.startTrack(track, !now))
+         currentPosition = getTracklist().indexOf(track);
+   }
+
+   public void queue(AudioTrack track) {
+      if (getTracklist().contains(track)) {
+         return;
+      }
+      getTracklist().add(track);
+      if(player.getPlayingTrack() == null)
+         play(track, true);
+   }
+
+   public void previousTrack() {
+      currentPosition--;
+      if (currentPosition < 0) {
+         if (keepGoing())
+            currentPosition = tracklist.size() - 1;
+         else {
+            stopSchedule();
+            return;
+         }
+      }
+      select(currentPosition, true);
+   }
+
+   public void nextTrack() {
+      currentPosition++;
+      if (currentPosition >= tracklist.size()) {
+         if (keepGoing())
+            currentPosition = 0;
+         else {
+            stopSchedule();
+            return;
+         }
+      }
+      select(currentPosition, true);
+   }
+
+   public void stopSchedule() {
+      tracklist.clear();
+      if(player.getPlayingTrack() != null) {
+         player.stopTrack();
+      }
+      currentPosition = 0;
+   }
+
+   public void setRepeatMode(RepeatMode repeatMode) {
+      this.repeatMode = repeatMode;
+   }
+
+   public RepeatMode getRepeatMode() {
+      return repeatMode;
+   }
+
+   public void setPauseState(boolean paused) {
+      player.setPaused(paused);
+   }
+
+   public boolean validPosition(int position) {
+      return position >= 0 && position < tracklist.size();
+   }
+
+   public boolean keepGoing() {
+      return getRepeatMode() == RepeatMode.ALL ? true : false;
+   }
+
+   public List<AudioTrack> getTracklist() {
+      return tracklist;
+   }
+
+   @Override
+   public GuildWrapper getWrapper() {
+      return guildWrapper;
    }
 
    @Override
@@ -196,27 +209,6 @@ public final class TrackScheduler extends AudioEventAdapter implements AudioSend
    @Override
    public boolean isOpus() {
       return true;
-   }
-
-   public void setRepeatMode(RepeatMode repeatMode) {
-      this.repeatMode = repeatMode;
-   }
-
-   public RepeatMode getRepeatMode() {
-      return repeatMode;
-   }
-
-   @Override
-   public GuildWrapper getWrapper() {
-      return guildWrapper;
-   }
-
-   public List<AudioTrack> getTracklist() {
-      return tracklist;
-   }
-
-   public AudioTrack getLastTrack() {
-      return lastTrack;
    }
 
    public enum RepeatMode {

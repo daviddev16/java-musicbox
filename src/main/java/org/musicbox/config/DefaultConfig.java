@@ -16,6 +16,7 @@ public class DefaultConfig extends JsonConfiguration {
    public static String OWNER;
    public static String PREFIX;
    public static String LANGUAGE;
+   public static boolean ENABLE_PLAYGROUND;
 
    public DefaultConfig(String name) {
       super(name);
@@ -27,6 +28,7 @@ public class DefaultConfig extends JsonConfiguration {
       PREFIX = getString(DEBUG_MODE ? "debugCommandPrefix" : "commandPrefix");
       YOUTUBE_API_KEY = getString("youtubeApiKey");
       DELETE_MESSAGE_AFTER = getInt("deleteMessageAfter");
+      ENABLE_PLAYGROUND = getBoolean("enablePlayground");
       LANGUAGE = getString("language"); /* default debug language */
       defaultConfig = this;
    }

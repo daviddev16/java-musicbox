@@ -26,13 +26,15 @@ public final class FailHandler implements IFallible {
    @Override
    public void onTypeMissmatch(MessageReceivedEvent event, Received received, CommandSupply commandSupply) {
       Messages.translatedMessage(event, Messages.COMMAND_TYPE_MISSMATCH,
-            PlaceholderBuilder.createBy(event, false).add(Constants.KEY_COMMAND_USAGE, commandSupply.getUsage()).build());
+            PlaceholderBuilder.createBy(event, false).add(Constants.KEY_COMMAND_USAGE, commandSupply.getUsage())
+            .build());
    }
 
    @Override
    public void onWrongArgumentCount(MessageReceivedEvent event, Received received, CommandSupply commandSupply) {
       Messages.translatedMessage(event, Messages.COMMAND_SYNTAX_ERROR,
-            PlaceholderBuilder.createBy(event, false).build());
+            PlaceholderBuilder.createBy(event, false).add(Constants.KEY_COMMAND_USAGE, commandSupply.getUsage())
+            .build());
    }
 
    @Override

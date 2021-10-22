@@ -88,6 +88,14 @@ public final class Utilities {
       return false;
    }
 
+   public static String stripUrl(String url) {
+      if (url.startsWith("<") && url.endsWith(">")) {
+         return url.substring(1, url.length() - 1);
+      } else {
+         return url;
+      }
+   }
+   
    @SafeVarargs
    public static List<Permission> allOf(Collection<Permission>... permissions) {
       List<Permission> collectPermissions = new ArrayList<>();
