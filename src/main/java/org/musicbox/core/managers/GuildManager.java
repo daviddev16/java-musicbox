@@ -2,11 +2,7 @@ package org.musicbox.core.managers;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-
-import org.musicbox.core.guild.GuildInstance;
-import org.musicbox.core.guild.modules.InspectorModule;
-import org.musicbox.core.guild.modules.LanguageModule;
-import org.musicbox.core.guild.modules.ScheduleModule;
+import org.musicbox.core.guild.GuildWrapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -17,32 +13,27 @@ public final class GuildManager {
    private static Logger logger = LoggerFactory.getLogger(GuildManager.class);
 
    private static GuildManager guildManager;
-   private final Map<Long, GuildInstance> guildInstances;
+   private final Map<Long, GuildWrapper> guildWrappers;
 
    private GuildManager() {
-      guildInstances = new ConcurrentHashMap<>();
+      guildWrappers = new ConcurrentHashMap<>();
       guildManager = this;
       logger.info("GuildManager loaded.");
    }
 
-   public synchronized GuildInstance getGuildInstance(Guild guild) {
+   public synchronized GuildWrapper getWrapper(Guild guild) {
 
-      GuildInstance guildInstance = guildInstances.get(guild.getIdLong());
-      if (guildInstance != null) {
-         return guildInstance;
+      GuildWrapper guildWrapper = guildWrappers.get(guild.getIdLong());
+      if (guildWrapper != null) {
+         return guildWrapper;
       }
-
-      guildInstance = new GuildInstance(guild);
-
-      guildInstance.addModule(new ScheduleModule(), new LanguageModule(), new InspectorModule());
-
-      guildInstances.put(guild.getIdLong(), guildInstance);
-
-      return guildInstance;
+      guildWrapper = new GuildWrapper(guild);
+      guildWrappers.put(guild.getIdLong(), guildWrapper);
+      return guildWrapper;
    }
 
-   public Map<Long, GuildInstance> getGuildInstances() {
-      return guildInstances;
+   public Map<Long, GuildWrapper> getWrappers() {
+      return guildWrappers;
    }
 
    public static GuildManager getGuildManager() {

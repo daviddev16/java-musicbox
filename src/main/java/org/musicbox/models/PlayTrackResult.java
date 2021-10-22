@@ -2,7 +2,7 @@ package org.musicbox.models;
 
 import java.util.List;
 
-import org.musicbox.core.guild.GuildInstance;
+import org.musicbox.core.guild.GuildWrapper;
 import org.musicbox.core.models.IAudioLoadResult;
 import org.musicbox.core.utils.Constants;
 import org.musicbox.core.utils.Messages;
@@ -17,12 +17,12 @@ import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 public class PlayTrackResult implements IAudioLoadResult {
 
    private final MessageReceivedEvent event;
-   private final GuildInstance guildInstance;
+   private final GuildWrapper guildWrapper;
    private final List<Placeholder> placeholders;
 
-   public PlayTrackResult(MessageReceivedEvent event, GuildInstance guildInstance, List<Placeholder> placeholders) {
+   public PlayTrackResult(MessageReceivedEvent event, GuildWrapper guildWrapper, List<Placeholder> placeholders) {
       this.event = event;
-      this.guildInstance = guildInstance;
+      this.guildWrapper = guildWrapper;
       this.placeholders = placeholders;
    }
 
@@ -37,7 +37,8 @@ public class PlayTrackResult implements IAudioLoadResult {
       Messages.translatedMessage(getEvent(), Messages.COMMAND_FAILED, placeholders);
 
       if(!(e instanceof FriendlyException)) {
-         /* report to owner */
+         e.printStackTrace();
+         System.exit(-1);
       }
 
    }
@@ -54,8 +55,8 @@ public class PlayTrackResult implements IAudioLoadResult {
       Messages.translatedMessage(getEvent(), Messages.PLAYLIST_ADDED, placeholders);
    }
 
-   public GuildInstance getGuildInstance() {
-      return guildInstance;
+   public GuildWrapper getWrapper() {
+      return guildWrapper;
    }
 
    public MessageReceivedEvent getEvent() {

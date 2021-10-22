@@ -54,7 +54,7 @@
     },
     {
       "id": 5,
-      "title": "não foi Possível usar o bot.",
+      "title": "Não foi possível usar o bot.",
       "description": "Você precisa conectar em um canal de voz.",
       "footer": {
         "text": "Requisitado por $[senderTag]",
@@ -63,8 +63,8 @@
     },
     {
       "id": 6,
-      "title": "não foi Possível usar o bot.",
-      "description": "Voc� precisa estar no mesmo canal de voz do bot.",
+      "title": "Não foi possível usar o bot.",
+      "description": "Você precisa estar no mesmo canal de voz do bot.",
       "footer": {
         "text": "Requisitado por $[senderTag]",
         "iconUrl": "$[senderAvatar]"
@@ -82,7 +82,7 @@
     {
       "id": 8,
       "title": "$[trackTitle]",
-      "description": "Uma nova m�sica foi adicionada.\nVeja a lista de reprodução em $[globalPrefix]queue.",
+      "description": "Uma nova música foi adicionada.\nVeja a lista de reprodução em $[globalPrefix]queue.",
       "footer": {
         "text": "Requisitado por $[senderTag]",
         "iconUrl": "$[senderAvatar]"

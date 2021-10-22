@@ -16,7 +16,7 @@ import org.musicbox.core.managers.YoutubeSearchManager;
 import org.musicbox.core.models.Listeners;
 import org.musicbox.listeners.CommandListener;
 import org.musicbox.listeners.PresenceListener;
-import org.musicbox.listeners.WatcherListener;
+import org.musicbox.listeners.InspectorListener;
 import org.musicbox.models.CommandFailHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -55,7 +55,7 @@ public class MusicBox {
       Listeners.setup();
 
       Listeners.register(
-            new WatcherListener(),
+            new InspectorListener(),
             new CommandListener(),
             new PresenceListener());
 

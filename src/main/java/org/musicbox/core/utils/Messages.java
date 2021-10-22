@@ -2,8 +2,7 @@ package org.musicbox.core.utils;
 
 import java.util.List;
 
-import org.musicbox.core.guild.GuildInstance;
-import org.musicbox.core.guild.modules.LanguageModule;
+import org.musicbox.core.guild.GuildWrapper;
 import org.musicbox.core.managers.GuildManager;
 import org.musicbox.core.managers.LanguageManager;
 
@@ -33,8 +32,8 @@ public final class Messages {
    }
 
    public static void translatedMessage(MessageReceivedEvent event, int messageId, List<Placeholder> placeholders) {
-      GuildInstance guildInstance = GuildManager.getGuildManager().getGuildInstance(event.getGuild());
-      send(event.getTextChannel(), guildInstance.getModule(LanguageModule.class).getUsedLanguage(), messageId,
+      GuildWrapper wrapper = GuildManager.getGuildManager().getWrapper(event.getGuild());
+      send(event.getTextChannel(), wrapper.getLanguage().getUsedLanguage(), messageId,
             placeholders);
    }
 

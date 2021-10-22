@@ -24,8 +24,8 @@ public final class Permissions {
    public static boolean canWrite(TextChannel textChannel, Member sender) {
       return sender.hasPermission(textChannel, WRITING_PERMISSIONS);
    }
-
-   public static boolean canSelfConnect(VoiceChannel channel) {
+   
+   public static boolean canConnect(VoiceChannel channel) {
       Member selfMember = channel.getGuild().getSelfMember();
       return selfMember.hasPermission(channel, VOICE_CHANNEL_PERMISSIONS);
    }

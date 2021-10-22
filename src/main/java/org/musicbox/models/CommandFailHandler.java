@@ -20,7 +20,7 @@ public final class CommandFailHandler implements IFallible {
    @Override
    public void onNotFound(MessageReceivedEvent event, Received received, CommandSupply commandSupply) {
       Messages.translatedMessage(event, Messages.COMMAND_NOT_FOUND,
-            PlaceholderBuilder.createBy(event, false).build());
+            PlaceholderBuilder.createBy(event, true).build());
    }
 
    @Override

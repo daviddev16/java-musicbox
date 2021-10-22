@@ -1,16 +1,20 @@
-package org.musicbox.core.guild.modules;
+package org.musicbox.core.guild;
 
 import java.util.Timer;
 import java.util.TimerTask;
 
+import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.VoiceChannel;
 
-public final class InspectorModule extends GuildModule {
+public final class Inspector implements GuildWrapperPart {
 
    private volatile Timer waitingStateTimer;
-
-   @Override
-   public void load() {}
+  
+   private final GuildWrapper guildWrapper;
+   
+   public Inspector(GuildWrapper guildWrapper) {
+      this.guildWrapper = guildWrapper;
+   }
 
    /* wait until someone join the voice channel again */
    public void waitToQuitIfNecessary(VoiceChannel channel) {
@@ -23,10 +27,10 @@ public final class InspectorModule extends GuildModule {
          @Override
          public void run() {
 
-            synchronized (getModule(ScheduleModule.class)) {
+            synchronized (getWrapper().getScheduler()) {
                getGuild().getAudioManager().closeAudioConnection();
-               getModule(ScheduleModule.class).stop();
-               destroyWaitingStateTimer();
+               getWrapper().getScheduler().stop();
+               destroyTimer();
             }
 
          }
@@ -37,17 +41,22 @@ public final class InspectorModule extends GuildModule {
    public void cancelIfNecessary() {
       if(waitingStateTimer != null) {
          waitingStateTimer.cancel();
-         destroyWaitingStateTimer();
+         destroyTimer();
       }
    }
 
    /* destroy it */
-   private void destroyWaitingStateTimer() {
+   private void destroyTimer() {
       waitingStateTimer = null;
    }
 
    public boolean isWaiting() {
       return waitingStateTimer != null;
+   }
+
+   @Override
+   public GuildWrapper getWrapper() {
+      return guildWrapper;
    }
 
 }

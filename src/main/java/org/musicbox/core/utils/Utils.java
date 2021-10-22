@@ -45,7 +45,7 @@ public final class Utils {
       list.forEach(object -> {
 
          if(object instanceof Permission)
-            joiner.add("**" + ((Permission)object).getName() + "**");
+            joiner.add(((Permission)object).getName().toUpperCase());
 
       });
       return joiner.toString().trim();

@@ -41,7 +41,7 @@ public class PresenceListener extends Listener {
 
    @Override
    public void onShutdown(ShutdownEvent event) {
-      GuildManager.getGuildManager().getGuildInstances().values().forEach(guildInstance -> {
+      GuildManager.getGuildManager().getWrappers().values().forEach(guildInstance -> {
          guildInstance.getGuild().getAudioManager().closeAudioConnection();
       });
    }
