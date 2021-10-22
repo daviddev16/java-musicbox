@@ -1,7 +1,7 @@
 # Music Box (Java Discord Bot)
 
 [![License](https://img.shields.io/github/license/jagrosh/MusicBot.svg)](https://github.com/daviddev16/java-musicbox/blob/master/LICENSE)
-[![CircleCI](https://circleci.com/gh/daviddev16/java-musicbox/tree/Development.svg?style=shield)](https://circleci.com/gh/daviddev16/java-musicbox/tree/Development)
+[![CircleCI](https://img.shields.io/circleci/build/github/daviddev16/java-musicbox/master)](https://circleci.com/gh/daviddev16/java-musicbox/tree/master)
 [![Discord](https://discordapp.com/api/guilds/893011039468273705/widget.png)](https://discord.gg/RjxMwhMwwF)
 
 
