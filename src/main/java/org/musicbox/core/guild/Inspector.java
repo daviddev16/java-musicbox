@@ -3,7 +3,6 @@ package org.musicbox.core.guild;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.VoiceChannel;
 
 public final class Inspector implements GuildWrapperPart {
@@ -29,7 +28,7 @@ public final class Inspector implements GuildWrapperPart {
 
             synchronized (getWrapper().getScheduler()) {
                getGuild().getAudioManager().closeAudioConnection();
-               getWrapper().getScheduler().stop();
+               getWrapper().getScheduler().stopSchedule();
                destroyTimer();
             }
 

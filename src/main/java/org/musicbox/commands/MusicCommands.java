@@ -82,7 +82,7 @@ public class MusicCommands {
             return;
          }
 
-         guildWrapper.getScheduler().stop();
+         guildWrapper.getScheduler().stopSchedule();
       }
    }
 
@@ -148,8 +148,8 @@ public class MusicCommands {
             return;
          }
 
-         if(guildWrapper.getScheduler().isQueuePosition(position)) {
-            guildWrapper.getScheduler().select(position);
+         if(guildWrapper.getScheduler().validPosition(position)) {
+            guildWrapper.getScheduler().select(position, true);
          }
       }
    }
