@@ -12,12 +12,12 @@ import org.musicbox.core.managers.BotAudioManager;
 import org.musicbox.core.managers.CommandManager;
 import org.musicbox.core.managers.GuildManager;
 import org.musicbox.core.managers.LanguageManager;
+import org.musicbox.core.managers.ListenerManager;
 import org.musicbox.core.managers.YoutubeSearchManager;
-import org.musicbox.core.models.Listeners;
 import org.musicbox.listeners.CommandListener;
 import org.musicbox.listeners.PresenceListener;
 import org.musicbox.listeners.InspectorListener;
-import org.musicbox.models.CommandFailHandler;
+import org.musicbox.models.FailHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -47,14 +47,14 @@ public class MusicBox {
       BotAudioManager.setup();
       GuildManager.setup();
       YoutubeSearchManager.setup();
-      CommandFailHandler.setup();
+      FailHandler.setup();
 
       CommandManager.setup();
       CommandManager.getCommandManager().handle(MusicCommands.class);
 
-      Listeners.setup();
+      ListenerManager.setup();
 
-      Listeners.register(
+      ListenerManager.register(
             new InspectorListener(),
             new CommandListener(),
             new PresenceListener());
@@ -81,7 +81,7 @@ public class MusicBox {
             .setGatewayEncoding(GatewayEncoding.ETF)
             .setChunkingFilter(ChunkingFilter.NONE)
             .setMemberCachePolicy(MemberCachePolicy.VOICE)
-            .addEventListeners(Listeners.getAllListeners())
+            .addEventListeners(ListenerManager.getAllListeners())
             .setRawEventsEnabled(true)
             .setBulkDeleteSplittingEnabled(false)
             .setEventPool(ThreadingConfig.newScheduler(1, () -> "MusicBox", "EventPool"), true)

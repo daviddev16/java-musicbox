@@ -1,4 +1,6 @@
-package org.musicbox.core.guild;
+package org.musicbox.core.models;
+
+import org.musicbox.core.guild.GuildWrapper;
 
 import net.dv8tion.jda.api.entities.Guild;
 

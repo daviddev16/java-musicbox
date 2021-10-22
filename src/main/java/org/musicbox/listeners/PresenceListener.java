@@ -1,7 +1,7 @@
 package org.musicbox.listeners;
 
 import org.musicbox.core.managers.GuildManager;
-import org.musicbox.core.models.Listener;
+import org.musicbox.core.managers.ListenerManager.Listener;
 
 import net.dv8tion.jda.api.OnlineStatus;
 import net.dv8tion.jda.api.entities.Activity;

@@ -1,6 +1,8 @@
-package org.musicbox.core.guild;
+package org.musicbox.core.guild.controllers;
 
-import org.musicbox.core.utils.Constants;
+import org.musicbox.core.guild.GuildWrapper;
+import org.musicbox.core.models.GuildWrapperPart;
+import org.musicbox.miscs.Constants;
 
 import net.dv8tion.jda.api.entities.Guild;
 

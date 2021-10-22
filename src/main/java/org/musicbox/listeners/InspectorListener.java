@@ -2,10 +2,10 @@ package org.musicbox.listeners;
 
 import java.util.List;
 
-import org.musicbox.core.guild.Inspector;
 import org.musicbox.core.guild.GuildWrapper;
+import org.musicbox.core.guild.controllers.Inspector;
 import org.musicbox.core.managers.GuildManager;
-import org.musicbox.core.models.Listener;
+import org.musicbox.core.managers.ListenerManager.Listener;
 
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;

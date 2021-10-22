@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.musicbox.core.config.LanguageConfiguration;
-import org.musicbox.core.utils.Constants;
+import org.musicbox.miscs.Constants;
 
 import com.google.gson.JsonObject;
 

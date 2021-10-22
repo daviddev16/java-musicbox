@@ -10,8 +10,8 @@ import org.musicbox.core.command.Link;
 import org.musicbox.core.command.Received;
 import org.musicbox.core.command.Usage;
 import org.musicbox.core.exceptions.ParameterException;
-import org.musicbox.core.utils.Utils;
-import org.musicbox.models.CommandFailHandler;
+import org.musicbox.core.utils.Utilities;
+import org.musicbox.models.FailHandler;
 
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
@@ -98,10 +98,10 @@ public class CommandManager {
       } catch(ParameterException e) {
          switch(e.getExceptionType()) {
          case ParameterException.TYPE_MISSMATCH:
-            CommandFailHandler.getFailHandler().onTypeMissmatch(received.getEvent(), received, commandSupply);
+            FailHandler.getFailHandler().onTypeMissmatch(received.getEvent(), received, commandSupply);
             break;
          case ParameterException.OUT_OF_BOUNDS:
-            CommandFailHandler.getFailHandler().onWrongArgumentCount(received.getEvent(), received, commandSupply);
+            FailHandler.getFailHandler().onWrongArgumentCount(received.getEvent(), received, commandSupply);
             break;
          }
       }
@@ -109,7 +109,7 @@ public class CommandManager {
    }
 
    private void commandException(Received received, CommandSupply commandSupply, Exception exception) {
-      CommandFailHandler.getFailHandler().onThrowException(received.getEvent(), received, commandSupply, exception);
+      FailHandler.getFailHandler().onThrowException(received.getEvent(), received, commandSupply, exception);
       System.out.println("error while processing a command [" + commandSupply.getCommandId() + "]");
    }
 
@@ -126,7 +126,7 @@ public class CommandManager {
          } else if (parameter == Double.class || parameter == double.class) {
             return Double.parseDouble(argument);
          } else if (parameter == Boolean.class || parameter == boolean.class) {
-            return parseBoolean(argument);
+            return Utilities.parseBoolean(argument);
          } else if (parameter == Long.class || parameter == long.class) {
             return Long.parseLong(argument);
          } else if (parameter == String.class) {
@@ -155,18 +155,11 @@ public class CommandManager {
          processCommandSupply(received, commandSupply);
          return;
       }
-      CommandFailHandler.getFailHandler().onNotFound(event, received, commandSupply);
+      FailHandler.getFailHandler().onNotFound(event, received, commandSupply);
    }
 
    private CommandSupply findCommandSupply(String name) {
       return commandSupplies.stream().filter(commandSupply -> commandSupply.isMine(name)).findAny().orElse(null);
-   }
-
-   private boolean parseBoolean(String value) {
-      if(Utils.isBoolean(value)) {
-         return Utils.getBoolean(value);
-      }
-      throw new IllegalArgumentException("Not a boolean value.");
    }
 
    private boolean matchCommandSupply(Received received, CommandSupply commandSupply) {

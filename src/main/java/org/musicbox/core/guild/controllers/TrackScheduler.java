@@ -1,4 +1,4 @@
-package org.musicbox.core.guild;
+package org.musicbox.core.guild.controllers;
 
 import java.nio.ByteBuffer;
 import java.util.Collections;
@@ -6,10 +6,13 @@ import java.util.LinkedList;
 import java.util.List;
 
 import org.musicbox.config.DefaultConfig;
+import org.musicbox.core.builders.LRHBuilder;
+import org.musicbox.core.guild.GuildWrapper;
 import org.musicbox.core.managers.BotAudioManager;
-import org.musicbox.core.models.IAudioLoadResult;
-import org.musicbox.core.player.RepeatMode;
-import org.musicbox.core.utils.LRHBuilder;
+import org.musicbox.core.managers.YoutubeSearchManager;
+import org.musicbox.core.models.GuildWrapperPart;
+import org.musicbox.core.utils.Utilities;
+import org.musicbox.models.QueuedTrackResult;
 
 import com.sedmelluq.discord.lavaplayer.player.AudioLoadResultHandler;
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayer;
@@ -103,7 +106,7 @@ public final class TrackScheduler extends AudioEventAdapter implements AudioSend
    public boolean validPosition(int position) {
       return tracklist.get(position) != null;
    }
-   
+
    public AudioTrack getValidTrackState(int position) {
       AudioTrack audioTrack = getTracklist().get(position);
 
@@ -118,23 +121,31 @@ public final class TrackScheduler extends AudioEventAdapter implements AudioSend
    }
 
    public void play(AudioTrack track, boolean now) {
-      if (getTracklist().contains(track))
-         return;
-
-      getTracklist().add(track);
       if (player.startTrack(track, !now))
          currentPosition = getTracklist().indexOf(track);
    }
 
+   public void queue(String content, final QueuedTrackResult result) {
+      if (!Utilities.isURL(content)) {
+         content = YoutubeSearchManager.getSearchManager().getUrlBasedOnText(content);
+      }
+      load(content, result);
+   }
+   
    public void queue(AudioTrack track) {
-      play(track, false);
+      if (getTracklist().contains(track))
+         return;
+      getTracklist().add(track);
+      if(player.getPlayingTrack() == null)
+         play(track, true);
    }
 
-   public void load(final String url, IAudioLoadResult result) {
+   public void load(final String url, QueuedTrackResult result) {
       AudioPlayerManager manager = BotAudioManager.getBotAudioManager().getAudioPlayerManager();
-      AudioLoadResultHandler loadResultHandler = LRHBuilder.create().onFailed((exception) -> result.onFailed(exception))
-            .onNoMatches((voId) -> result.noMatches()).onTrackLoaded(track -> {
-
+      AudioLoadResultHandler loadResultHandler = LRHBuilder.create()
+            .onFailed((exception) -> result.onFailed(exception))
+            .onNoMatches((voId) -> result.noMatches())
+            .onTrackLoaded(track -> {
                try {
                   queue(track);
                   result.onQueuedSingle(track);
@@ -151,9 +162,7 @@ public final class TrackScheduler extends AudioEventAdapter implements AudioSend
                   result.onFailed(e);
                }
             })
-
             .build();
-
       manager.loadItemOrdered(this, stripUrl(url), loadResultHandler);
    }
 
@@ -208,6 +217,12 @@ public final class TrackScheduler extends AudioEventAdapter implements AudioSend
 
    public AudioTrack getLastTrack() {
       return lastTrack;
+   }
+
+   public enum RepeatMode {
+      ALL,
+      SINGLE,
+      NONE;
    }
 
 }
