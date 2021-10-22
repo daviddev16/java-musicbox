@@ -1,31 +1,36 @@
 package org.musicbox.listeners;
 
-import org.musicbox.MusicBox;
-import org.musicbox.utils.Utils;
+
+import org.musicbox.config.DefaultConfig;
+import org.musicbox.core.managers.CommandManager;
+import org.musicbox.core.managers.ListenerManager.Listener;
+import org.musicbox.core.utils.SelfPermissions;
+import org.musicbox.core.utils.Utilities;
 
 import net.dv8tion.jda.api.entities.ChannelType;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
-import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
-public class CommandListener extends ListenerAdapter {
+public class CommandListener extends Listener {
 
-  @Override
-  public void onMessageReceived(MessageReceivedEvent event) {
-	if (!event.isFromType(ChannelType.TEXT) || event.getAuthor().isBot())
-	  return;
+   @Override
+   public void onMessageReceived(MessageReceivedEvent event) {
 
-	if (!MusicBox.getConfiguration().isDebugMode()) {
-	  MusicBox.getCommandController().handle(event, MusicBox.getConfiguration().getDefaultCommandPrefix());
-	  return;
-	}
+      if (!event.isFromType(ChannelType.TEXT) || event.getAuthor().isBot())
+         return;
 
-	/* my id lol */
-	if (event.getMember().getUser().getIdLong() != 339978701297156098L) {
-	  event.getTextChannel().sendMessage("Você não tem permissão de usar o bot em modo de desenvolvimento.")
-		  .queue(Utils.deleteAfter(20L));
-	  return;
-	}
+      /* check if the bot can send embeds in the text channel */
+      if (!SelfPermissions.canWrite(event.getTextChannel())) {
+         return;
+      }
 
-	MusicBox.getCommandController().handle(event, MusicBox.getConfiguration().getDebugCommandPrefix());
-  }
+      /* kernel's id */
+      if (DefaultConfig.DEBUG_MODE && event.getMember().getUser().getIdLong() != 339978701297156098L) {
+         event.getTextChannel().sendMessage("Você não tem permissão de usar o bot em modo de desenvolvimento.")
+               .queue(Utilities.deleteAfter(20L));
+         return;
+      }
+
+      CommandManager.getCommandManager().perform(DefaultConfig.PREFIX, event);
+   }
+
 }

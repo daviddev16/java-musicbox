@@ -1,0 +1,101 @@
+{
+  "messages": [
+    {
+      "id": 0,
+      "title": "Houve um falha interna ao executar esse comando.",
+      "description": "$[exceptionMessage]",
+      "footer": {
+        "text": "Requisitado por $[senderTag]",
+        "iconUrl": "$[senderAvatar]"
+      }
+    },
+    {
+      "id": 1,
+      "title": "Comando não encontrado.",
+      "description": "Veja a lista de comandos em $[globalPrefix]help.",
+      "footer": {
+        "text": "Requisitado por $[senderTag]",
+        "iconUrl": "$[senderAvatar]"
+      }
+    },
+    {
+      "id": 2,
+      "title": "Falha ao executar comando.",
+      "description": "Tente: $[commandUsage]",
+      "footer": {
+        "text": "Requisitado por $[senderTag]",
+        "iconUrl": "$[senderAvatar]"
+      }
+    },
+    {
+      "id": 3,
+      "title": "Comando inválido.",
+      "description": "Tente: $[commandUsage]",
+      "footer": {
+        "text": "Requisitado por $[senderTag]",
+        "iconUrl": "$[senderAvatar]"
+      }
+    },
+    {
+      "id": 4,
+      "title": "O MusicBox não pode ser usado aqui.",
+      "description": "MusicBox não possui as permissões necessarias para enviar mensagem aqui.",
+      "fields": [
+        {
+          "name": "Permissões faltando: ",
+          "value": "$[missingPermissions]",
+          "inline": false
+        }
+      ],
+      "footer": {
+        "text": "Requisitado por $[senderTag]",
+        "iconUrl": "$[senderAvatar]"
+      }
+    },
+    {
+      "id": 5,
+      "title": "Não foi possível usar o bot.",
+      "description": "Você precisa conectar em um canal de voz.",
+      "footer": {
+        "text": "Requisitado por $[senderTag]",
+        "iconUrl": "$[senderAvatar]"
+      }
+    },
+    {
+      "id": 6,
+      "title": "Não foi possível usar o bot.",
+      "description": "Você precisa estar no mesmo canal de voz do bot.",
+      "footer": {
+        "text": "Requisitado por $[senderTag]",
+        "iconUrl": "$[senderAvatar]"
+      }
+    },
+    {
+      "id": 7,
+      "title": "não encontrei nada :(",
+      "description": "Nada encontrado para '$[userInput]'",
+      "footer": {
+        "text": "Requisitado por $[senderTag]",
+        "iconUrl": "$[senderAvatar]"
+      }
+    },
+    {
+      "id": 8,
+      "title": "$[trackTitle]",
+      "description": "Uma nova música foi adicionada.\nVeja a lista de reprodução em $[globalPrefix]queue.",
+      "footer": {
+        "text": "Requisitado por $[senderTag]",
+        "iconUrl": "$[senderAvatar]"
+      }
+    },
+    {
+      "id": 9,
+      "title": "$[trackTitle]",
+      "description": "Uma nova Playlist foi adicionada.\nVeja a lista de reprodução em $[globalPrefix]queue.",
+      "footer": {
+        "text": "Requisitado por $[senderTag]",
+        "iconUrl": "$[senderAvatar]"
+      }
+    }
+  ]
+}
