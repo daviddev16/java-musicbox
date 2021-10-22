@@ -1,4 +1,4 @@
-package org.musicbox.playground;
+package org.playground;
 
 import java.util.ArrayList;
 import java.util.List;

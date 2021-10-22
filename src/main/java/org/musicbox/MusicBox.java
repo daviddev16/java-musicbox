@@ -18,7 +18,7 @@ import org.musicbox.listeners.CommandListener;
 import org.musicbox.listeners.PresenceListener;
 import org.musicbox.listeners.InspectorListener;
 import org.musicbox.models.FailHandler;
-import org.musicbox.playground.Playground;
+import org.playground.Playground;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

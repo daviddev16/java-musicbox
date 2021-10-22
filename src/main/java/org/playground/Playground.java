@@ -1,4 +1,4 @@
-package org.musicbox.playground;
+package org.playground;
 
 public class Playground {
 

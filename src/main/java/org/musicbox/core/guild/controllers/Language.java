@@ -4,8 +4,6 @@ import org.musicbox.core.guild.GuildWrapper;
 import org.musicbox.core.models.GuildWrapperPart;
 import org.musicbox.miscs.Constants;
 
-import net.dv8tion.jda.api.entities.Guild;
-
 public final class Language implements GuildWrapperPart {
 
    private final GuildWrapper guildWrapper;
