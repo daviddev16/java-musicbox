@@ -1,7 +1,7 @@
 # Music Box (Java Discord Bot)
 
 [![License](https://img.shields.io/github/license/jagrosh/MusicBot.svg)](https://github.com/daviddev16/java-musicbox/blob/master/LICENSE)
-[![CircleCI](https://circleci.com/gh/daviddev16/java-musicbox/tree/Development.svg?style=shield)](https://circleci.com/gh/daviddev16/java-musicbox/tree/Development)
+[![CircleCI](https://img.shields.io/circleci/build/github/daviddev16/java-musicbox/master)](https://circleci.com/gh/daviddev16/java-musicbox/tree/master)
 [![Discord](https://discordapp.com/api/guilds/893011039468273705/widget.png)](https://discord.gg/RjxMwhMwwF)
 
 
@@ -19,6 +19,10 @@
    </a>
    <a href="https://discord.gg/RjxMwhMwwF">
      <img src="https://img.shields.io/static/v1?label=&message=Join+the+community!&color=bb72da&style=flat-badge&logo=discord&logoColor=white&logoWidth=10">
+   </a><br><br>
+   This project is using:<br><br>
+   <a href="https://github.com/DV8FromTheWorld/JDA">
+     <img src="https://shields.io/maven-metadata/v?metadataUrl=https%3A%2F%2Fm2.dv8tion.net%2Freleases%2Fnet%2Fdv8tion%2FJDA%2Fmaven-metadata.xml&color=informational&label=JDA">
    </a>
 </p>
 
@@ -29,7 +33,6 @@
  - Supports Youtube / SoundCloud / Vimeo / Bandcamp / Twitch streams
  - Supports search query for Youtube.
  - Playlist support (Youtube only)
-
 
 ## Warning
 
