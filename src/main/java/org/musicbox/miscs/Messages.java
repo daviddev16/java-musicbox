@@ -28,9 +28,11 @@ public final class Messages {
    public static final int TRACK_ADDED = 8;
    public static final int PLAYLIST_ADDED = 9;
 
+   public static final int QUEUE_PAGE = 20;
+   
    private static void send(TextChannel channel, String languageId, int messageId, List<Placeholder> placeholders) {
       JsonObject jsonMessage = LanguageManager.getLanguageManager().getMessage(languageId, messageId);
-      channel.sendMessage(Utilities.translate(jsonMessage, placeholders)).queue();
+      channel.sendMessageEmbeds(Utilities.translate(jsonMessage, placeholders)).queue();
    }
 
    public static void translatedMessage(MessageReceivedEvent event, int messageId, List<Placeholder> placeholders) {

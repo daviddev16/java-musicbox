@@ -216,7 +216,6 @@ public class MusicCommands {
 
    }
 
-
    @Usage(usage = "shutdown")
    @Link(commandId = 3, names = { "shutdown" }, category = CommandCategory.MUSIC, argumentsSplit = true)
    private void shutdown(MessageReceivedEvent event) {

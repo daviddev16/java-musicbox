@@ -71,6 +71,15 @@
       }
     },
     {
+      "id": 20,
+      "title": "Lista de reprodução",
+      "description": "$[informativeQueue]",
+      "footer": {
+        "text": "Requisitado por $[senderTag]",
+        "iconUrl": "$[senderAvatar]"
+      }
+    },
+    {
       "id": 7,
       "title": "não encontrei nada :(",
       "description": "Nada encontrado para '$[userInput]'",

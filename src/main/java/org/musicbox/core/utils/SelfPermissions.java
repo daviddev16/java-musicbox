@@ -4,12 +4,14 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.musicbox.core.guild.GuildWrapper;
+import org.musicbox.miscs.Constants;
 
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.GuildChannel;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.TextChannel;
+import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.entities.VoiceChannel;
 
 import static org.musicbox.core.utils.Utilities.allOf;
@@ -22,12 +24,20 @@ public final class SelfPermissions {
          Permission.MESSAGE_WRITE
          );
 
+   public static List<Permission> PAGINATE_PERMISSIONS = Arrays.asList(
+         Permission.MESSAGE_EMBED_LINKS,
+         Permission.MESSAGE_ADD_REACTION,
+         Permission.MESSAGE_WRITE,
+         Permission.MESSAGE_MANAGE
+         );
+
+
    public static List<Permission> VOICE_PERMISSIONS = Arrays.asList(
          Permission.VOICE_CONNECT,
          Permission.VOICE_SPEAK
          );
-   
-   public static List<Permission> ALL_PERMISSIONS = allOf(WRITE_PERMISSIONS,VOICE_PERMISSIONS);
+
+   public static List<Permission> ALL_PERMISSIONS = allOf(WRITE_PERMISSIONS, VOICE_PERMISSIONS, PAGINATE_PERMISSIONS);
 
    public static boolean canWrite(TextChannel textChannel) {
       return textChannel != null && getSelfMember(textChannel)
@@ -37,6 +47,19 @@ public final class SelfPermissions {
    public static boolean canSpeak(VoiceChannel voiceChannel) {
       return voiceChannel != null && getSelfMember(voiceChannel)
             .hasPermission(voiceChannel, VOICE_PERMISSIONS);
+   }
+
+   public static boolean canPaginate(TextChannel textChannel) {
+      return textChannel != null && getSelfMember(textChannel)
+            .hasPermission(textChannel, PAGINATE_PERMISSIONS);
+   }
+
+   public static boolean isSelf(long id) {
+      return (id == Constants.DEBUG_BOT_ID || id == Constants.MAIN_BOT_ID);
+   }
+
+   public static boolean isSelf(User user) {
+      return (user != null && isSelf(user.getIdLong()));
    }
 
    public static boolean isAlreadyConnect(Guild guild) {
@@ -49,9 +72,9 @@ public final class SelfPermissions {
    }
 
    public static boolean isAlreadyConnect(GuildWrapper wrapper) {
-      return wrapper != null && isAlreadyConnect(wrapper.getGuild());
+      return (wrapper != null && isAlreadyConnect(wrapper.getGuild()));
    }
-   
+
    public static Member getSelfMember(GuildChannel channel) {
       return channel.getGuild().getSelfMember();
    }
