@@ -22,7 +22,10 @@
    </a><br><br>
    This project is using:<br><br>
    <a href="https://github.com/DV8FromTheWorld/JDA">
-     <img src="https://shields.io/maven-metadata/v?metadataUrl=https%3A%2F%2Fm2.dv8tion.net%2Freleases%2Fnet%2Fdv8tion%2FJDA%2Fmaven-metadata.xml&color=informational&label=JDA">
+     <img src="https://img.shields.io/static/v1?label=&message=JDA+(Java+Discord+API)&color=bb72da&style=flat-badge&logo=java&logoColor=white&logoWidth=10">
+   </a>
+   <a href="https://developers.google.com/youtube/v3">
+     <img src="https://img.shields.io/static/v1?label=&message=Youtube+Data+API&color=bb72da&style=flat-badge&logo=java&logoColor=white&logoWidth=10">
    </a>
 </p>
 
