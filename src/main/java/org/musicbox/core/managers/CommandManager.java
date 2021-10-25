@@ -41,7 +41,7 @@ public class CommandManager {
       try {
          new CommandManager();
       } catch (InstanceAlreadyExistsException e) {
-         logger.info(e.getLocalizedMessage());
+         logger.warn(e.getLocalizedMessage());
       } 
    }
    

@@ -37,7 +37,7 @@ public final class LanguageManager {
       try {
          new LanguageManager();
       } catch (InstanceAlreadyExistsException e) {
-         logger.info(e.getLocalizedMessage());
+         logger.warn(e.getLocalizedMessage());
       } 
    }
 

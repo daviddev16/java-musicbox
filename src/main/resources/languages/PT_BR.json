@@ -75,6 +75,24 @@
       "title": "Lista de reprodução",
       "description": "$[informativeQueue]",
       "footer": {
+        "text": "$[currentPage]/$[maxPage]",
+        "iconUrl": "$[senderAvatar]"
+      }
+    },
+     {
+      "id": 21,
+      "title": "Lista vazia.",
+      "description": "Use $[globalPrefix]play para começar uma música.",
+      "footer": {
+        "text": "Requisitado por $[senderTag]",
+        "iconUrl": "$[senderAvatar]"
+      }
+    },
+    {
+      "id": 22,
+      "title": "Lista de commandos:",
+      "description": "$[content]",
+      "footer": {
         "text": "Requisitado por $[senderTag]",
         "iconUrl": "$[senderAvatar]"
       }

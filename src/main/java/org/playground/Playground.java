@@ -1,8 +1,8 @@
 package org.playground;
 
-public class Playground {
 
-   public static void setupPlayground() {
-      PaginatorManager.setup();
-   }
+public final class Playground {
+
+   public static void setupPlayground() { /* setup playground stuff */ }
+   
 }

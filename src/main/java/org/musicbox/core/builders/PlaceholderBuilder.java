@@ -72,15 +72,28 @@ public final class PlaceholderBuilder {
 
       return placeholders;
    }
+   
+   public static void putOrReplace(List<Placeholder> placeholders, Placeholder placeholder) {
 
-   public List<Placeholder> build() {
-      return placeholders;
+      Placeholder fPlaceholder = placeholders.stream()
+            .filter(ph -> ph.getSuffix().equals(placeholder.getSuffix()))
+            .findAny().orElse(null);
+      
+      if(fPlaceholder != null)
+         fPlaceholder.setReplacement(placeholder.getReplacement());
+      else
+         placeholders.add(placeholder);
    }
 
    public static PlaceholderBuilder createBy(GenericEvent event, boolean setupDefaults) {
       return new PlaceholderBuilder(setupDefaults).event(event);
+
    }
 
+   public List<Placeholder> build() {
+      return placeholders;
+   }
+   
    public static final class Placeholder {
 
       public String suffix;
@@ -133,4 +146,5 @@ public final class PlaceholderBuilder {
          return ("$[" + getSuffix() + "]").trim();
       }
    }
+   
 }

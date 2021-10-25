@@ -35,7 +35,7 @@ public final class ListenerManager {
       try {
          new ListenerManager();
       } catch (InstanceAlreadyExistsException e) {
-         logger.info(e.getLocalizedMessage());
+         logger.warn(e.getLocalizedMessage());
       } 
    }
    

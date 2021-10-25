@@ -1,15 +1,14 @@
-package org.playground;
+package org.musicbox.modules.paginator;
 
 import java.util.List;
 
-import org.playground.Paginator.Page;
-
+import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.GuildChannel;
 import net.dv8tion.jda.api.entities.Message;
 
 public interface IPaginator {
 
-   List<Page> getPages();
+   List<EmbedBuilder> getPages();
 
    int getCurrentIndex();
 
@@ -23,6 +22,6 @@ public interface IPaginator {
 
    void back();
    
-   void moveToPage(Page page);
+   void moveToPage(EmbedBuilder page);
 
 }

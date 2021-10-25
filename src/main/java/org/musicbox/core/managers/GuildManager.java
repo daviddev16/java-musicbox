@@ -33,7 +33,7 @@ public final class GuildManager {
       try {
          new GuildManager();
       } catch (InstanceAlreadyExistsException e) {
-         logger.info(e.getLocalizedMessage());
+         logger.warn(e.getLocalizedMessage());
       } 
    }
 

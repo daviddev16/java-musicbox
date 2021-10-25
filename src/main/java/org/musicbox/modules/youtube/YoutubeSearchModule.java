@@ -1,4 +1,4 @@
-package org.musicbox.modules;
+package org.musicbox.modules.youtube;
 
 import java.io.IOException;
 import java.util.List;
@@ -44,9 +44,7 @@ public class YoutubeSearchModule extends CoreModule {
    }
    
    @Override
-   public void onDisabling() {
-      System.out.println("ao");
-   }
+   public void onDisabling() {}
    
    public YouTube getYoutube() {
       return this.youtube;
