@@ -4,20 +4,22 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.EnumSet;
 
+import javax.management.InstanceAlreadyExistsException;
 import javax.security.auth.login.LoginException;
 
 import org.musicbox.commands.MusicCommands;
 import org.musicbox.config.DefaultConfig;
-import org.musicbox.core.managers.BotAudioManager;
 import org.musicbox.core.managers.CommandManager;
 import org.musicbox.core.managers.GuildManager;
 import org.musicbox.core.managers.LanguageManager;
 import org.musicbox.core.managers.ListenerManager;
-import org.musicbox.core.managers.YoutubeSearchManager;
+import org.musicbox.core.module.Modules;
 import org.musicbox.listeners.CommandListener;
 import org.musicbox.listeners.PresenceListener;
 import org.musicbox.listeners.InspectorListener;
 import org.musicbox.models.FailHandler;
+import org.musicbox.modules.PaginatorModule;
+import org.musicbox.modules.YoutubeSearchModule;
 import org.playground.Playground;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -40,7 +42,10 @@ public class MusicBox {
 
    private final ShardManager shardManager;
 
-   public MusicBox() throws LoginException {
+   protected MusicBox() throws LoginException, InstanceAlreadyExistsException {
+      
+      if (musicBox != null)
+         throw new InstanceAlreadyExistsException("MusicBox instance already exists.");
 
       DefaultConfig.setup("musicbox-app");
 
@@ -48,10 +53,16 @@ public class MusicBox {
          Playground.setupPlayground();
       }
 
+      /* setting up isolated modules */
+      Modules.setup();
+      Modules.registerAll(YoutubeSearchModule.class, 
+            PaginatorModule.class);
+      
+      Modules.unregisterModule(YoutubeSearchModule.class);
+      
+      /* setting up application managers */
       LanguageManager.setup();
-      BotAudioManager.setup();
       GuildManager.setup();
-      YoutubeSearchManager.setup();
       FailHandler.setup();
 
       CommandManager.setup();
@@ -69,6 +80,7 @@ public class MusicBox {
       EnumSet<GatewayIntent> intents = EnumSet.of(
             GatewayIntent.GUILD_MESSAGES,
             GatewayIntent.GUILD_EMOJIS,
+            GatewayIntent.GUILD_MESSAGE_REACTIONS,
             GatewayIntent.GUILD_VOICE_STATES
             );
 
@@ -80,6 +92,7 @@ public class MusicBox {
             CacheFlag.EMOTE
             );
 
+      /* setting up JDA */
       shardManager = DefaultShardManagerBuilder.create(
             DefaultConfig.TOKEN, intents)
             .disableCache(cacheFlags)

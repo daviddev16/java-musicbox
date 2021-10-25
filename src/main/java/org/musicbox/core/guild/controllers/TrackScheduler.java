@@ -8,8 +8,7 @@ import java.util.List;
 import org.musicbox.config.DefaultConfig;
 import org.musicbox.core.builders.LRHBuilder;
 import org.musicbox.core.guild.GuildWrapper;
-import org.musicbox.core.managers.BotAudioManager;
-import org.musicbox.core.managers.YoutubeSearchManager;
+import org.musicbox.core.managers.AudioManager;
 import org.musicbox.core.models.GuildWrapperPart;
 import org.musicbox.core.utils.Utilities;
 import org.musicbox.models.QueuedTrackResult;
@@ -38,7 +37,7 @@ public final class TrackScheduler extends AudioEventAdapter implements AudioSend
 
 
    public TrackScheduler(GuildWrapper guildWrapper) {
-      this.player = BotAudioManager.getBotAudioManager().getAudioPlayerManager().createPlayer();
+     this.player = null; /*BotAudioManager.getBotAudioManager().getAudioPlayerManager().createPlayer();*/
       this.tracklist = Collections.synchronizedList(new LinkedList<>());
       this.player.setVolume(DefaultConfig.VOLUME);
       this.player.addListener(this);
@@ -78,7 +77,7 @@ public final class TrackScheduler extends AudioEventAdapter implements AudioSend
    }
 
    public void load(final String url, QueuedTrackResult result) {
-      AudioPlayerManager manager = BotAudioManager.getBotAudioManager().getAudioPlayerManager();
+      AudioPlayerManager manager = AudioManager.getAudioManager().getPlayerManager();
       AudioLoadResultHandler loadResultHandler = LRHBuilder.create()
             .onFailed((exception) -> result.onFailed(exception))
             .onNoMatches((voId) -> result.noMatches())
@@ -105,7 +104,7 @@ public final class TrackScheduler extends AudioEventAdapter implements AudioSend
 
    public void queue(String content, final QueuedTrackResult result) {
       if (!Utilities.isURL(content)) {
-         content = YoutubeSearchManager.getSearchManager().getUrlBasedOnText(content);
+         //content = YoutubeSearchManager.getSearchManager().getUrlBasedOnText(content);
       }
       load(content, result);
    }

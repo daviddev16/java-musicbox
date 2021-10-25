@@ -4,6 +4,9 @@ public final class Constants {
 
    public static boolean ENABLE_EMBED_THUMBNAILS = false;
 
+   public static final long DEBUG_BOT_ID = 893259644217225270L;
+   public static final long MAIN_BOT_ID = 892542872811884584L;
+   
    public static final String PT_BR = "PT_BR";
 
    public static final String KEY_SENDER_NAME = "senderTag";
@@ -18,6 +21,7 @@ public final class Constants {
    public static final String KEY_GLOBAL_PREFIX = "globalPrefix";
    public static final String KEY_EXCEPTION_MESSAGE = "exceptionMessage";
    public static final String KEY_MISSING_PERMISSIONS = "missingPermissions";
+   public static final String KEY_INFORMATIVE_QUEUE = "informativeQueue";
 
 
 }

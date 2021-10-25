@@ -5,6 +5,8 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.management.InstanceAlreadyExistsException;
+
 import org.musicbox.core.command.CommandSupply;
 import org.musicbox.core.command.Link;
 import org.musicbox.core.command.Received;
@@ -12,23 +14,37 @@ import org.musicbox.core.command.Usage;
 import org.musicbox.core.exceptions.ParameterException;
 import org.musicbox.core.utils.Utilities;
 import org.musicbox.models.FailHandler;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
 public class CommandManager {
 
+   private static Logger logger = LoggerFactory.getLogger(CommandManager.class);
    private static CommandManager commandManager;
+   
    private final List<CommandSupply> commandSupplies;
 
-   private CommandManager() {
+   private CommandManager() throws InstanceAlreadyExistsException {
+      
+      if (commandManager != null)
+         throw new InstanceAlreadyExistsException("CommandManager instance already exists.");
+      
       commandSupplies = new ArrayList<>();
+      
+      logger.info("CommandManager loaded.");
       commandManager = this;
    }
-
-   public static void setup() {
-      new CommandManager();
+   
+   public static void setup() { 
+      try {
+         new CommandManager();
+      } catch (InstanceAlreadyExistsException e) {
+         logger.info(e.getLocalizedMessage());
+      } 
    }
-
+   
    public void handle(Class<?> handleClass) {
 
       if (handleClass == null)
@@ -168,7 +184,7 @@ public class CommandManager {
       }
       return true;
    }
-
+   
    public static CommandManager getCommandManager() {
       return commandManager;
    }
