@@ -1,5 +1,6 @@
 package org.musicbox.listeners;
 
+import org.musicbox.config.DefaultConfig;
 import org.musicbox.core.managers.GuildManager;
 import org.musicbox.core.managers.ListenerManager.Listener;
 
@@ -21,8 +22,16 @@ public class PresenceListener extends Listener {
       String shard = event.getJDA().getShardInfo().getShardString();
 
       guildCount = event.getGuildTotalCount();
-      event.getJDA().getPresence().setPresence(OnlineStatus.ONLINE,
-            Activity.of(ActivityType.LISTENING, shard));
+      
+      if(DefaultConfig.DEBUG_MODE) {
+        
+         event.getJDA().getPresence().setPresence(OnlineStatus.ONLINE,
+               Activity.of(ActivityType.LISTENING, shard));
+
+      } else {
+         event.getJDA().getPresence().setPresence(OnlineStatus.ONLINE,
+               Activity.of(ActivityType.LISTENING, "musica em " + guildCount + " servidores."));
+      }
    }
 
    @Override
