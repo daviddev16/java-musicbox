@@ -36,7 +36,7 @@ public final class AudioManager {
       try {
          new AudioManager();
       } catch (InstanceAlreadyExistsException e) {
-         logger.info(e.getLocalizedMessage());
+         logger.warn(e.getLocalizedMessage());
       } 
    }
    

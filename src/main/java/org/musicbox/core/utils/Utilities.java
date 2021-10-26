@@ -10,6 +10,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
 
 import org.musicbox.core.builders.PlaceholderBuilder.Placeholder;
+import org.musicbox.core.guild.controllers.TrackScheduler;
 import org.musicbox.miscs.Constants;
 
 import com.google.gson.JsonArray;
@@ -20,12 +21,11 @@ import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Message;
-import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.entities.VoiceChannel;
 
 public final class Utilities {
 
-   public static MessageEmbed translate(JsonObject jsonObject, List<Placeholder> placeholders) {
+   public static  EmbedBuilder translate(JsonObject jsonObject, List<Placeholder> placeholders) {
       EmbedBuilder builder = new EmbedBuilder();
       if (jsonObject.has("author")) {
          builder.setAuthor(
@@ -42,7 +42,8 @@ public final class Utilities {
          builder.setDescription(translatePlaceholders(jsonObject.get("description").getAsString(), placeholders));
       }
       if (jsonObject.has("color")) {
-         builder.setColor(Color.decode("#" + translatePlaceholders(jsonObject.get("color").getAsString(), placeholders)));
+         builder.setColor(Color.decode("#bb72da")); /* sim hehehe */
+         //builder.setColor(Color.decode("#" + translatePlaceholders(jsonObject.get("color").getAsString(), placeholders)));
       }
       if (jsonObject.has("image")) {
          builder.setImage(translatePlaceholders(jsonObject.get("image").getAsString(), placeholders));
@@ -67,7 +68,7 @@ public final class Utilities {
          });
       }
 
-      return builder.build();
+      return builder;
    }
 
    public static String translatePlaceholders(String text, List<Placeholder> placeholders) {
@@ -88,6 +89,28 @@ public final class Utilities {
       return false;
    }
 
+   /* this is ugly xdd but yeah*/
+   public static List<String> spliceTracklist(TrackScheduler scheduler){
+      List<String> splices = new ArrayList<>();
+      StringBuilder builder = new StringBuilder();
+      for(int i = 0; i < scheduler.getTracklist().size(); i++) {
+         String trackName = i + " - " + scheduler.getTracklist().get(i).getInfo().title;
+         if(scheduler.getCurrentPosition() == i) {
+            trackName = "```fix\n" + trackName + " [NOW]```";
+         }
+         else {
+            trackName = "```\n" + trackName + "```";
+         }
+         if(i % 5 == 0 && i != 0) {
+            splices.add(builder.toString().trim());
+            builder.delete(0, builder.length());
+         }
+         builder.append(trackName).append('\n');
+      }
+      splices.add(builder.toString().trim());
+      return splices;
+   }
+
    public static String stripUrl(String url) {
       if (url.startsWith("<") && url.endsWith(">")) {
          return url.substring(1, url.length() - 1);
@@ -95,7 +118,7 @@ public final class Utilities {
          return url;
       }
    }
-   
+
    @SafeVarargs
    public static List<Permission> allOf(Collection<Permission>... permissions) {
       List<Permission> collectPermissions = new ArrayList<>();
@@ -120,7 +143,7 @@ public final class Utilities {
          return false;
       }
    }
-   
+
    public static boolean parseBoolean(String value) {
       if(Utilities.isBoolean(value)) {
          return Utilities.getBoolean(value);

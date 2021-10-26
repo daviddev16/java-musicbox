@@ -10,5 +10,4 @@ public abstract class CoreModule {
    public String toString() {
       return "(" + getClass().getSimpleName() + ")"; 
    }
-   
 }

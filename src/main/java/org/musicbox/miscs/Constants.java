@@ -21,7 +21,12 @@ public final class Constants {
    public static final String KEY_GLOBAL_PREFIX = "globalPrefix";
    public static final String KEY_EXCEPTION_MESSAGE = "exceptionMessage";
    public static final String KEY_MISSING_PERMISSIONS = "missingPermissions";
+   
    public static final String KEY_INFORMATIVE_QUEUE = "informativeQueue";
+   public static final String KEY_MAX_PAGES = "maxPage";
+   public static final String KEY_CURRENT_PAGE = "currentPage";
+   
+   public static final String KEY_CONTENT = "content";
 
 
 }

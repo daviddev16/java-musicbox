@@ -23,6 +23,13 @@ public class CommandListener extends Listener {
          return;
       }
 
+      /* temporary/debugging 
+      if(event.getGuild().getIdLong() != 893011039468273705L) {
+         event.getTextChannel().sendMessage("Não posso ser usado aqui, estou em fase de teste para a proxima versão.\nCaso queira testar, basta entrar no servidor: https://discord.gg/RjxMwhMwwF.")
+         .queue(Utilities.deleteAfter(20L));
+         return;
+      }*/
+      
       /* kernel's id */
       if (DefaultConfig.DEBUG_MODE && event.getMember().getUser().getIdLong() != 339978701297156098L) {
          event.getTextChannel().sendMessage("Você não tem permissão de usar o bot em modo de desenvolvimento.")

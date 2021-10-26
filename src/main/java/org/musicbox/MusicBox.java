@@ -9,6 +9,7 @@ import javax.security.auth.login.LoginException;
 
 import org.musicbox.commands.MusicCommands;
 import org.musicbox.config.DefaultConfig;
+import org.musicbox.core.managers.AudioManager;
 import org.musicbox.core.managers.CommandManager;
 import org.musicbox.core.managers.GuildManager;
 import org.musicbox.core.managers.LanguageManager;
@@ -18,8 +19,8 @@ import org.musicbox.listeners.CommandListener;
 import org.musicbox.listeners.PresenceListener;
 import org.musicbox.listeners.InspectorListener;
 import org.musicbox.models.FailHandler;
-import org.musicbox.modules.PaginatorModule;
-import org.musicbox.modules.YoutubeSearchModule;
+import org.musicbox.modules.paginator.PaginatorModule;
+import org.musicbox.modules.youtube.YoutubeSearchModule;
 import org.playground.Playground;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -36,7 +37,7 @@ import net.dv8tion.jda.internal.utils.config.ThreadingConfig;
 import okhttp3.OkHttpClient;
 
 public class MusicBox {
-
+   
    private static Logger logger = LoggerFactory.getLogger(MusicBox.class);
    private static MusicBox musicBox;
 
@@ -58,9 +59,8 @@ public class MusicBox {
       Modules.registerAll(YoutubeSearchModule.class, 
             PaginatorModule.class);
       
-      Modules.unregisterModule(YoutubeSearchModule.class);
-      
       /* setting up application managers */
+      AudioManager.setup();
       LanguageManager.setup();
       GuildManager.setup();
       FailHandler.setup();

@@ -1,8 +1,8 @@
 package org.musicbox.core.module;
 
 import java.util.Collections;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.management.InstanceAlreadyExistsException;
 
@@ -14,14 +14,14 @@ public class Modules {
    private static Logger logger = LoggerFactory.getLogger(Modules.class);
    private static Modules modulesInstance;
 
-   private List<CoreModule> modules;
+   private Set<CoreModule> modules;
 
    private Modules() throws InstanceAlreadyExistsException {
 
       if(modulesInstance != null)
          throw new InstanceAlreadyExistsException("Modules instance already exists.");
 
-      modules = Collections.synchronizedList(new LinkedList<>());
+      modules = Collections.synchronizedSet(new HashSet<>());
       modulesInstance = this;
    }
 
@@ -52,6 +52,11 @@ public class Modules {
       }
    }
 
+   public static boolean hasModule(Class<? extends CoreModule> moduleClass) {
+      return getModulesInstance().getModules().stream()
+            .anyMatch(module -> module.getClass().isAssignableFrom(moduleClass));
+   }
+
    public static void register(Class<? extends CoreModule> moduleClass) {
       if(getModulesInstance().getModules().stream()
             .noneMatch(module -> module.getClass().isAssignableFrom(moduleClass))) {
@@ -59,6 +64,7 @@ public class Modules {
             CoreModule coreModule = moduleClass.getConstructor().newInstance();
             if(getModulesInstance().getModules().add(coreModule)) {
                coreModule.onRegistered();
+               logger.info(coreModule.toString() + " registered.");
             }
             return;
          } catch (Exception e) {
@@ -67,15 +73,14 @@ public class Modules {
       }
       throw new IllegalCallerException(moduleClass.getTypeName() + " already registered.");
    }
-   
+
    @SuppressWarnings("unchecked")
    @SafeVarargs
    public static void registerAll(Class<?>... moduleClasses) {
       for(Class<?> moduleClass : moduleClasses) {
-
          if(!CoreModule.class.isAssignableFrom(moduleClass))
             continue;
-         
+
          register((Class<? extends CoreModule>) moduleClass);
       }
    }
@@ -92,7 +97,7 @@ public class Modules {
       return modulesInstance;
    }
 
-   public List<CoreModule> getModules() {
+   public Set<CoreModule> getModules() {
       return modules;
    }
 

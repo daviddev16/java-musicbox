@@ -49,8 +49,6 @@ public final class Inspector implements GuildWrapperPart {
       getGuild().getAudioManager().setSendingHandler(null);
    }
 
-  
-   
    /* cancel the waiting state */
    public void cancelIfNecessary() {
       if (waitingStateTimer != null) {

@@ -10,8 +10,10 @@ import org.musicbox.core.builders.LRHBuilder;
 import org.musicbox.core.guild.GuildWrapper;
 import org.musicbox.core.managers.AudioManager;
 import org.musicbox.core.models.GuildWrapperPart;
+import org.musicbox.core.module.Modules;
 import org.musicbox.core.utils.Utilities;
 import org.musicbox.models.QueuedTrackResult;
+import org.musicbox.modules.youtube.YoutubeSearchModule;
 
 import com.sedmelluq.discord.lavaplayer.player.AudioLoadResultHandler;
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayer;
@@ -35,9 +37,8 @@ public final class TrackScheduler extends AudioEventAdapter implements AudioSend
    private RepeatMode repeatMode;
    private AudioFrame lastFrame;
 
-
    public TrackScheduler(GuildWrapper guildWrapper) {
-     this.player = null; /*BotAudioManager.getBotAudioManager().getAudioPlayerManager().createPlayer();*/
+     this.player = AudioManager.getAudioManager().getPlayerManager().createPlayer();
       this.tracklist = Collections.synchronizedList(new LinkedList<>());
       this.player.setVolume(DefaultConfig.VOLUME);
       this.player.addListener(this);
@@ -104,7 +105,8 @@ public final class TrackScheduler extends AudioEventAdapter implements AudioSend
 
    public void queue(String content, final QueuedTrackResult result) {
       if (!Utilities.isURL(content)) {
-         //content = YoutubeSearchManager.getSearchManager().getUrlBasedOnText(content);
+         content = Modules.getModule(YoutubeSearchModule.class)
+               .getUrlBasedOnText(content);
       }
       load(content, result);
    }
@@ -112,6 +114,16 @@ public final class TrackScheduler extends AudioEventAdapter implements AudioSend
    public void play(AudioTrack track, boolean now) {
       if (player.startTrack(track, !now))
          currentPosition = getTracklist().indexOf(track);
+   }
+   
+   public String getCurrentName() {
+      if(currentPosition < 0 || currentPosition >= tracklist.size())
+         return "-";
+      return currentPosition + " - " + tracklist.get(currentPosition).getInfo().title;
+   }
+
+   public void restart() {
+      select(currentPosition, true);
    }
 
    public void queue(AudioTrack track) {
@@ -164,6 +176,10 @@ public final class TrackScheduler extends AudioEventAdapter implements AudioSend
    public RepeatMode getRepeatMode() {
       return repeatMode;
    }
+   
+   public int getCurrentPosition() {
+      return currentPosition;
+   }
 
    public void setPauseState(boolean paused) {
       player.setPaused(paused);
@@ -179,6 +195,10 @@ public final class TrackScheduler extends AudioEventAdapter implements AudioSend
 
    public List<AudioTrack> getTracklist() {
       return tracklist;
+   }
+   
+   public boolean isEmptyOrDone() {
+      return getTracklist().isEmpty();
    }
 
    @Override

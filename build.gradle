@@ -1,12 +1,14 @@
 plugins {
     id 'java'
     id 'application'
-    id 'com.github.johnrengelman.shadow' version '5.0.0'
+    
+			/* java-musicbox-all.jar */
+    id 'com.github.johnrengelman.shadow' version '7.0.0'
 
 }
 
 group = "org.musicbox"
-mainClassName = "org.musicbox.MusicBox"
+mainClassName = "org.musicbox.Main"
 
 apply plugin: 'java'
 apply plugin: 'com.github.johnrengelman.shadow'
