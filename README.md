@@ -9,7 +9,7 @@
    MusicBox is a brand new discord bot for music purpose.<br><br>
    <img width="700" alt="banner" src="https://i.imgur.com/Bkg5eAz.gif"><br><br>
   <a href="https://github.com/daviddev16/java-musicbox">
-     <img src="https://img.shields.io/static/v1?label=&message=Online+version+(1.0.2+alpha)&color=bb72da&style=flat-badge&logo=Bandcamp&logoColor=white&logoWidth=10">
+     <img src="https://img.shields.io/static/v1?label=&message=Online+version+(pre-1.0.3_alpha)&color=bb72da&style=flat-badge&logo=Bandcamp&logoColor=white&logoWidth=10">
    </a>
    <a href="https://circleci.com/gh/daviddev16/java-musicbox/tree/Development">
      <img src="https://img.shields.io/static/v1?label=&message=Development+version+(1.0.3+alpha)&color=bb72da&style=flat-badge&logo=Bandcamp&logoColor=white&logoWidth=10">
