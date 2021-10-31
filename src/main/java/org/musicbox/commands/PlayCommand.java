@@ -1,13 +1,16 @@
 package org.musicbox.commands;
 
 import java.util.Arrays;
+import java.util.List;
 
 import org.musicbox.core.builders.PlaceholderBuilder;
+import org.musicbox.core.builders.PlaceholderBuilder.Placeholder;
 import org.musicbox.core.command.GuildCommand;
 import org.musicbox.core.guild.GuildWrapper;
 import org.musicbox.core.translation.TranslationKeys;
+import org.musicbox.core.utils.Messages;
 import org.musicbox.core.utils.SelfPermissions;
-import org.musicbox.miscs.Messages;
+import org.musicbox.models.QueuedTrackResult;
 
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
@@ -22,32 +25,33 @@ public class PlayCommand extends GuildCommand {
    public void onExecute(GuildWrapper wrapper, MessageReceivedEvent event, Object[] params) {
 
       Member member = event.getMember();
-      PlaceholderBuilder builder = PlaceholderBuilder.createBy(event, true);
+      String titleOrUrl = params[0].toString();
 
-      Messages.Embed.send(event, TranslationKeys.PLAY_COMMAND, builder);
+      List<Placeholder> placeholders = PlaceholderBuilder.createBy(event, true)
+            .event(event).command(this).build();
 
-      if(SelfPermissions.isAlreadyConnect(wrapper)) {
-         if(!SelfPermissions.isTogether(member)) {
-          //  Messages.Embed.send(event.getTextChannel(), TranslationKeys.GENERIC_ERROR, 
-           //       Placeholder.of(event.getGuild(), TranslationKeys.INVALID_VOICE_CHANNEL));
+      if (SelfPermissions.isAlreadyConnect(wrapper)) {
+         if (!SelfPermissions.isTogether(member)) {
+            Messages.Embed.send(event.getTextChannel(), placeholders, 
+                  TranslationKeys.MEMBER_IS_NOT_TOGETHER, null);
             return;
          }
       } else {
-         if(member.getVoiceState().inVoiceChannel()) {
+         if (member.getVoiceState().inVoiceChannel())
             wrapper.getInspector().connect(member.getVoiceState().getChannel());
-         } else {
-          //  Messages.Embed.send(event.getTextChannel(), TranslationKeys.GENERIC_ERROR, 
-           //       Placeholder.of(event.getGuild(), TranslationKeys.INVALID_VOICE_CHANNEL));
+         else {
+            Messages.Embed.send(event.getTextChannel(), placeholders, 
+                  TranslationKeys.INVALID_VOICE_CHANNEL, null);
             return;
          }
       }
-      
-      wrapper.getScheduler().load(null, null);
+      wrapper.getScheduler().queue(titleOrUrl, 
+            new QueuedTrackResult(event, wrapper, placeholders));
    }
 
    @Override
    public String toUsageString() {
-      return "play <title or url>";
+      return "<title or url>";
    }
 
 }

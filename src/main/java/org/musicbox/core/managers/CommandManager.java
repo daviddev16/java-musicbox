@@ -35,6 +35,14 @@ public class CommandManager {
       commandManager = this;
    }
 
+   public static void setup() {
+      try {
+         new CommandManager();
+      } catch (InstanceAlreadyExistsException e) {
+         logger.warn(e.getLocalizedMessage());
+      }
+   }
+
    public void perform(String prefix, MessageReceivedEvent event) {
 
       GuildWrapper wrapper = GuildManager.getGuildManager().getWrapper(event.getGuild());
@@ -57,35 +65,37 @@ public class CommandManager {
       }
 
       try {
+         /* check the compatibility */
          command.tryoutCommand(translator);
+
       }catch(ParameterException exception) {
          GuildFailHandler.getFailHandler().onGenericError(command, event.getTextChannel(), 
-               event.getAuthor(), TranslationKeys.COMMAND_MISSMATCH);
+               event.getAuthor(), exception.getError());
          return;
       }
 
-      Object[] params = new Object[1];
-
-      if(!command.isContentArgument()) {
-         params = new Object[command.getRequiredArguments().size()];
-         for(int i = 0; i < params.length; i++) {
-            params[i] = command.parse(translator.getArguments()[i], command.getRequiredArguments().get(i));
-         }
-      } else {
-         params[0] = Utilities.getWholeContent(translator.getArguments());
-      }
+      Object[] params = getParameters(command, translator);
 
       if (event.isFromGuild())
          command.onExecute(wrapper, event, params);
    }
 
-   public static void setup() {
-      try {
-         new CommandManager();
-      } catch (InstanceAlreadyExistsException e) {
-         logger.warn(e.getLocalizedMessage());
+   
+   private Object[] getParameters(GenericCommand command, CommandTranslator translator) {
+      if(command != null) {
+         if(command.isContentArgument()) {   
+            return new Object[] { Utilities.getWholeContent(translator.getArguments()) };
+         }
+         Object[] parameters = new Object[translator.getArguments().length];
+         for(int i = 0; i < parameters.length; i++) {
+            parameters[i] = Utilities.parse(translator.getArguments()[i], 
+                  command.getRequiredArguments().get(i));
+         }
+         return parameters;
       }
+      return new Object[] {};
    }
+   
 
    public GenericCommand getCommandByName(String name) {
       return getCommands().stream().filter(cmd -> cmd.isMine(name))

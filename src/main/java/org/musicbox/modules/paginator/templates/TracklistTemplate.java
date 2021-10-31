@@ -7,9 +7,9 @@ import org.musicbox.core.builders.PlaceholderBuilder;
 import org.musicbox.core.builders.PlaceholderBuilder.Placeholder;
 import org.musicbox.core.guild.GuildWrapper;
 import org.musicbox.core.translation.LanguageManager;
+import org.musicbox.core.utils.Messages;
 import org.musicbox.core.utils.Utilities;
-import org.musicbox.miscs.Constants;
-import org.musicbox.miscs.Messages;
+
 import com.google.gson.JsonObject;
 
 import net.dv8tion.jda.api.EmbedBuilder;

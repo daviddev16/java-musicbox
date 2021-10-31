@@ -11,7 +11,6 @@ import java.util.function.Consumer;
 
 import org.musicbox.core.builders.PlaceholderBuilder.Placeholder;
 import org.musicbox.core.guild.controllers.TrackScheduler;
-import org.musicbox.miscs.Constants;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
@@ -48,7 +47,7 @@ public final class Utilities {
       if (jsonObject.has("image")) {
          builder.setImage(translatePlaceholders(jsonObject.get("image").getAsString(), placeholders));
       }
-      if (jsonObject.has("thumbnail") && Constants.ENABLE_EMBED_THUMBNAILS) {
+      if (jsonObject.has("thumbnail")) {
          builder.setThumbnail(translatePlaceholders(jsonObject.get("thumbnail").getAsString(), placeholders));
       }
       if (jsonObject.has("title")) {
@@ -71,6 +70,27 @@ public final class Utilities {
       return builder;
    }
 
+   public static Object parse(String argument, Class<?> parameter) {
+      if (parameter == Integer.class || parameter == int.class) {
+         return Integer.parseInt(argument);
+      } else if (parameter == Byte.class || parameter == byte.class) {
+         return Byte.parseByte(argument);
+      } else if (parameter == Short.class || parameter == short.class) {
+         return Short.parseShort(argument);
+      } else if (parameter == Float.class || parameter == float.class) {
+         return Float.parseFloat(argument);
+      } else if (parameter == Double.class || parameter == double.class) {
+         return Double.parseDouble(argument);
+      } else if (parameter == Boolean.class || parameter == boolean.class) {
+         return Utilities.parseBoolean(argument);
+      } else if (parameter == Long.class || parameter == long.class) {
+         return Long.parseLong(argument);
+      } else if (parameter == String.class) {
+         return argument.trim();
+      }
+      return new String();
+   }
+   
    public static String translatePlaceholders(String text, List<Placeholder> placeholders) {
       
       if(placeholders == null || placeholders.isEmpty())

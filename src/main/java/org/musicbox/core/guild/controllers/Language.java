@@ -2,7 +2,7 @@ package org.musicbox.core.guild.controllers;
 
 import org.musicbox.core.guild.GuildWrapper;
 import org.musicbox.core.models.GuildWrapperPart;
-import org.musicbox.miscs.Constants;
+import org.musicbox.core.translation.LanguageManager;
 
 public final class Language implements GuildWrapperPart {
 
@@ -13,7 +13,7 @@ public final class Language implements GuildWrapperPart {
    }
 
    public String getUsedLanguage() {
-      return Constants.PT_BR;
+      return LanguageManager.PT_BR;
    }
 
    @Override

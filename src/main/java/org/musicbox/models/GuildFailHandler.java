@@ -6,7 +6,7 @@ import org.musicbox.core.builders.PlaceholderBuilder;
 import org.musicbox.core.command.GenericCommand;
 import org.musicbox.core.models.IFallible;
 import org.musicbox.core.translation.TranslationKeys;
-import org.musicbox.miscs.Messages;
+import org.musicbox.core.utils.Messages;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -31,7 +31,7 @@ public final class GuildFailHandler implements IFallible {
             .command(command)
             .user(sender);
       
-      Messages.Embed.send(channel, builder, translation);
+      Messages.Embed.send(channel, builder, translation, null);
    }
 
    public static void setup() {

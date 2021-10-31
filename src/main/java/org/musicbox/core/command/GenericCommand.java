@@ -3,6 +3,7 @@ package org.musicbox.core.command;
 import java.util.LinkedList;
 
 import java.util.List;
+import java.util.stream.Stream;
 
 import org.musicbox.core.exceptions.ParameterException;
 import org.musicbox.core.guild.GuildWrapper;
@@ -24,17 +25,38 @@ public abstract class GenericCommand {
       this.arguments = new LinkedList<>();
    }
 
-   public boolean isMine(String command) {
-      for(String usage : usages) {
-         if(usage.equals(command)) {
-            return true;
-         }
-      }
-      return false;
+   public abstract void onExecute(GuildWrapper wrapper, MessageReceivedEvent event, Object[] params);
+   
+   public boolean isMine(final String command) {
+      return Stream.of(usages).filter(usage -> usage.equals(command))
+            .findAny().isPresent();
    }
 
-   public abstract void onExecute(GuildWrapper wrapper, MessageReceivedEvent event, Object[] params);
+   public void tryoutCommand(CommandTranslator translator) throws ParameterException {
+      if(!isContentArgument()) {
+         if(arguments.size() != translator.getArguments().length) {
+            throw new ParameterException("Out of bounds.", 
+                  ParameterException.OUT_OF_BOUNDS);
+         }
+         try {
+            for(int i = 0; i < translator.getArguments().length; i++) {
+               Utilities.parse(translator.getArguments()[i], arguments.get(i));
+            }
+         }catch(Exception e) {
+            throw new ParameterException("Type missmatch.", 
+                  ParameterException.TYPE_MISSMATCH);
+         }
+      }
+      if(translator.getArguments().length < 1) {
+         throw new ParameterException("Empty content.", 
+               ParameterException.EMPTY_CONTENT);  
+      }
+   }
 
+   public void nextRequiredAs(Class<?> nextArgumentClass) {
+      arguments.add(nextArgumentClass);
+   }
+   
    public String getName() {
       return name;
    }
@@ -53,45 +75,6 @@ public abstract class GenericCommand {
 
    public List<Class<?>> getRequiredArguments(){
       return arguments;
-   }
-   
-   public void nextRequiredAs(Class<?> nextArgumentClass) {
-      arguments.add(nextArgumentClass);
-   }
-
-   public void tryoutCommand(CommandTranslator translator) throws ParameterException {
-      if(arguments.size() != translator.getArguments().length) {
-         throw new ParameterException("Out of bounds.", ParameterException.OUT_OF_BOUNDS);
-      }
-      for(int i = 0; i < translator.getArguments().length; i++) {
-         parse(translator.getArguments()[i], arguments.get(i));
-      }
-   }
-
-   public Object parse(String argument, Class<?> parameter) {
-      try {
-         if (parameter == Integer.class || parameter == int.class) {
-            return Integer.parseInt(argument);
-         } else if (parameter == Byte.class || parameter == byte.class) {
-            return Byte.parseByte(argument);
-         } else if (parameter == Short.class || parameter == short.class) {
-            return Short.parseShort(argument);
-         } else if (parameter == Float.class || parameter == float.class) {
-            return Float.parseFloat(argument);
-         } else if (parameter == Double.class || parameter == double.class) {
-            return Double.parseDouble(argument);
-         } else if (parameter == Boolean.class || parameter == boolean.class) {
-            return Utilities.parseBoolean(argument);
-         } else if (parameter == Long.class || parameter == long.class) {
-            return Long.parseLong(argument);
-         } else if (parameter == String.class) {
-            return argument.trim();
-         } else {
-            throw new ParameterException("Type missmatch.", ParameterException.TYPE_MISSMATCH);
-         }
-      }catch (Exception e) {
-         throw new ParameterException("Type missmatch.", ParameterException.TYPE_MISSMATCH);
-      }
    }
 
    public abstract String toUsageString();

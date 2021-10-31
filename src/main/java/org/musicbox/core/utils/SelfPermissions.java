@@ -4,7 +4,6 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.musicbox.core.guild.GuildWrapper;
-import org.musicbox.miscs.Constants;
 
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Guild;
@@ -17,6 +16,9 @@ import net.dv8tion.jda.api.entities.VoiceChannel;
 import static org.musicbox.core.utils.Utilities.allOf;
 
 public final class SelfPermissions {
+
+   public static final long DEBUG_BOT_ID = 893259644217225270L;
+   public static final long MAIN_BOT_ID = 892542872811884584L;
 
    public static List<Permission> WRITE_PERMISSIONS = Arrays.asList(
          Permission.MESSAGE_EMBED_LINKS,
@@ -55,7 +57,7 @@ public final class SelfPermissions {
    }
 
    public static boolean isSelf(long id) {
-      return (id == Constants.DEBUG_BOT_ID || id == Constants.MAIN_BOT_ID);
+      return (id == DEBUG_BOT_ID || id == MAIN_BOT_ID);
    }
 
    public static boolean isSelf(User user) {
@@ -82,7 +84,7 @@ public final class SelfPermissions {
    public static boolean isPlaying(GuildWrapper wrapper) {
       return isAlreadyConnect(wrapper) && wrapper.getScheduler().isPlaying();
    }
-   
+
    public static boolean isTogether(Member member) {
       if(member.getVoiceState().inVoiceChannel())
          return isConnected(member.getVoiceState().getChannel());

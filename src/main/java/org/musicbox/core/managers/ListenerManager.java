@@ -42,7 +42,7 @@ public final class ListenerManager {
    
    public static void register(Listener... listeners) {
       Arrays.stream(listeners).filter(listener -> listener != null)
-            .forEach(listener -> getListenerManager().getListeners().add(listener));
+            .forEach(getListenerManager().getListeners()::add);
    }
 
    public static void addListener(Listener listener) {
@@ -54,15 +54,16 @@ public final class ListenerManager {
    }
    
    public static Listener[] getAllListeners() {
-      return listenerManager.getListeners().toArray(new Listener[listenerManager.getListeners().size()]);
-   }
-   
-   private List<Listener> getListeners() {
-      return listeners;
+      return listenerManager.getListeners().toArray(
+            new Listener[listenerManager.getListeners().size()]);
    }
 
    private static ListenerManager getListenerManager() {
       return listenerManager;
+   }
+
+   private List<Listener> getListeners() {
+      return listeners;
    }
 
    public static abstract class Listener extends ListenerAdapter {}

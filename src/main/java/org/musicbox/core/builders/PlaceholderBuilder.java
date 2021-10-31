@@ -32,6 +32,7 @@ public final class PlaceholderBuilder {
    public PlaceholderBuilder command(GenericCommand command) {
       if (command != null) {
          add(PlaceholderKeys.COMMAND_USAGE, command.toUsageString());
+         add(PlaceholderKeys.COMMAND_NAME, command.getName());
       }
       return this;
    }
@@ -104,6 +105,12 @@ public final class PlaceholderBuilder {
       return placeholders;
    }
 
+   public static void add(List<Placeholder> placeholders, Placeholder... phs) {
+      if(phs != null && placeholders != null) {
+         Stream.of(phs).forEach(placeholders::add);
+      }
+   }
+   
    public static void putOrReplace(List<Placeholder> placeholders, Placeholder placeholder) {
 
       Placeholder fPlaceholder = placeholders.stream()

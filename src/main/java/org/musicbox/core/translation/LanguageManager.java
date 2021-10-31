@@ -9,7 +9,7 @@ import javax.management.InstanceAlreadyExistsException;
 import org.musicbox.config.DefaultConfig;
 import org.musicbox.core.config.LanguageConfiguration;
 import org.musicbox.core.managers.GuildManager;
-import org.musicbox.miscs.Constants;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -18,6 +18,8 @@ import net.dv8tion.jda.api.entities.Guild;
 
 public final class LanguageManager {
 
+   public static final String PT_BR = "PT_BR2";
+   
    private static Logger logger = LoggerFactory.getLogger(LanguageManager.class);
    private static LanguageManager languageManager;
 
@@ -30,8 +32,7 @@ public final class LanguageManager {
 
       languagesMap = new ConcurrentHashMap<>();
 
-      createLanguage(Constants.PT_BR,
-            LanguageConfiguration.createLanguage(DefaultConfig.LANGUAGE));
+      createLanguage(PT_BR, LanguageConfiguration.createLanguage(DefaultConfig.LANGUAGE));
 
       logger.info("LanguageManager loaded.");
       languageManager = this;

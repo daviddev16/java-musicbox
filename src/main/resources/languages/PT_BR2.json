@@ -1,20 +1,16 @@
 {
 	"embeds": {
-		"play_command": {
-			"title":"oaoala",
-			"description": "desc"
-		},
 		"command_not_found": {
-			"title": "Não foi possível usar o bot.",
+			"title": "Não foi possível usar o bot",
 			"fields": [
 				{
 					"name": "Erro:",
-					"value": "Comando não encontrado.\nTente novamente.",
+					"value": "Comando não encontrado, tente novamente.",
 					"inline": true
 				},
 				{
 					"name": "Solução:",
-					"value": "Use $[global_prefix]help para ver a lista\nde comandos.",
+					"value": "Use `$[global_prefix]help` para ver a lista\nde comandos.",
 					"inline": true
 				}
 			],
@@ -24,16 +20,16 @@
 			}
 		},
 		"command_missmatch": {
-			"title": "Não foi possível usar o bot.",
+			"title": "Não foi possível usar o bot",
 			"fields": [
 				{
 					"name": "Erro:",
-					"value": "Tipo passado desconhecido\nTente novamente..",
+					"value": "Tipo passado desconhecido, tente novamente...",
 					"inline": true
 				},
 				{
 					"name": "Solução:",
-					"value": "Uso correto **$[global_prefix]$[command_usage] **",
+					"value": "Uso correto ▸ `$[global_prefix]$[command_name] $[command_usage]`.",
 					"inline": true
 				}
 			],
@@ -42,13 +38,137 @@
 				"iconUrl": "$[sender_avatar]"
 			}
 		},
-		"track_queued": {
-			"title": "Música adicionada a lista.",
+		"command_out_of_bounds": {
+			"title": "Não foi possível usar o bot",
 			"fields": [
 				{
-					"name": "Posição **$[track_position]**.",
-					"value": "$[track_title]",
-					"inline": false
+					"name": "Erro:",
+					"value": "Argumentos fora dos limites, tente novamente...",
+					"inline": true
+				},
+				{
+					"name": "Solução:",
+					"value": "Uso correto ▸ `$[global_prefix]$[command_name] $[command_usage]`.",
+					"inline": true
+				}
+			],
+			"footer": {
+				"text": "Tente novamente ・ Requisitado por $[sender_name]",
+				"iconUrl": "$[sender_avatar]"
+			}
+		},
+		"member_is_not_together": {
+			"title": "Não foi possível usar o bot",
+			"fields": [
+				{
+					"name": "Erro:",
+					"value": "Você precisa estar no mesmo canal de voz que o bot.",
+					"inline": true
+				},
+				{
+					"name": "Solução:",
+					"value": "Entre no mesmo canal de voz do bot.",
+					"inline": true
+				}
+			],
+			"footer": {
+				"text": "Tente novamente ・ Requisitado por $[sender_name]",
+				"iconUrl": "$[sender_avatar]"
+			}
+		},
+		"invalid_voice_channel": {
+			"title": "Não foi possível usar o bot",
+			"fields": [
+				{
+					"name": "Erro:",
+					"value": "Você não está em um canal de voz.",
+					"inline": true
+				},
+				{
+					"name": "Solução:",
+					"value": "Entre em algum canal de voz para usar o bot.",
+					"inline": true
+				}
+			],
+			"footer": {
+				"text": "Tente novamente ・ Requisitado por $[sender_name]",
+				"iconUrl": "$[sender_avatar]"
+			}
+		},
+		"no_matches": {
+			"title": "Não foi possível usar o bot",
+			"fields": [
+				{
+					"name": "Erro:",
+					"value": "Nada encontrado para isso.",
+					"inline": true
+				},
+				{
+					"name": "Solução:",
+					"value": "Insira uma URL ou um titulo valido.",
+					"inline": true
+				}
+			],
+			"footer": {
+				"text": "Tente novamente ・ Requisitado por $[sender_name]",
+				"iconUrl": "$[sender_avatar]"
+			}
+		},
+		"generic_error": {
+			"title": "Não foi possível usar o bot",
+			"fields": [
+				{
+					"name": "Erro:",
+					"value": "$[generic_error_message]",
+					"inline": true
+				},
+				{
+					"name": "Nível:",
+					"value": "$[error_level]",
+					"inline": true
+				}
+			],
+			"footer": {
+				"text": "Requisitado por $[sender_name]",
+				"iconUrl": "$[sender_avatar]"
+			}
+		},
+		"track_queued": {
+			"title": "Música adicionada a lista",
+			"fields": [
+			   {
+			   	"name": "Música:",
+			   	"value": "$[track_title]",
+			   	"inline": true
+			   },
+				{
+					"name": "Posição:   ",
+					"value": "$[track_position]",
+					"inline": true
+				},
+				{
+					"name": "Duração:",
+					"value": "$[track_duration]",
+					"inline": true
+				}
+			],
+			"footer": {
+				"text": "Requisitado por $[sender_name]",
+				"iconUrl": "$[sender_avatar]"
+			}
+		},
+		"playlist_queued": {
+			"title": "Playlist adicionada a lista",
+			"fields": [
+			   {
+			   	"name": "Nome:",
+			   	"value": "$[playlist_title]",
+			   	"inline": true
+			   },
+				{
+					"name": "Tamanho:",
+					"value": "$[playlist_length]",
+					"inline": true
 				}
 			],
 			"footer": {

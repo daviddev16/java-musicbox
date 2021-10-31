@@ -38,7 +38,7 @@ public final class TrackScheduler extends AudioEventAdapter implements AudioSend
    private AudioFrame lastFrame;
 
    public TrackScheduler(GuildWrapper guildWrapper) {
-     this.player = AudioManager.getAudioManager().getPlayerManager().createPlayer();
+      this.player = AudioManager.getAudioManager().getPlayerManager().createPlayer();
       this.tracklist = Collections.synchronizedList(new LinkedList<>());
       this.player.setVolume(DefaultConfig.VOLUME);
       this.player.addListener(this);
@@ -77,7 +77,7 @@ public final class TrackScheduler extends AudioEventAdapter implements AudioSend
       return audioTrack;
    }
 
-   public void load(final String url, QueuedTrackResult result) {
+   private void load(final String url, QueuedTrackResult result) {
       AudioPlayerManager manager = AudioManager.getAudioManager().getPlayerManager();
       AudioLoadResultHandler loadResultHandler = LRHBuilder.create()
             .onFailed((exception) -> result.onFailed(exception))
@@ -115,7 +115,7 @@ public final class TrackScheduler extends AudioEventAdapter implements AudioSend
       if (player.startTrack(track, !now))
          currentPosition = getTracklist().indexOf(track);
    }
-   
+
    public String getCurrentName() {
       if(currentPosition < 0 || currentPosition >= tracklist.size())
          return "-";
@@ -176,7 +176,7 @@ public final class TrackScheduler extends AudioEventAdapter implements AudioSend
    public RepeatMode getRepeatMode() {
       return repeatMode;
    }
-   
+
    public int getCurrentPosition() {
       return currentPosition;
    }
@@ -196,7 +196,7 @@ public final class TrackScheduler extends AudioEventAdapter implements AudioSend
    public List<AudioTrack> getTracklist() {
       return tracklist;
    }
-   
+
    public boolean isEmptyOrDone() {
       return getTracklist().isEmpty();
    }
@@ -204,7 +204,15 @@ public final class TrackScheduler extends AudioEventAdapter implements AudioSend
    public boolean isPlaying() {
       return player.getPlayingTrack() != null;
    }
-   
+
+   public int getTrackPosition(AudioTrack track) {
+      
+      if(getTracklist().isEmpty() || track == null)
+         return -1;
+      
+      return  getTracklist().indexOf(track);
+   }
+
    @Override
    public GuildWrapper getWrapper() {
       return guildWrapper;
@@ -239,4 +247,6 @@ public final class TrackScheduler extends AudioEventAdapter implements AudioSend
       SINGLE,
       NONE;
    }
+
+
 }
