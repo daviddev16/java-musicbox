@@ -1,12 +1,15 @@
 package org.musicbox.core.builders;
 
 import java.util.ArrayList;
+
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Stream;
 
 import org.musicbox.config.DefaultConfig;
-import org.musicbox.miscs.Constants;
-
+import org.musicbox.core.command.GenericCommand;
+import org.musicbox.core.translation.PlaceholderKeys;
+import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.GenericEvent;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
@@ -17,8 +20,7 @@ public final class PlaceholderBuilder {
    public PlaceholderBuilder(boolean setupDefaults) {
       this.placeholders = new ArrayList<>();
       if (setupDefaults) {
-         add(Constants.KEY_GLOBAL_PREFIX, DefaultConfig.PREFIX);
-         add(Constants.KEY_OWNER, DefaultConfig.OWNER);
+         defaults(this);
       }
    }
 
@@ -27,18 +29,35 @@ public final class PlaceholderBuilder {
       return this;
    }
 
-   /**
-    * add all placeholders from event
-    * */
-   public PlaceholderBuilder event(GenericEvent event) {
-      if (event instanceof MessageReceivedEvent) {
-         add(Constants.KEY_SENDER_NAME, ((MessageReceivedEvent) event).getAuthor().getAsTag());
-         add(Constants.KEY_SENDER_AVATAR, ((MessageReceivedEvent) event).getAuthor().getEffectiveAvatarUrl());
+   public PlaceholderBuilder command(GenericCommand command) {
+      if (command != null) {
+         add(PlaceholderKeys.COMMAND_USAGE, command.toUsageString());
       }
       return this;
    }
 
-   public PlaceholderBuilder add(String suffix, String replacement) {
+   public PlaceholderBuilder collect(Placeholder... placeholders) {
+      if(placeholders != null)
+         Stream.of(placeholders).forEachOrdered(ph -> add(ph));
+      return this;
+   }
+
+   public PlaceholderBuilder user(User user) {
+      if(user != null) {
+         add(PlaceholderKeys.SENDER_NAME, user.getAsTag());
+         add(PlaceholderKeys.SENDER_AVATAR, user.getEffectiveAvatarUrl());
+      }
+      return this;
+   }
+
+   public PlaceholderBuilder event(GenericEvent event) {
+      if (event instanceof MessageReceivedEvent) {
+         user(((MessageReceivedEvent)event).getAuthor());
+      }
+      return this;
+   }
+
+   public PlaceholderBuilder add(PlaceholderKeys suffix, String replacement) {
       placeholders.add(Placeholder.create(suffix, replacement));
       return this;
    }
@@ -52,6 +71,18 @@ public final class PlaceholderBuilder {
          placeholder.setReplacement(newReplacement);
 
       return this;
+   }
+
+   public static PlaceholderBuilder of(boolean defaults, Placeholder... placeholders) {
+      return PlaceholderBuilder.createDefault(defaults).collect(placeholders);
+   }
+
+   public static PlaceholderBuilder createBy(GenericEvent event, boolean setupDefaults) {
+      return new PlaceholderBuilder(setupDefaults).event(event);
+   }
+
+   public static PlaceholderBuilder createDefault(boolean setupDefaults) {
+      return new PlaceholderBuilder(setupDefaults);
    }
 
    public static List<Placeholder> replace(List<Placeholder> placeholders, String suffix, String newReplacement) {
@@ -72,28 +103,40 @@ public final class PlaceholderBuilder {
 
       return placeholders;
    }
-   
+
    public static void putOrReplace(List<Placeholder> placeholders, Placeholder placeholder) {
 
       Placeholder fPlaceholder = placeholders.stream()
             .filter(ph -> ph.getSuffix().equals(placeholder.getSuffix()))
             .findAny().orElse(null);
-      
+
       if(fPlaceholder != null)
          fPlaceholder.setReplacement(placeholder.getReplacement());
       else
          placeholders.add(placeholder);
    }
 
-   public static PlaceholderBuilder createBy(GenericEvent event, boolean setupDefaults) {
-      return new PlaceholderBuilder(setupDefaults).event(event);
+   public static List<Placeholder> toList(boolean defaults, Placeholder... placeholderArray) {
+      if(placeholderArray != null) {
+         PlaceholderBuilder builder = new PlaceholderBuilder(defaults);
+         Stream.of(placeholderArray).forEachOrdered(ph -> builder.add(ph));
+         return builder.build();
+      }
+      return Arrays.asList();
+   }
 
+   public static PlaceholderBuilder defaults(PlaceholderBuilder phBuilder) {
+      if(phBuilder != null) {
+         phBuilder.add(PlaceholderKeys.GLOBAL_PREFIX, DefaultConfig.PREFIX);
+         phBuilder.add(PlaceholderKeys.OWNER, DefaultConfig.OWNER);
+      }
+      return phBuilder;
    }
 
    public List<Placeholder> build() {
       return placeholders;
    }
-   
+
    public static final class Placeholder {
 
       public String suffix;
@@ -122,8 +165,8 @@ public final class PlaceholderBuilder {
          return placeholders;
       }
 
-      public static Placeholder create(String suffix, String replacement) {
-         return new Placeholder(suffix, replacement);
+      public static Placeholder create(PlaceholderKeys suffix, String replacement) {
+         return new Placeholder(suffix.getTag(), replacement);
       }
 
       public String getSuffix() {
@@ -146,5 +189,5 @@ public final class PlaceholderBuilder {
          return ("$[" + getSuffix() + "]").trim();
       }
    }
-   
+
 }

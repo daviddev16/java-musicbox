@@ -27,6 +27,7 @@ public final class Utilities {
 
    public static  EmbedBuilder translate(JsonObject jsonObject, List<Placeholder> placeholders) {
       EmbedBuilder builder = new EmbedBuilder();
+      builder.setColor(Color.decode("#bb72da")); /* hmm hehehe */
       if (jsonObject.has("author")) {
          builder.setAuthor(
                translatePlaceholders(jsonObject.get("author").getAsJsonObject().get("name").getAsString(), placeholders),
@@ -42,7 +43,6 @@ public final class Utilities {
          builder.setDescription(translatePlaceholders(jsonObject.get("description").getAsString(), placeholders));
       }
       if (jsonObject.has("color")) {
-         builder.setColor(Color.decode("#bb72da")); /* sim hehehe */
          //builder.setColor(Color.decode("#" + translatePlaceholders(jsonObject.get("color").getAsString(), placeholders)));
       }
       if (jsonObject.has("image")) {
@@ -72,6 +72,10 @@ public final class Utilities {
    }
 
    public static String translatePlaceholders(String text, List<Placeholder> placeholders) {
+      
+      if(placeholders == null || placeholders.isEmpty())
+         return text;
+         
       String translatedCode = text;
       for (Placeholder placeholder : placeholders) {
          translatedCode = translatedCode.replace(placeholder.getCode(), placeholder.getReplacement());
@@ -151,6 +155,14 @@ public final class Utilities {
       throw new IllegalArgumentException("Not a boolean value.");
    }
 
+   public static String getWholeContent(String[] arguments) {
+      StringBuilder builder = new StringBuilder();
+      for(String argument : arguments) {
+         builder.append(argument).append(' ');
+      }
+      return builder.toString().trim();
+   }
+   
    public static String toString(List<?> list) {
       StringJoiner joiner = new StringJoiner(", ");
       list.forEach(object -> {

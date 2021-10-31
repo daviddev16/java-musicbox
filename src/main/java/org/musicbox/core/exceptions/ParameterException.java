@@ -9,9 +9,13 @@ public class ParameterException extends RuntimeException {
 
    private int exceptionType;
 
-   public ParameterException(String name, int exceptionType) {
-      super(name);
+   public ParameterException(String message, int exceptionType) {
+      super(message);
       this.exceptionType = exceptionType;
+   }
+   
+   public ParameterException(ParameterException subException) {
+      this(subException.getMessage(), subException.getExceptionType());
    }
 
    public int getExceptionType() {

@@ -201,6 +201,10 @@ public final class TrackScheduler extends AudioEventAdapter implements AudioSend
       return getTracklist().isEmpty();
    }
 
+   public boolean isPlaying() {
+      return player.getPlayingTrack() != null;
+   }
+   
    @Override
    public GuildWrapper getWrapper() {
       return guildWrapper;
@@ -235,5 +239,4 @@ public final class TrackScheduler extends AudioEventAdapter implements AudioSend
       SINGLE,
       NONE;
    }
-
 }

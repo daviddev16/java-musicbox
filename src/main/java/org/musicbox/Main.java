@@ -20,6 +20,7 @@ public class Main {
                "                                         \r\n" +
                "                                         ");
 
+         LOGGER.error("a"); 
          new MusicBox();
       } catch (Exception e) {
          LOGGER.error("Error while starting MusicBox.", e);

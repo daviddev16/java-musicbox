@@ -2,45 +2,39 @@ package org.musicbox.miscs;
 
 import java.util.List;
 
+import org.musicbox.core.builders.PlaceholderBuilder;
 import org.musicbox.core.builders.PlaceholderBuilder.Placeholder;
-import org.musicbox.core.guild.GuildWrapper;
-import org.musicbox.core.managers.GuildManager;
-import org.musicbox.core.managers.LanguageManager;
-import org.musicbox.core.utils.Utilities;
+import org.musicbox.core.translation.TranslationKeys;
+import org.musicbox.core.translation.Translations;
 
-import com.google.gson.JsonObject;
-
+import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.entities.TextChannel;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
 public final class Messages {
 
-   public static final int COMMAND_FAILED = 0;
-   public static final int COMMAND_NOT_FOUND = 1;
-   public static final int COMMAND_SYNTAX_ERROR = 2;
-   public static final int COMMAND_TYPE_MISSMATCH = 3;
-   public static final int COMMAND_MISSING_PERMISSION = 4;
+   public static final class Embed {
 
-   public static final int ABSENT_FROM_VOICE_CHANNEL = 5;
-   public static final int NOT_SAME_VOICE_CHANNEL = 6;
-   public static final int NO_MATCHES = 7;
+      public static void send(TextChannel channel, MessageEmbed embed) {
+         channel.sendMessageEmbeds(embed).queue(); 
+      }
 
-   public static final int TRACK_ADDED = 8;
-   public static final int PLAYLIST_ADDED = 9;
+      public static void send(TextChannel channel, PlaceholderBuilder builder, TranslationKeys key) {
+         send(channel, builder.build(), key);
+      }
 
-   public static final int QUEUE_PAGE = 20;
-   public static final int EMPTY_TRACKLIST = 21;
-   public static final int COMMAND_HELP = 22;
-   
-   private static void send(TextChannel channel, String languageId, int messageId, List<Placeholder> placeholders) {
-      JsonObject jsonMessage = LanguageManager.getLanguageManager().getMessage(languageId, messageId);
-      channel.sendMessageEmbeds(Utilities.translate(jsonMessage, placeholders).build()).queue();
+      public static void send(TextChannel channel, List<Placeholder> placeholders, TranslationKeys key) {
+         send(channel, Translations.getEmbedTranslation(channel.getGuild(), key, placeholders));
+      }
+
+      public static void send(TextChannel channel, TranslationKeys key, Placeholder... placeholderArray) {
+         send(channel, PlaceholderBuilder.createDefault(true).collect(placeholderArray).build(), key);
+      }
+
+      public static void send(MessageReceivedEvent event, TranslationKeys key, PlaceholderBuilder builder) {
+         send(event.getTextChannel(), ( (builder != null) ? builder : PlaceholderBuilder.createBy(event, true) )
+               .build(), key);
+      }
+
    }
-
-   public static void translatedMessage(MessageReceivedEvent event, int messageId, List<Placeholder> placeholders) {
-      GuildWrapper wrapper = GuildManager.getGuildManager().getWrapper(event.getGuild());
-      send(event.getTextChannel(), wrapper.getLanguage().getUsedLanguage(), messageId,
-            placeholders);
-   }
-
 }

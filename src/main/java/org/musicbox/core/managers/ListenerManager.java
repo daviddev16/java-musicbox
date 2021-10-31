@@ -8,6 +8,7 @@ import java.util.List;
 import javax.management.InstanceAlreadyExistsException;
 
 import org.musicbox.MusicBox;
+import org.musicbox.core.translation.LanguageManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

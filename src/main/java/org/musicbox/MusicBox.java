@@ -7,18 +7,18 @@ import java.util.EnumSet;
 import javax.management.InstanceAlreadyExistsException;
 import javax.security.auth.login.LoginException;
 
-import org.musicbox.commands.MusicCommands;
+import org.musicbox.commands.PlayCommand;
 import org.musicbox.config.DefaultConfig;
 import org.musicbox.core.managers.AudioManager;
 import org.musicbox.core.managers.CommandManager;
 import org.musicbox.core.managers.GuildManager;
-import org.musicbox.core.managers.LanguageManager;
 import org.musicbox.core.managers.ListenerManager;
 import org.musicbox.core.module.Modules;
+import org.musicbox.core.translation.LanguageManager;
 import org.musicbox.listeners.CommandListener;
 import org.musicbox.listeners.PresenceListener;
 import org.musicbox.listeners.InspectorListener;
-import org.musicbox.models.FailHandler;
+import org.musicbox.models.GuildFailHandler;
 import org.musicbox.modules.paginator.PaginatorModule;
 import org.musicbox.modules.youtube.YoutubeSearchModule;
 import org.playground.Playground;
@@ -63,11 +63,11 @@ public class MusicBox {
       AudioManager.setup();
       LanguageManager.setup();
       GuildManager.setup();
-      FailHandler.setup();
+      GuildFailHandler.setup();
 
       CommandManager.setup();
-      CommandManager.getCommandManager().handle(MusicCommands.class);
-
+      CommandManager.getCommandManager().getCommands().add(new PlayCommand());
+      
       ListenerManager.setup();
 
       ListenerManager.register(

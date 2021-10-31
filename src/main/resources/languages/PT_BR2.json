@@ -1,0 +1,60 @@
+{
+	"embeds": {
+		"play_command": {
+			"title":"oaoala",
+			"description": "desc"
+		},
+		"command_not_found": {
+			"title": "Não foi possível usar o bot.",
+			"fields": [
+				{
+					"name": "Erro:",
+					"value": "Comando não encontrado.\nTente novamente.",
+					"inline": true
+				},
+				{
+					"name": "Solução:",
+					"value": "Use $[global_prefix]help para ver a lista\nde comandos.",
+					"inline": true
+				}
+			],
+			"footer": {
+				"text": "Tente novamente ・ Requisitado por $[sender_name]",
+				"iconUrl": "$[sender_avatar]"
+			}
+		},
+		"command_missmatch": {
+			"title": "Não foi possível usar o bot.",
+			"fields": [
+				{
+					"name": "Erro:",
+					"value": "Tipo passado desconhecido\nTente novamente..",
+					"inline": true
+				},
+				{
+					"name": "Solução:",
+					"value": "Uso correto **$[global_prefix]$[command_usage] **",
+					"inline": true
+				}
+			],
+			"footer": {
+				"text": "Tente novamente ・ Requisitado por $[sender_name]",
+				"iconUrl": "$[sender_avatar]"
+			}
+		},
+		"track_queued": {
+			"title": "Música adicionada a lista.",
+			"fields": [
+				{
+					"name": "Posição **$[track_position]**.",
+					"value": "$[track_title]",
+					"inline": false
+				}
+			],
+			"footer": {
+				"text": "Requisitado por $[sender_name]",
+				"iconUrl": "$[sender_avatar]"
+			}
+		}
+	}
+}

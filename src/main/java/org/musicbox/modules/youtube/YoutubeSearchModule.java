@@ -18,7 +18,7 @@ public class YoutubeSearchModule extends CoreModule {
    private YouTube youtube;
    
    @Override
-   public void onRegistered() {
+   public void onEnabled() {
       youtube = new YouTube.Builder(Auth.HTTP_TRANSPORT, Auth.JSON_FACTORY, new HttpRequestInitializer() {
          public void initialize(HttpRequest request) throws IOException {}
       }).setApplicationName("musicbox-java-search").build();
@@ -42,9 +42,6 @@ public class YoutubeSearchModule extends CoreModule {
       } catch (Exception e) {}
       return "-";
    }
-   
-   @Override
-   public void onDisabling() {}
    
    public YouTube getYoutube() {
       return this.youtube;

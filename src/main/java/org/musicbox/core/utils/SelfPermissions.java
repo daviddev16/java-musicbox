@@ -79,8 +79,11 @@ public final class SelfPermissions {
       return channel.getGuild().getSelfMember();
    }
 
+   public static boolean isPlaying(GuildWrapper wrapper) {
+      return isAlreadyConnect(wrapper) && wrapper.getScheduler().isPlaying();
+   }
+   
    public static boolean isTogether(Member member) {
-
       if(member.getVoiceState().inVoiceChannel())
          return isConnected(member.getVoiceState().getChannel());
 

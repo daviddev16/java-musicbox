@@ -1,8 +1,7 @@
 package org.musicbox.core.module;
 
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 import javax.management.InstanceAlreadyExistsException;
 
@@ -14,64 +13,53 @@ public class Modules {
    private static Logger logger = LoggerFactory.getLogger(Modules.class);
    private static Modules modulesInstance;
 
-   private Set<CoreModule> modules;
+   private Map<Class<? extends CoreModule>, CoreModule> modules;
 
    private Modules() throws InstanceAlreadyExistsException {
-
       if(modulesInstance != null)
          throw new InstanceAlreadyExistsException("Modules instance already exists.");
 
-      modules = Collections.synchronizedSet(new HashSet<>());
+      modules = new LinkedHashMap<>();
       modulesInstance = this;
    }
 
    @SuppressWarnings("unchecked")
    public static <E extends CoreModule> E getModule(Class<E> moduleClass) {
-
       if(moduleClass == null)
          throw new NullPointerException("Module class is null.");
 
-      return (E) getModulesInstance().getModules().stream()
-            .filter(module -> module.getClass().isAssignableFrom(moduleClass))
-            .findAny().orElse(null);
-   }
-
-   public static void unregisterModule(Class<? extends CoreModule> moduleClass) {
-
-      if(moduleClass == null)
-         throw new NullPointerException("Module class is null.");
-
-      CoreModule coreModule = getModulesInstance().getModules().stream()
-            .filter(module -> module.getClass().isAssignableFrom(moduleClass))
-            .findAny().orElse(null);
-
-      if(coreModule != null) {
-         coreModule.onDisabling();
-         getModulesInstance().getModules().remove(coreModule);
-         logger.info(coreModule.toString() + " was disabled. Functions that use this module may stop working.");
-      }
-   }
-
-   public static boolean hasModule(Class<? extends CoreModule> moduleClass) {
-      return getModulesInstance().getModules().stream()
-            .anyMatch(module -> module.getClass().isAssignableFrom(moduleClass));
+      return (E) getModulesInstance().getModules().get(moduleClass);
    }
 
    public static void register(Class<? extends CoreModule> moduleClass) {
-      if(getModulesInstance().getModules().stream()
-            .noneMatch(module -> module.getClass().isAssignableFrom(moduleClass))) {
-         try {
-            CoreModule coreModule = moduleClass.getConstructor().newInstance();
-            if(getModulesInstance().getModules().add(coreModule)) {
-               coreModule.onRegistered();
-               logger.info(coreModule.toString() + " registered.");
-            }
-            return;
-         } catch (Exception e) {
-            e.printStackTrace();
-         }
+      if(moduleClass == null)
+         throw new NullPointerException("Module class is null.");
+
+      try {
+         CoreModule module = moduleClass.getConstructor().newInstance();
+         getModulesInstance().getModules().putIfAbsent(moduleClass, module);
+         module.onEnabled();
+         
+         logger.info(module.toString() + " registered.");  
+      } catch (Throwable e) {
+         logger.error(e.getLocalizedMessage());
+         System.exit(-1);
       }
-      throw new IllegalCallerException(moduleClass.getTypeName() + " already registered.");
+   }
+
+   public static void unregister(Class<? extends CoreModule> moduleClass) {
+      if(moduleClass == null)
+         throw new NullPointerException("Module class is null.");
+
+      getModulesInstance().getModules().keySet().stream()
+      .filter(moduleClass::isAssignableFrom).findAny().ifPresent(module -> {
+         getModulesInstance().getModules().remove(module);
+      });
+   }
+
+   public static boolean hasModule(Class<? extends CoreModule> moduleClass) {
+      return getModulesInstance().getModules().keySet().stream()
+            .filter(moduleClass::isAssignableFrom).findAny().isPresent();
    }
 
    @SuppressWarnings("unchecked")
@@ -97,7 +85,7 @@ public class Modules {
       return modulesInstance;
    }
 
-   public Set<CoreModule> getModules() {
+   public Map<Class<? extends CoreModule>, CoreModule> getModules() {
       return modules;
    }
 

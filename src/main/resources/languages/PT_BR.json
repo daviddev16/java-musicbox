@@ -1,4 +1,12 @@
-{
+{ 
+  "errors": {
+  },
+  "descriptions": [
+    {
+      "id": 0,
+      "text": "Comando não encontrado."
+    }
+  ],	
   "messages": [
     {
       "id": 0,
@@ -65,6 +73,21 @@
       "id": 6,
       "title": "Não foi possível usar o bot.",
       "description": "Você precisa estar no mesmo canal de voz do bot.",
+      "footer": {
+        "text": "Requisitado por $[senderTag]",
+        "iconUrl": "$[senderAvatar]"
+      }
+    },
+    {/* generic erro */
+      "id": 30,
+      "title": "Não foi possível usar o bot.",
+      "fields": [
+      	{
+      	  "name": "Erro:",
+      	  "value": "$[genericErrorMessage]"
+      	}
+      ],
+      "description": "Tente novamente.",
       "footer": {
         "text": "Requisitado por $[senderTag]",
         "iconUrl": "$[senderAvatar]"

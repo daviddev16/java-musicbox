@@ -1,7 +1,7 @@
 package org.musicbox.core.config;
 
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
+import org.musicbox.core.translation.TranslationKeys;
+
 import com.google.gson.JsonObject;
 
 public class LanguageConfiguration extends JsonConfiguration {
@@ -13,15 +13,9 @@ public class LanguageConfiguration extends JsonConfiguration {
    public static LanguageConfiguration createLanguage(String name) {
       return new LanguageConfiguration(name);
    }
-
-   public JsonObject getMessage(int messageId) {
-      JsonArray messagesArray = getJsonArray("messages");
-      for(JsonElement element : messagesArray) {
-         if(element.isJsonObject() && element.getAsJsonObject().get("id").getAsInt() == messageId) {
-            return element.getAsJsonObject();
-         }
-      }
-      return null;
+   
+   public JsonObject getEmbed(TranslationKeys key) {
+      return getJsonObject("embeds").getAsJsonObject(key.getKey());
    }
-
+   
 }

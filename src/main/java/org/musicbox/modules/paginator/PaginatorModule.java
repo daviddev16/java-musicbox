@@ -15,12 +15,9 @@ public class PaginatorModule extends CoreModule {
    private List<Paginator> paginators;
 
    @Override
-   public void onRegistered() {
+   public void onEnabled() {
       paginators = Collections.synchronizedList(new LinkedList<>());
    }
-
-   @Override
-   public void onDisabling() {}
 
    protected void clearPaginator(Paginator paginator) {
       paginators.remove(paginator);
@@ -31,7 +28,6 @@ public class PaginatorModule extends CoreModule {
    }
 
    public void createPaginator(EmbedBuilder[] pages, TextChannel textChannel) {
-
       if (pages == null)
          throw new NullPointerException("Pages are null.");
 
