@@ -5,6 +5,7 @@ import javax.management.InstanceAlreadyExistsException;
 import org.musicbox.core.builders.PlaceholderBuilder;
 import org.musicbox.core.command.GenericCommand;
 import org.musicbox.core.models.IFallible;
+import org.musicbox.core.translation.PlaceholderKeys;
 import org.musicbox.core.translation.TranslationKeys;
 import org.musicbox.core.utils.Messages;
 import org.slf4j.Logger;
@@ -24,14 +25,24 @@ public final class GuildFailHandler implements IFallible {
 
       failHandler = this;
    }
-   
+
    @Override
    public void onGenericError(GenericCommand command, TextChannel channel, User sender, TranslationKeys translation) {
       PlaceholderBuilder builder = PlaceholderBuilder.createDefault(true)
             .command(command)
             .user(sender);
-      
+
       Messages.Embed.send(channel, builder, translation, null);
+   }
+
+   @Override
+   public void onThrownException(GenericCommand command, TextChannel channel, User sender, Exception exception) {
+      PlaceholderBuilder builder = PlaceholderBuilder.createDefault(true)
+            .command(command)
+            .user(sender)
+            .add(PlaceholderKeys.GENERIC_ERROR_MESSAGE, exception.getMessage());
+
+      Messages.Embed.send(channel, builder, TranslationKeys.GENERIC_ERROR, null);
    }
 
    public static void setup() {
@@ -45,5 +56,7 @@ public final class GuildFailHandler implements IFallible {
    public static GuildFailHandler getFailHandler() {
       return failHandler;
    }
+
+
 
 }

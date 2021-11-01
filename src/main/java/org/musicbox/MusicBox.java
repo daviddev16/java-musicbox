@@ -1,13 +1,18 @@
 package org.musicbox;
 
 import java.util.Arrays;
+
 import java.util.Collection;
 import java.util.EnumSet;
 
 import javax.management.InstanceAlreadyExistsException;
 import javax.security.auth.login.LoginException;
 
+import org.musicbox.commands.PauseCommand;
 import org.musicbox.commands.PlayCommand;
+import org.musicbox.commands.ResumeCommand;
+import org.musicbox.commands.SelectCommand;
+import org.musicbox.commands.StopCommand;
 import org.musicbox.config.DefaultConfig;
 import org.musicbox.core.managers.AudioManager;
 import org.musicbox.core.managers.CommandManager;
@@ -66,10 +71,15 @@ public class MusicBox {
       GuildFailHandler.setup();
 
       CommandManager.setup();
-      CommandManager.getCommandManager().getCommands().add(new PlayCommand());
+      CommandManager.register(
+            new PlayCommand(),
+            new PauseCommand(),
+            new ResumeCommand(),
+            new StopCommand(),
+            new SelectCommand()
+            );
       
       ListenerManager.setup();
-
       ListenerManager.register(
             new InspectorListener(),
             new CommandListener(),

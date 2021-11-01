@@ -39,6 +39,10 @@ public class PauseCommand extends GuildCommand {
          return;
       }
 
+      if(wrapper.getScheduler().isPaused()) {
+         return;
+      }
+      
       wrapper.getScheduler().setPauseState(true);
    }
 

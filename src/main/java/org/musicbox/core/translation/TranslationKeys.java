@@ -3,7 +3,9 @@ package org.musicbox.core.translation;
 /* translation field */
 public enum TranslationKeys {
 
-   /* embed keys */
+   /*embeds */
+   SELECT_COMMAND("select_command"),
+   
    PLAYLIST_QUEUED("playlist_queued"),
    TRACK_QUEUED("track_queued"),
    
@@ -15,8 +17,11 @@ public enum TranslationKeys {
    COMMAND_MISSMATCH("command_missmatch"),
    COMMAND_OUT_OF_BOUNDS("command_out_of_bounds"),
    COMMAND_NOT_FOUND("command_not_found"),
-   MISSING_BOT("missing_bot");
-
+   MISSING_BOT("missing_bot"),
+   
+   /*labels*/
+   LABEL_INVALID_POSITION("invalid_position");
+   
    private String key;
 
    private TranslationKeys(String key) {

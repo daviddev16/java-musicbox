@@ -3,7 +3,6 @@ package org.musicbox.core.command;
 import java.util.LinkedList;
 
 import java.util.List;
-import java.util.stream.Stream;
 
 import org.musicbox.core.exceptions.ParameterException;
 import org.musicbox.core.guild.GuildWrapper;
@@ -28,8 +27,7 @@ public abstract class GenericCommand {
    public abstract void onExecute(GuildWrapper wrapper, MessageReceivedEvent event, Object[] params);
    
    public boolean isMine(final String command) {
-      return Stream.of(usages).filter(usage -> usage.equals(command))
-            .findAny().isPresent();
+      return usages.stream().anyMatch(usage -> usage.equals(command));
    }
 
    public void tryoutCommand(CommandTranslator translator) throws ParameterException {

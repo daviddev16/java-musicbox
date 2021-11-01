@@ -18,4 +18,8 @@ public class LanguageConfiguration extends JsonConfiguration {
       return getJsonObject("embeds").getAsJsonObject(key.getKey());
    }
    
+   public String getLabel(TranslationKeys key) {
+      return getJsonObject("labels").get(key.getKey()).getAsString();
+   }
+   
 }

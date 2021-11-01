@@ -194,6 +194,23 @@
 				"text": "Requisitado por $[sender_name]",
 				"iconUrl": "$[sender_avatar]"
 			}
+		},
+		"select_command": {
+			"title": "Música selecionada",
+			"fields": [
+				{
+					"name": "Música:",
+					"value": "$[track_title]",
+					"inline": true
+				}
+			],
+			"footer": {
+				"text": "Requisitado por $[sender_name]",
+				"iconUrl": "$[sender_avatar]"
+			}
 		}
+	},
+	"labels": {
+		"invalid_position": "Posição inválida."
 	}
 }

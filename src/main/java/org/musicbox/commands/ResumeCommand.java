@@ -10,23 +10,20 @@ import org.musicbox.core.guild.GuildWrapper;
 import org.musicbox.core.translation.TranslationKeys;
 import org.musicbox.core.utils.Messages;
 import org.musicbox.core.utils.SelfPermissions;
-import org.musicbox.models.QueuedTrackResult;
 
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
-public class PlayCommand extends GuildCommand {
+public class ResumeCommand extends GuildCommand {
 
-   public PlayCommand() {
-      super("play", Arrays.asList("play", "p"), true);
+   public ResumeCommand() {
+      super("resume", Arrays.asList("resume", "rs"), true/* ignoring arguments */);
    }
 
    @Override
    public void onExecute(GuildWrapper wrapper, MessageReceivedEvent event, Object[] params) {
 
       Member member = event.getMember();
-      String titleOrUrl = params[0].toString();
-
       List<Placeholder> placeholders = PlaceholderBuilder.createBy(event, true)
             .event(event).command(this).build();
 
@@ -37,22 +34,16 @@ public class PlayCommand extends GuildCommand {
             return;
          }
       } else {
-         if (member.getVoiceState().inVoiceChannel())
-            wrapper.getInspector().connect(member.getVoiceState().getChannel());
-         else {
-            Messages.Embed.send(event.getTextChannel(), placeholders, 
-                  TranslationKeys.INVALID_VOICE_CHANNEL, null);
-            return;
-         }
+         Messages.Embed.send(event.getTextChannel(), placeholders, 
+               TranslationKeys.MISSING_BOT, null);
+         return;
+      }
+
+      if(!wrapper.getScheduler().isPaused()) {
+         return;
       }
       
-      wrapper.getScheduler().queue(titleOrUrl, 
-            new QueuedTrackResult(event, wrapper, placeholders));
-   }
-
-   @Override
-   public String toUsageString() {
-      return "<title or url>";
+      wrapper.getScheduler().setPauseState(false);
    }
 
 }

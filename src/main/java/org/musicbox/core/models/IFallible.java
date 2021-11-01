@@ -8,6 +8,7 @@ import net.dv8tion.jda.api.entities.User;
 
 public interface IFallible {
    
-   void onGenericError(GenericCommand command, TextChannel channel, User sender, TranslationKeys label);
+   void onGenericError(GenericCommand command, TextChannel channel, User sender, TranslationKeys translationKey);
+   void onThrownException(GenericCommand command, TextChannel channel, User sender, Exception exception);
    
 }

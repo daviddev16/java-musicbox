@@ -212,6 +212,26 @@ public final class TrackScheduler extends AudioEventAdapter implements AudioSend
       
       return  getTracklist().indexOf(track);
    }
+   
+   public AudioTrack getAudioTrack(int position) {
+      if (position < 0 || getTracklist().size() >= position) {
+         return null;
+      }
+      return getTracklist().get(position);
+   }
+   
+   public String getTrackName(int position) {
+      AudioTrack track = getAudioTrack(position);
+      return track != null ? track.getInfo().title : "-";
+   }
+   
+   public String getCurrentTrackName() {
+      return getTrackName(currentPosition);
+   }
+
+   public boolean isPaused() {
+      return player.isPaused();
+   }
 
    @Override
    public GuildWrapper getWrapper() {
@@ -223,7 +243,6 @@ public final class TrackScheduler extends AudioEventAdapter implements AudioSend
       if (lastFrame == null) {
          lastFrame = player.provide();
       }
-
       return lastFrame != null;
    }
 
@@ -242,11 +261,6 @@ public final class TrackScheduler extends AudioEventAdapter implements AudioSend
       return true;
    }
 
-   public enum RepeatMode {
-      ALL,
-      SINGLE,
-      NONE;
-   }
-
+   public enum RepeatMode { ALL, SINGLE, NONE; }
 
 }

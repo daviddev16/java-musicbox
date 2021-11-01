@@ -33,6 +33,7 @@ public final class PlaceholderBuilder {
       if (command != null) {
          add(PlaceholderKeys.COMMAND_USAGE, command.toUsageString());
          add(PlaceholderKeys.COMMAND_NAME, command.getName());
+         add(PlaceholderKeys.ERROR_LEVEL, "LOW"); /* can be replaced */
       }
       return this;
    }

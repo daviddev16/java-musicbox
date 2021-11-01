@@ -64,7 +64,6 @@ public class CommandManager {
                event.getAuthor(), TranslationKeys.COMMAND_NOT_FOUND);
          return;
       }
-
       try {
          /* check the compatibility */
          command.tryoutCommand(translator);
@@ -76,9 +75,15 @@ public class CommandManager {
       }
 
       Object[] params = getParameters(command, translator);
-
-      if (event.isFromGuild())
-         command.onExecute(wrapper, event, params);
+      
+      if (event.isFromGuild()) {
+         try {
+            command.onExecute(wrapper, event, params);
+         }catch(Exception e) {
+            GuildFailHandler.getFailHandler().onThrownException(command, 
+                  event.getTextChannel(), event.getAuthor(), e);
+         }
+      }
    }
 
    private Object[] getParameters(GenericCommand command, CommandTranslator translator) {
@@ -103,11 +108,7 @@ public class CommandManager {
    }
 
    public static void register(GenericCommand... commands) {
-      if(commands == null) {   
-         return;
-      }
-      
-      Stream.of(commands).forEach(getCommandManager().getCommands()::add);
+      Stream.of(commands).forEach(cmd -> getCommandManager().getCommands().add(cmd));
    }
 
    public Set<GenericCommand> getCommands() {

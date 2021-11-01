@@ -5,6 +5,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import javax.management.InstanceAlreadyExistsException;
 
+import org.musicbox.MusicBox;
 import org.musicbox.core.guild.GuildWrapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -37,15 +38,19 @@ public final class GuildManager {
       } 
    }
 
-   public synchronized GuildWrapper getWrapper(Guild guild) {
-
-      GuildWrapper guildWrapper = guildWrappers.get(guild.getIdLong());
+   public GuildWrapper getWrapper(long id) {
+      GuildWrapper guildWrapper = guildWrappers.get(id);
       if (guildWrapper != null) {
          return guildWrapper;
       }
-      guildWrapper = new GuildWrapper(guild);
-      guildWrappers.put(guild.getIdLong(), guildWrapper);
+      guildWrapper = new GuildWrapper(MusicBox.getMusicBox().getShardManager().getGuildById(id));
+      guildWrappers.put(id, guildWrapper);
       return guildWrapper;
+
+   }
+
+   public synchronized GuildWrapper getWrapper(Guild guild) {
+      return getWrapper(guild.getIdLong());
    }
 
    public Map<Long, GuildWrapper> getWrappers() {
@@ -56,4 +61,5 @@ public final class GuildManager {
       return guildManager;
    }
 
+  
 }

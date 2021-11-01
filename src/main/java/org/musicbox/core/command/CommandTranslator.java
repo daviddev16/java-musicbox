@@ -20,7 +20,6 @@ public final class CommandTranslator {
       String contentDisplay = event.getMessage().getContentDisplay();
       contentDisplay = contentDisplay.substring(DefaultConfig.PREFIX.length(), 
             contentDisplay.length());
-      
       String[] arguments = contentDisplay.split("\\s+");
       String[] commandArguments = Arrays.copyOfRange(arguments, 1, arguments.length);
       return new CommandTranslator(arguments[0], commandArguments);

@@ -7,25 +7,29 @@ import org.musicbox.core.builders.PlaceholderBuilder;
 import org.musicbox.core.builders.PlaceholderBuilder.Placeholder;
 import org.musicbox.core.command.GuildCommand;
 import org.musicbox.core.guild.GuildWrapper;
+import org.musicbox.core.translation.PlaceholderKeys;
 import org.musicbox.core.translation.TranslationKeys;
 import org.musicbox.core.utils.Messages;
 import org.musicbox.core.utils.SelfPermissions;
-import org.musicbox.models.QueuedTrackResult;
+
+import com.sedmelluq.discord.lavaplayer.tools.FriendlyException;
+import com.sedmelluq.discord.lavaplayer.tools.FriendlyException.Severity;
 
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
-public class PlayCommand extends GuildCommand {
+public class SelectCommand extends GuildCommand {
 
-   public PlayCommand() {
-      super("play", Arrays.asList("play", "p"), true);
+   public SelectCommand() {
+      super("select", Arrays.asList("select", "slct", "slc", "sl"), false);
+      nextRequiredAs(Integer.class);
    }
 
    @Override
    public void onExecute(GuildWrapper wrapper, MessageReceivedEvent event, Object[] params) {
 
       Member member = event.getMember();
-      String titleOrUrl = params[0].toString();
+      Integer position = (Integer)params[0];
 
       List<Placeholder> placeholders = PlaceholderBuilder.createBy(event, true)
             .event(event).command(this).build();
@@ -45,9 +49,20 @@ public class PlayCommand extends GuildCommand {
             return;
          }
       }
+
+      if(!wrapper.getScheduler().validPosition(position.intValue())) {
+         throw new FriendlyException(wrapper.getLanguage().getLabel(
+               TranslationKeys.LABEL_INVALID_POSITION), Severity.COMMON, null);
+      }
       
-      wrapper.getScheduler().queue(titleOrUrl, 
-            new QueuedTrackResult(event, wrapper, placeholders));
+      wrapper.getScheduler().select(position.intValue(), true);
+
+      PlaceholderBuilder.putOrReplace(placeholders, Placeholder.create(PlaceholderKeys.TRACK_TITLE, 
+            wrapper.getScheduler().getCurrentName()));
+      
+      Messages.Embed.send(event.getTextChannel(), placeholders, 
+            TranslationKeys.SELECT_COMMAND, null);
+      
    }
 
    @Override

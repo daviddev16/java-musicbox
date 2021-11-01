@@ -34,7 +34,7 @@ public final class Inspector implements GuildWrapperPart {
                destroyTimer();
             }
          }
-      }, 60 * 2 * 1000);
+      }, 60 * 5 * 1000);
    }
 
    /* connect to the voice channel */
