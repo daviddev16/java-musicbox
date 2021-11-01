@@ -30,7 +30,16 @@ public enum TranslationKeys {
    LABEL_INVALID_POSITION("label_invalid_position"),
    LABEL_ALREADY_PAUSED("label_already_paused"),
    LABEL_ALREADY_RESUMED("label_already_resumed"),
-   LABEL_UNSKIPPABLE("label_unskippable");
+   LABEL_UNABLE_ACTION("label_unable_action"),
+   LABEL_UNSKIPPABLE("label_unskippable"),
+   
+   LABEL_PLAY_DESCRIPTION("label_play_description"),
+   LABEL_STOP_DESCRIPTION("label_stop_description"),
+   LABEL_SKIP_DESCRIPTION("label_skip_description"),
+   LABEL_RESUME_DESCRIPTION("label_resume_description"),
+   LABEL_PAUSE_DESCRIPTION("label_pause_description"),
+   LABEL_SELECT_DESCRIPTION("label_select_description"),
+   LABEL_REPEAT_DESCRIPTION("label_repeat_description");
    
    private String key;
 

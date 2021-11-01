@@ -20,7 +20,8 @@ import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 public class ResumeCommand extends GuildCommand {
 
    public ResumeCommand() {
-      super("resume", Arrays.asList("resume", "rs"), true);
+      super("resume", Arrays.asList("resume", "rs"), false);
+      description(TranslationKeys.LABEL_RESUME_DESCRIPTION);
    }
 
    @Override
@@ -30,8 +31,12 @@ public class ResumeCommand extends GuildCommand {
       
       List<Placeholder> placeholders = PlaceholderBuilder.createBy(event, true)
             .event(event).command(this).build();
-
-      if(!wrapper.getScheduler().isPaused()) {
+      
+      if(wrapper.getScheduler().isEmptyOrDone()) {
+         throw new FriendlyException(wrapper.getLanguage().getLabel(
+               TranslationKeys.LABEL_UNABLE_ACTION), Severity.COMMON, null);
+      }
+      else if(!wrapper.getScheduler().isPaused()) {
          throw new FriendlyException(wrapper.getLanguage().getLabel(
                TranslationKeys.LABEL_ALREADY_RESUMED), Severity.COMMON, null);
       }

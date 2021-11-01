@@ -19,7 +19,8 @@ import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 public class StopCommand extends GuildCommand {
 
    public StopCommand() {
-      super("stop", Arrays.asList("stop", "st", "stp"), true/* ignoring arguments */);
+      super("stop", Arrays.asList("stop", "st", "stp"), false);
+      description(TranslationKeys.LABEL_STOP_DESCRIPTION);
    }
 
    @Override

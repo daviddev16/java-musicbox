@@ -8,6 +8,7 @@ import org.musicbox.core.builders.PlaceholderBuilder.Placeholder;
 import org.musicbox.core.command.GuildCommand;
 import org.musicbox.core.guild.GuildWrapper;
 import org.musicbox.core.guild.controllers.TrackScheduler.RepeatMode;
+import org.musicbox.core.translation.PlaceholderKeys;
 import org.musicbox.core.translation.TranslationKeys;
 import org.musicbox.core.utils.Messages;
 import org.musicbox.core.utils.SelfPermissions;
@@ -18,6 +19,7 @@ public class RepeatCommand extends GuildCommand {
 
    public RepeatCommand() {
       super("repeat", Arrays.asList("repeat", "rp"), true);
+      description(TranslationKeys.LABEL_REPEAT_DESCRIPTION);
    }
 
    @Override
@@ -25,8 +27,7 @@ public class RepeatCommand extends GuildCommand {
       if(!SelfPermissions.canInteract(event.getMember(), wrapper)) {
          return;
       }
-
-      String repeatModeString = params[0].toString();
+      String repeatModeString = params[0].toString().toUpperCase();
       List<Placeholder> placeholders = PlaceholderBuilder.createBy(event, true)
             .event(event).command(this).build();
       
@@ -35,8 +36,10 @@ public class RepeatCommand extends GuildCommand {
                TranslationKeys.WRONG_REPEAT_MODE, null);
          return;
       }
-
       wrapper.getScheduler().setRepeatMode(RepeatMode.valueOf(repeatModeString));
+      
+      placeholders.add(Placeholder.create(PlaceholderKeys.REPEAT_MODE, 
+            repeatModeString));
       
       Messages.Embed.send(event.getTextChannel(), placeholders, 
             TranslationKeys.REPEAT_COMMAND, null);
@@ -44,7 +47,7 @@ public class RepeatCommand extends GuildCommand {
 
    @Override
    public String toUsageString() {
-      return "<title or url>";
+      return "<All|Single|None>";
    }
 
 }

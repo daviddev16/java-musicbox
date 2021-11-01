@@ -19,6 +19,7 @@ public class PlayCommand extends GuildCommand {
 
    public PlayCommand() {
       super("play", Arrays.asList("play", "p"), true);
+      description(TranslationKeys.LABEL_PLAY_DESCRIPTION);
    }
 
    @Override

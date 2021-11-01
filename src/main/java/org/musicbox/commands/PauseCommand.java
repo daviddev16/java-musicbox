@@ -21,7 +21,8 @@ import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 public class PauseCommand extends GuildCommand {
 
    public PauseCommand() {
-      super("pause", Arrays.asList("pause", "ps"), true);
+      super("pause", Arrays.asList("pause", "ps"), false);
+      description(TranslationKeys.LABEL_PAUSE_DESCRIPTION);
    }
 
    @Override
@@ -32,7 +33,11 @@ public class PauseCommand extends GuildCommand {
       List<Placeholder> placeholders = PlaceholderBuilder.createBy(event, true)
             .event(event).command(this).build();
 
-      if(wrapper.getScheduler().isPaused()) {
+      if(wrapper.getScheduler().isEmptyOrDone()) {
+         throw new FriendlyException(wrapper.getLanguage().getLabel(
+               TranslationKeys.LABEL_UNABLE_ACTION), Severity.COMMON, null);
+      }
+      else if(wrapper.getScheduler().isPaused()) {
          throw new FriendlyException(wrapper.getLanguage().getLabel(
                TranslationKeys.LABEL_ALREADY_PAUSED), Severity.COMMON, null);
       }

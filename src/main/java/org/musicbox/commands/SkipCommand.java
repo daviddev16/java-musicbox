@@ -20,14 +20,15 @@ import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 public class SkipCommand extends GuildCommand {
 
    public SkipCommand() {
-      super("skip", Arrays.asList("skip", "skp", "sk", "next"), true/* ignoring arguments */);
+      super("skip", Arrays.asList("skip", "skp", "sk", "next"), false);
+      description(TranslationKeys.LABEL_SKIP_DESCRIPTION);
    }
 
    @Override
    public void onExecute(GuildWrapper wrapper, MessageReceivedEvent event, Object[] params) {
       if(!SelfPermissions.canInteract(event.getMember(), wrapper))
          return;
-      
+
       List<Placeholder> placeholders = PlaceholderBuilder.createBy(event, true)
             .event(event).command(this).build();
 
@@ -35,16 +36,16 @@ public class SkipCommand extends GuildCommand {
          throw new FriendlyException(wrapper.getLanguage().getLabel(
                TranslationKeys.LABEL_UNSKIPPABLE), Severity.COMMON, null);
       }
-      
+
       final String previousTrack = wrapper.getScheduler().getCurrentName();
-    
+
       wrapper.getScheduler().nextTrack();
 
       placeholders.add(Placeholder.create(PlaceholderKeys.TRACK_TITLE_PREVIOUS, 
             previousTrack));
       placeholders.add(Placeholder.create(PlaceholderKeys.TRACK_TITLE, 
             wrapper.getScheduler().getCurrentName()));
-      
+
       Messages.Embed.send(event.getTextChannel(), placeholders, 
             TranslationKeys.SKIP_COMMAND, null);
    }

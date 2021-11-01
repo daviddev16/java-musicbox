@@ -21,6 +21,7 @@ public class SelectCommand extends GuildCommand {
 
    public SelectCommand() {
       super("select", Arrays.asList("select", "slct", "slc", "sl"), false);
+      description(TranslationKeys.LABEL_SELECT_DESCRIPTION);
       nextRequiredAs(Integer.class);
    }
 

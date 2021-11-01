@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.musicbox.core.exceptions.ParameterException;
 import org.musicbox.core.guild.GuildWrapper;
+import org.musicbox.core.translation.TranslationKeys;
 import org.musicbox.core.utils.Utilities;
 
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
@@ -16,6 +17,7 @@ public abstract class GenericCommand {
    private List<String> usages;
    private boolean contentArgument;
    private List<Class<?>> arguments;
+   private TranslationKeys descriptionKey;
 
    public GenericCommand(String name, List<String> usages, boolean contentArgument) {
       this.name = name;
@@ -25,36 +27,37 @@ public abstract class GenericCommand {
    }
 
    public abstract void onExecute(GuildWrapper wrapper, MessageReceivedEvent event, Object[] params);
+
+   public void description(TranslationKeys descriptionKey) {
+      this.descriptionKey = descriptionKey;
+   }
    
    public boolean isMine(final String command) {
       return usages.stream().anyMatch(usage -> usage.equals(command));
    }
 
    public void tryoutCommand(CommandTranslator translator) throws ParameterException {
-      if(!isContentArgument()) {
-         if(arguments.size() != translator.getArguments().length) {
-            throw new ParameterException("Out of bounds.", 
-                  ParameterException.OUT_OF_BOUNDS);
-         }
-         try {
-            for(int i = 0; i < translator.getArguments().length; i++) {
-               Utilities.parse(translator.getArguments()[i], arguments.get(i));
-            }
-         }catch(Exception e) {
-            throw new ParameterException("Type missmatch.", 
-                  ParameterException.TYPE_MISSMATCH);
-         }
+      if(isContentArgument()) {
+         return;
       }
-      if(translator.getArguments().length < 1) {
-         throw new ParameterException("Empty content.", 
-               ParameterException.EMPTY_CONTENT);  
+      else if (arguments.size() != translator.getArguments().length) {
+         throw new ParameterException("Out of bounds.", 
+               ParameterException.OUT_OF_BOUNDS);
+      }
+      try {
+         for (int i = 0; i < translator.getArguments().length; i++) {
+            Utilities.parse(translator.getArguments()[i], arguments.get(i));
+         }
+      } catch (Exception e) {
+         throw new ParameterException("Type missmatch.", 
+               ParameterException.TYPE_MISSMATCH);
       }
    }
 
    public void nextRequiredAs(Class<?> nextArgumentClass) {
       arguments.add(nextArgumentClass);
    }
-   
+
    public String getName() {
       return name;
    }
@@ -71,7 +74,7 @@ public abstract class GenericCommand {
       this.usages = usages;
    }
 
-   public List<Class<?>> getRequiredArguments(){
+   public List<Class<?>> getRequiredArguments() {
       return arguments;
    }
 
@@ -79,6 +82,10 @@ public abstract class GenericCommand {
 
    public boolean isContentArgument() {
       return contentArgument;
+   }
+
+   public TranslationKeys getDescription() {
+      return descriptionKey;
    }
 
 }

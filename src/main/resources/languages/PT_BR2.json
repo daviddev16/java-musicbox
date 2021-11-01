@@ -243,7 +243,7 @@
 			"fields": [
 				{
 					"name": "Música:",
-					"value": "$[track_position]",
+					"value": "$[track_title]",
 					"inline": true
 				}
 			],
@@ -257,7 +257,7 @@
 			"fields": [
 				{
 					"name": "Música:",
-					"value": "$[track_position]",
+					"value": "$[track_title]",
 					"inline": true
 				}
 			],
@@ -313,6 +313,14 @@
 		"label_already_resumed": "Uma música já está tocando.",
 		"label_already_paused": "Uma música já foi pausada.",
 		"label_unskippable": "Não é possível passar a música.",
-		"label_empty_list": "Lista vazia."
+		"label_unable_action": "Não é possível executar essa ação.",
+		"label_empty_list": "Lista vazia.",
+		"label_play_description": "Adiciona uma nova música a lista.",
+		"label_stop_description": "Esvazia a lista.",
+		"label_skip_description": "Passa para a próxima música.",
+		"label_repeat_description": "Seleciona um modo de repetição.",
+		"label_resume_description": "Continuar música pausada.",
+		"label_pause_description": "Pausa a música atual.",
+		"label_select_description": "Seleciona uma música."
 	}
 }
