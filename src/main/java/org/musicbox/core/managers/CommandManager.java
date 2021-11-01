@@ -2,6 +2,7 @@ package org.musicbox.core.managers;
 
 import java.util.LinkedHashSet;
 import java.util.Set;
+import java.util.stream.Stream;
 
 import javax.management.InstanceAlreadyExistsException;
 
@@ -80,7 +81,6 @@ public class CommandManager {
          command.onExecute(wrapper, event, params);
    }
 
-   
    private Object[] getParameters(GenericCommand command, CommandTranslator translator) {
       if(command != null) {
          if(command.isContentArgument()) {   
@@ -95,11 +95,19 @@ public class CommandManager {
       }
       return new Object[] {};
    }
-   
+
 
    public GenericCommand getCommandByName(String name) {
       return getCommands().stream().filter(cmd -> cmd.isMine(name))
             .findAny().orElse(null);
+   }
+
+   public static void register(GenericCommand... commands) {
+      if(commands == null) {   
+         return;
+      }
+      
+      Stream.of(commands).forEach(getCommandManager().getCommands()::add);
    }
 
    public Set<GenericCommand> getCommands() {

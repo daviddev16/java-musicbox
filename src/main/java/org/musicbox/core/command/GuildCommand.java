@@ -8,4 +8,8 @@ public abstract class GuildCommand extends GenericCommand {
       super(name, usages, contentArgument);
    }
 
+   @Override
+   public String toUsageString() {
+      return "";
+   }
 }

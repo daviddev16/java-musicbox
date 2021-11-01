@@ -14,7 +14,8 @@ public enum TranslationKeys {
    GENERIC_ERROR("generic_error"),
    COMMAND_MISSMATCH("command_missmatch"),
    COMMAND_OUT_OF_BOUNDS("command_out_of_bounds"),
-   COMMAND_NOT_FOUND("command_not_found");
+   COMMAND_NOT_FOUND("command_not_found"),
+   MISSING_BOT("missing_bot");
 
    private String key;
 

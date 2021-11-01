@@ -114,6 +114,25 @@
 				"iconUrl": "$[sender_avatar]"
 			}
 		},
+		"missing_bot": {
+			"title": "Não foi possível usar o bot",
+			"fields": [
+				{
+					"name": "Erro:",
+					"value": "Bot ausente de canal de voz.",
+					"inline": true
+				},
+				{
+					"name": "Proximo passo:",
+					"value": "Use o comando ´$[global_prefix]play´ para iniciar uma música.",
+					"inline": true
+				}
+			],
+			"footer": {
+				"text": "Requisitado por $[sender_name]",
+				"iconUrl": "$[sender_avatar]"
+			}
+		},
 		"generic_error": {
 			"title": "Não foi possível usar o bot",
 			"fields": [
@@ -136,11 +155,11 @@
 		"track_queued": {
 			"title": "Música adicionada a lista",
 			"fields": [
-			   {
-			   	"name": "Música:",
-			   	"value": "$[track_title]",
-			   	"inline": true
-			   },
+				{
+					"name": "Música:",
+					"value": "$[track_title]",
+					"inline": true
+				},
 				{
 					"name": "Posição:   ",
 					"value": "$[track_position]",
@@ -160,11 +179,11 @@
 		"playlist_queued": {
 			"title": "Playlist adicionada a lista",
 			"fields": [
-			   {
-			   	"name": "Nome:",
-			   	"value": "$[playlist_title]",
-			   	"inline": true
-			   },
+				{
+					"name": "Nome:",
+					"value": "$[playlist_title]",
+					"inline": true
+				},
 				{
 					"name": "Tamanho:",
 					"value": "$[playlist_length]",
