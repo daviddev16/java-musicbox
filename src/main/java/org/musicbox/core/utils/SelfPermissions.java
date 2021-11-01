@@ -72,6 +72,10 @@ public final class SelfPermissions {
       return channel.getMembers().stream()
             .anyMatch(member -> member.getIdLong() == getSelfMember(channel).getIdLong());
    }
+   
+   public static boolean canInteract(Member member, GuildWrapper wrapper) {
+      return isAlreadyConnect(wrapper) && isTogether(member);
+   }
 
    public static boolean isAlreadyConnect(GuildWrapper wrapper) {
       return (wrapper != null && isAlreadyConnect(wrapper.getGuild()));

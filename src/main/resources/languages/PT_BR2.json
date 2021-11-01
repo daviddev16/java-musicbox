@@ -133,6 +133,30 @@
 				"iconUrl": "$[sender_avatar]"
 			}
 		},
+		"wrong_repeat_mode": {
+			"title": "Não foi possível usar o bot",
+			"fields": [
+				{
+					"name": "Erro:",
+					"value": "Modo de repetição inválido.",
+					"inline": true
+				},
+				{
+					"name": "Solução:",
+					"value": "Use o comando ´$[global_prefix]repeat all/single/none´.",
+					"inline": true
+				},
+				{
+					"name": "Ajuda:",
+					"value": "ALL = Repete toda as músicas\nSINGLE = Repete a música atual\nNONE = Nenhuma",
+					"inline": true
+				}
+			],
+			"footer": {
+				"text": "Requisitado por $[sender_name]",
+				"iconUrl": "$[sender_avatar]"
+			}
+		},
 		"generic_error": {
 			"title": "Não foi possível usar o bot",
 			"fields": [
@@ -199,8 +223,82 @@
 			"title": "Música selecionada",
 			"fields": [
 				{
+					"name": "Posição:",
+					"value": "$[track_position]",
+					"inline": true
+				},
+				{
 					"name": "Música:",
 					"value": "$[track_title]",
+					"inline": true
+				}
+			],
+			"footer": {
+				"text": "Requisitado por $[sender_name]",
+				"iconUrl": "$[sender_avatar]"
+			}
+		},
+		"pause_command": {
+			"title": "Música pausada.",
+			"fields": [
+				{
+					"name": "Música:",
+					"value": "$[track_position]",
+					"inline": true
+				}
+			],
+			"footer": {
+				"text": "Requisitado por $[sender_name]",
+				"iconUrl": "$[sender_avatar]"
+			}
+		},
+		"resume_command": {
+			"title": "Música despausada.",
+			"fields": [
+				{
+					"name": "Música:",
+					"value": "$[track_position]",
+					"inline": true
+				}
+			],
+			"footer": {
+				"text": "Requisitado por $[sender_name]",
+				"iconUrl": "$[sender_avatar]"
+			}
+		},
+		"skip_command": {
+			"title": "Música passada.",
+			"fields": [
+				{
+					"name": "Música anterior:",
+					"value": "$[previous::track_title]",
+					"inline": true
+				},
+				{
+					"name": "Música atual:",
+					"value": "$[track_title]",
+					"inline": true
+				}
+			],
+			"footer": {
+				"text": "Requisitado por $[sender_name]",
+				"iconUrl": "$[sender_avatar]"
+			}
+		},
+		"stop_command": {
+			"title": "Agenda encerrada.",
+			"description": "A lista de produção foi limpa.",
+			"footer": {
+				"text": "Requisitado por $[sender_name]",
+				"iconUrl": "$[sender_avatar]"
+			}
+		},
+		"repeat_command": {
+			"title": "Modo de repetição mudado.",
+			"fields": [
+				{
+					"name": "Novo modo:",
+					"value": "$[repeat_mode]",
 					"inline": true
 				}
 			],
@@ -211,6 +309,10 @@
 		}
 	},
 	"labels": {
-		"invalid_position": "Posição inválida."
+		"label_invalid_position": "Posição inválida.",
+		"label_already_resumed": "Uma música já está tocando.",
+		"label_already_paused": "Uma música já foi pausada.",
+		"label_unskippable": "Não é possível passar a música.",
+		"label_empty_list": "Lista vazia."
 	}
 }

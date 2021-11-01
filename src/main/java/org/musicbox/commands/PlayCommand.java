@@ -23,7 +23,6 @@ public class PlayCommand extends GuildCommand {
 
    @Override
    public void onExecute(GuildWrapper wrapper, MessageReceivedEvent event, Object[] params) {
-
       Member member = event.getMember();
       String titleOrUrl = params[0].toString();
 

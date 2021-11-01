@@ -12,12 +12,15 @@ public enum PlaceholderKeys {
    COMMAND_NAME("command_name"),
    
    TRACK_TITLE("track_title"),
+   TRACK_TITLE_PREVIOUS("previous::track_title"),
    TRACK_DURATION("track_duration"),
    TRACK_POSITION("track_position"),
    TIME_LEFT("time_left"),
-   
+
    PLAYLIST_LENGTH("playlist_length"),
    PLAYLIST_NAME("playlist_title"),
+   
+   REPEAT_MODE("repeat_mode"),
    
    GENERIC_ERROR_MESSAGE("generic_error_message"),
    ERROR_LEVEL("error_level");

@@ -7,38 +7,44 @@ import org.musicbox.core.builders.PlaceholderBuilder;
 import org.musicbox.core.builders.PlaceholderBuilder.Placeholder;
 import org.musicbox.core.command.GuildCommand;
 import org.musicbox.core.guild.GuildWrapper;
+import org.musicbox.core.guild.controllers.TrackScheduler.RepeatMode;
 import org.musicbox.core.translation.TranslationKeys;
 import org.musicbox.core.utils.Messages;
 import org.musicbox.core.utils.SelfPermissions;
 
-import com.sedmelluq.discord.lavaplayer.tools.FriendlyException;
-import com.sedmelluq.discord.lavaplayer.tools.FriendlyException.Severity;
-
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
-public class StopCommand extends GuildCommand {
+public class RepeatCommand extends GuildCommand {
 
-   public StopCommand() {
-      super("stop", Arrays.asList("stop", "st", "stp"), true/* ignoring arguments */);
+   public RepeatCommand() {
+      super("repeat", Arrays.asList("repeat", "rp"), true);
    }
 
    @Override
    public void onExecute(GuildWrapper wrapper, MessageReceivedEvent event, Object[] params) {
-      if(!SelfPermissions.canInteract(event.getMember(), wrapper))
+      if(!SelfPermissions.canInteract(event.getMember(), wrapper)) {
          return;
-      
-      List<Placeholder> placeholders = PlaceholderBuilder.createBy(event, true)
-            .event(event).command(this).build();
-
-      if(wrapper.getScheduler().isEmptyOrDone()) {
-         throw new FriendlyException(wrapper.getLanguage().getLabel(
-               TranslationKeys.LABEL_EMPTY_LIST), Severity.COMMON, null);
       }
 
-      Messages.Embed.send(event.getTextChannel(), placeholders, 
-            TranslationKeys.STOP_COMMAND, null);
+      String repeatModeString = params[0].toString();
+      List<Placeholder> placeholders = PlaceholderBuilder.createBy(event, true)
+            .event(event).command(this).build();
+      
+      if(!RepeatMode.isValid(repeatModeString)) {
+         Messages.Embed.send(event.getTextChannel(), placeholders, 
+               TranslationKeys.WRONG_REPEAT_MODE, null);
+         return;
+      }
 
-      wrapper.getScheduler().stopSchedule();
+      wrapper.getScheduler().setRepeatMode(RepeatMode.valueOf(repeatModeString));
+      
+      Messages.Embed.send(event.getTextChannel(), placeholders, 
+            TranslationKeys.REPEAT_COMMAND, null);
+   }
+
+   @Override
+   public String toUsageString() {
+      return "<title or url>";
    }
 
 }

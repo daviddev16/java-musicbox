@@ -1,6 +1,7 @@
 package org.musicbox.core.managers;
 
 import java.util.LinkedHashSet;
+
 import java.util.Set;
 import java.util.stream.Stream;
 
@@ -53,35 +54,35 @@ public class CommandManager {
 
       CommandTranslator translator = CommandTranslator.getByEvent(event);
 
-      if (!translator.isValid())
-         return;
+      if (translator.isValid()) {
 
-      GenericCommand command = (GenericCommand) getCommandManager()
-            .getCommandByName(translator.getCommand());
+         GenericCommand command = (GenericCommand) getCommandManager()
+               .getCommandByName(translator.getCommand());
 
-      if (command == null) {
-         GuildFailHandler.getFailHandler().onGenericError(command, event.getTextChannel(), 
-               event.getAuthor(), TranslationKeys.COMMAND_NOT_FOUND);
-         return;
-      }
-      try {
-         /* check the compatibility */
-         command.tryoutCommand(translator);
-
-      }catch(ParameterException exception) {
-         GuildFailHandler.getFailHandler().onGenericError(command, event.getTextChannel(), 
-               event.getAuthor(), exception.getError());
-         return;
-      }
-
-      Object[] params = getParameters(command, translator);
-      
-      if (event.isFromGuild()) {
+         if (command == null) {
+            GuildFailHandler.getFailHandler().onGenericError(command, event.getTextChannel(), 
+                  event.getAuthor(), TranslationKeys.COMMAND_NOT_FOUND);
+            return;
+         }
          try {
-            command.onExecute(wrapper, event, params);
-         }catch(Exception e) {
-            GuildFailHandler.getFailHandler().onThrownException(command, 
-                  event.getTextChannel(), event.getAuthor(), e);
+            /* check the compatibility */
+            command.tryoutCommand(translator);
+
+         }catch(ParameterException exception) {
+            GuildFailHandler.getFailHandler().onGenericError(command, event.getTextChannel(), 
+                  event.getAuthor(), exception.getError());
+            return;
+         }
+
+         Object[] params = getParameters(command, translator);
+
+         if (event.isFromGuild()) {
+            try {
+               command.onExecute(wrapper, event, params);
+            }catch(Exception e) {
+               GuildFailHandler.getFailHandler().onThrownException(command, 
+                     event.getTextChannel(), event.getAuthor(), e);
+            }
          }
       }
    }
