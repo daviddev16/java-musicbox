@@ -24,6 +24,7 @@ public abstract class GenericCommand {
       this.usages = usages;
       this.contentArgument = contentArgument;
       this.arguments = new LinkedList<>();
+      description(null);
    }
 
    public abstract void onExecute(GuildWrapper wrapper, MessageReceivedEvent event, Object[] params);
