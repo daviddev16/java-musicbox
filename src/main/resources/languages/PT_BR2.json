@@ -319,8 +319,8 @@
 		"label_stop_description": "Esvazia a lista.",
 		"label_skip_description": "Passa para a próxima música.",
 		"label_repeat_description": "Seleciona um modo de repetição.",
-		"label_resume_description": "Continuar música pausada.",
+		"label_resume_description": "Retomar música pausada.",
 		"label_pause_description": "Pausa a música atual.",
-		"label_select_description": "Seleciona uma música."
+		"label_select_description": "Seleciona a música da posição passada."
 	}
 }

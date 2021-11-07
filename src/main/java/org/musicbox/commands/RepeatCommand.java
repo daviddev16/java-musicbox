@@ -47,7 +47,7 @@ public class RepeatCommand extends GuildCommand {
 
    @Override
    public String toUsageString() {
-      return "<All|Single|None>";
+      return "<All | Single | None>";
    }
 
 }

@@ -28,7 +28,8 @@ public class HelpCommand extends GuildCommand {
       for(GenericCommand cmd : CommandManager.getCommandManager().getCommands()) {
          if(cmd.getDescription() != null) {
             strBuilder.append( "**" + ((GuildCommand)cmd).getFullUsage() + "**" ).append('\n');
-            strBuilder.append( wrapper.getLanguage().getLabel(cmd.getDescription()) ).append('\n');
+            strBuilder.append( "┖ " + wrapper.getLanguage().getLabel(cmd.getDescription()) ).append('\n');
+            strBuilder.append('\n');
          }
       }
 
