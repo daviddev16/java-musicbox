@@ -2,13 +2,13 @@ package org.musicbox.modules.paginator;
 
 import java.util.List;
 
-import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.GuildChannel;
 import net.dv8tion.jda.api.entities.Message;
+import net.dv8tion.jda.api.entities.MessageEmbed;
 
 public interface IPaginator {
 
-   List<EmbedBuilder> getPages();
+   List<MessageEmbed> getPages();
 
    int getCurrentIndex();
 
@@ -22,6 +22,6 @@ public interface IPaginator {
 
    void back();
    
-   void moveToPage(EmbedBuilder page);
+   void moveToPage(MessageEmbed page);
 
 }

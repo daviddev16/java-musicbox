@@ -12,9 +12,9 @@ import org.musicbox.core.managers.ListenerManager.Listener;
 import org.musicbox.core.module.Modules;
 import org.musicbox.core.utils.SelfPermissions;
 
-import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.GuildChannel;
 import net.dv8tion.jda.api.entities.Message;
+import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.entities.TextChannel;
 import net.dv8tion.jda.api.events.message.guild.react.GenericGuildMessageReactionEvent;
 
@@ -25,7 +25,7 @@ public class Paginator extends Listener implements IPaginator {
 
    private final Timer timer;
    private AtomicReference<Message> messageReference;
-   private List<EmbedBuilder> pages;
+   private List<MessageEmbed> pages;
    private int currentPage = 0;
 
    protected Paginator() {
@@ -47,7 +47,7 @@ public class Paginator extends Listener implements IPaginator {
 
    @Override
    public void open(GuildChannel channel) {
-      ((TextChannel) channel).sendMessageEmbeds(pages.get(currentPage).build()).queue(msg -> {
+      ((TextChannel) channel).sendMessageEmbeds(pages.get(currentPage)).queue(msg -> {
          messageReference.set(msg);
          msg.addReaction(BACK_EMOJI).queue();
          msg.addReaction(NEXT_EMOJI).queue(); /* back | next */    
@@ -57,9 +57,9 @@ public class Paginator extends Listener implements IPaginator {
    }
 
    @Override
-   public synchronized void moveToPage(EmbedBuilder page) {
+   public synchronized void moveToPage(MessageEmbed page) {
       if (getMessage() != null) {
-         getMessage().editMessageEmbeds(page.build()).queue(msg -> messageReference.set(msg));
+         getMessage().editMessageEmbeds(page).queue(msg -> messageReference.set(msg));
          return;
       }
       throw new NullPointerException("Null paginator message.");
@@ -112,7 +112,7 @@ public class Paginator extends Listener implements IPaginator {
    }
 
    @Override
-   public List<EmbedBuilder> getPages() {
+   public List<MessageEmbed> getPages() {
       return pages;
    }
 

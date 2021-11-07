@@ -11,6 +11,7 @@ import javax.security.auth.login.LoginException;
 import org.musicbox.commands.HelpCommand;
 import org.musicbox.commands.PauseCommand;
 import org.musicbox.commands.PlayCommand;
+import org.musicbox.commands.QueueCommand;
 import org.musicbox.commands.RepeatCommand;
 import org.musicbox.commands.ResumeCommand;
 import org.musicbox.commands.SelectCommand;
@@ -82,7 +83,8 @@ public class MusicBox {
             new SelectCommand(),
             new SkipCommand(),
             new RepeatCommand(),
-            new HelpCommand()
+            new HelpCommand(),
+            new QueueCommand()
             );
       
       ListenerManager.setup();

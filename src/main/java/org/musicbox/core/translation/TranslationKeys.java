@@ -11,6 +11,8 @@ public enum TranslationKeys {
    STOP_COMMAND("stop_command"),
    REPEAT_COMMAND("repeat_command"),
    
+   QUEUE_PAGE("queue_page"),
+   
    PLAYLIST_QUEUED("playlist_queued"),
    TRACK_QUEUED("track_queued"),
    
@@ -39,7 +41,8 @@ public enum TranslationKeys {
    LABEL_RESUME_DESCRIPTION("label_resume_description"),
    LABEL_PAUSE_DESCRIPTION("label_pause_description"),
    LABEL_SELECT_DESCRIPTION("label_select_description"),
-   LABEL_REPEAT_DESCRIPTION("label_repeat_description");
+   LABEL_REPEAT_DESCRIPTION("label_repeat_description"),
+   LABEL_QUEUE_DESCRIPTION("label_queue_description");
    
    private String key;
 

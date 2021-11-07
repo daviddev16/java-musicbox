@@ -7,7 +7,7 @@ import java.util.stream.Stream;
 
 import org.musicbox.core.module.CoreModule;
 
-import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.entities.TextChannel;
 
 public class PaginatorModule extends CoreModule {
@@ -27,7 +27,7 @@ public class PaginatorModule extends CoreModule {
       return paginators;
    }
 
-   public void createPaginator(EmbedBuilder[] pages, TextChannel textChannel) {
+   public void createPaginator(MessageEmbed[] pages, TextChannel textChannel) {
       if (pages == null)
          throw new NullPointerException("Pages are null.");
 

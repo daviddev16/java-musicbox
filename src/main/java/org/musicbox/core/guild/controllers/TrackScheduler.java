@@ -201,6 +201,10 @@ public final class TrackScheduler extends AudioEventAdapter implements AudioSend
       return getTracklist().isEmpty();
    }
 
+   public boolean isCurrent(int position) {
+      return getCurrentPosition() == position;
+   }
+   
    public boolean isPlaying() {
       return player.getPlayingTrack() != null;
    }

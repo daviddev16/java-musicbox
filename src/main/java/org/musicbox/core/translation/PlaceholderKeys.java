@@ -7,6 +7,9 @@ public enum PlaceholderKeys {
    
    SENDER_NAME("sender_name"),
    SENDER_AVATAR("sender_avatar"),
+   CURRENT_PAGE("current_page"),
+   MAX_PAGE("max_page"),
+   QUEUE_DESCRIPTION("queue_description"),
    
    COMMAND_USAGE("command_usage"),
    COMMAND_NAME("command_name"),

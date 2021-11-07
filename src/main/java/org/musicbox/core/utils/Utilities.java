@@ -113,28 +113,6 @@ public final class Utilities {
       return false;
    }
 
-   /* this is ugly xdd but yeah*/
-   public static List<String> spliceTracklist(TrackScheduler scheduler){
-      List<String> splices = new ArrayList<>();
-      StringBuilder builder = new StringBuilder();
-      for(int i = 0; i < scheduler.getTracklist().size(); i++) {
-         String trackName = i + " - " + scheduler.getTracklist().get(i).getInfo().title;
-         if(scheduler.getCurrentPosition() == i) {
-            trackName = "```fix\n" + trackName + " [NOW]```";
-         }
-         else {
-            trackName = "```\n" + trackName + "```";
-         }
-         if(i % 5 == 0 && i != 0) {
-            splices.add(builder.toString().trim());
-            builder.delete(0, builder.length());
-         }
-         builder.append(trackName).append('\n');
-      }
-      splices.add(builder.toString().trim());
-      return splices;
-   }
-
    public static String stripUrl(String url) {
       if (url.startsWith("<") && url.endsWith(">")) {
          return url.substring(1, url.length() - 1);
@@ -229,6 +207,7 @@ public final class Utilities {
       return (msg) -> msg.delete().queueAfter(sec, TimeUnit.SECONDS);
    }
 
+   /* valid ok */
    public static boolean isURL(String url) {
       try {
          new URL(url);

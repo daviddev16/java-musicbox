@@ -26,17 +26,20 @@ public class InspectorListener extends Listener {
 
       if (event instanceof GuildVoiceLeaveEvent) {
          channel = ((GuildVoiceLeaveEvent) event).getChannelLeft();
-         if (isBotPresent(channel) && isAlone(channel.getMembers())) {
-            if (!inspector.isWaiting()) {
-               inspector.waitToQuitIfNecessary(channel);
-            }
-         }
       } else if (event instanceof GuildVoiceJoinEvent) {
          channel = ((GuildVoiceJoinEvent) event).getChannelJoined();
-         if (isBotPresent(channel) && !isAlone(channel.getMembers())) {
+      }
+
+      if(isBotPresent(channel)) {
+         if(isAlone(channel.getMembers())) {
+            if(!inspector.isWaiting()) {
+               inspector.waitToQuitIfNecessary(channel);
+            }
+         } else {
             inspector.cancelIfNecessary();
          }
       }
+
    }
 
    public boolean isBotPresent(VoiceChannel voiceChannel) {

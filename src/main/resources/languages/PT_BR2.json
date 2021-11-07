@@ -306,6 +306,14 @@
 				"text": "Requisitado por $[sender_name]",
 				"iconUrl": "$[sender_avatar]"
 			}
+		},
+		"queue_page": {
+			"title": "Lista de reprodução",
+			"description": "$[queue_description]",
+			"footer": {
+				"text": "$[current_page]/$[max_page]",
+				"iconUrl": "$[sender_avatar]"
+			}
 		}
 	},
 	"labels": {
@@ -321,6 +329,7 @@
 		"label_repeat_description": "Seleciona um modo de repetição.",
 		"label_resume_description": "Retomar música pausada.",
 		"label_pause_description": "Pausa a música atual.",
-		"label_select_description": "Seleciona a música da posição passada."
+		"label_select_description": "Seleciona a música da posição passada.",
+		"label_queue_description": "Mostrar a lista de reprodução."
 	}
 }
