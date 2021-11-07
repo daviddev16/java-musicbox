@@ -8,7 +8,10 @@ import java.util.EnumSet;
 import javax.management.InstanceAlreadyExistsException;
 import javax.security.auth.login.LoginException;
 
+import org.musicbox.commands.BackCommand;
 import org.musicbox.commands.HelpCommand;
+import org.musicbox.commands.LeaveCommand;
+import org.musicbox.commands.NowCommand;
 import org.musicbox.commands.PauseCommand;
 import org.musicbox.commands.PlayCommand;
 import org.musicbox.commands.QueueCommand;
@@ -84,7 +87,10 @@ public class MusicBox {
             new SkipCommand(),
             new RepeatCommand(),
             new HelpCommand(),
-            new QueueCommand()
+            new QueueCommand(),
+            new NowCommand(),
+            new LeaveCommand(),
+            new BackCommand()
             );
       
       ListenerManager.setup();

@@ -10,6 +10,9 @@ public enum TranslationKeys {
    SKIP_COMMAND("skip_command"),
    STOP_COMMAND("stop_command"),
    REPEAT_COMMAND("repeat_command"),
+   RESTART_COMMAND("restart_command"),
+   BACK_COMMAND("back_command"),
+   NOW_COMMAND("now_command"),
    
    QUEUE_PAGE("queue_page"),
    
@@ -28,6 +31,8 @@ public enum TranslationKeys {
    MISSING_BOT("missing_bot"),
    
    /*labels*/
+   LABEL_NOT_PLAYING("label_not_playing"),
+   
    LABEL_EMPTY_LIST("label_empty_list"),
    LABEL_INVALID_POSITION("label_invalid_position"),
    LABEL_ALREADY_PAUSED("label_already_paused"),
@@ -42,6 +47,10 @@ public enum TranslationKeys {
    LABEL_PAUSE_DESCRIPTION("label_pause_description"),
    LABEL_SELECT_DESCRIPTION("label_select_description"),
    LABEL_REPEAT_DESCRIPTION("label_repeat_description"),
+   LABEL_RESTART_DESCRIPTION("label_restart_description"),
+   LABEL_NOW_DESCRIPTION("label_now_description"),
+   LABEL_BACK_DESCRIPTION("label_back_description"),
+   LABEL_LEAVE_DESCRIPTION("label_leave_description"),
    LABEL_QUEUE_DESCRIPTION("label_queue_description");
    
    private String key;

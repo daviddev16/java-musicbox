@@ -285,9 +285,45 @@
 				"iconUrl": "$[sender_avatar]"
 			}
 		},
+		"back_command": {
+			"title": "Música anterior tocando novamente.",
+			"fields": [
+				{
+					"name": "Música anterior:",
+					"value": "$[previous::track_title]",
+					"inline": true
+				}
+			],
+			"footer": {
+				"text": "Requisitado por $[sender_name]",
+				"iconUrl": "$[sender_avatar]"
+			}
+		},
 		"stop_command": {
 			"title": "Agenda encerrada.",
 			"description": "A lista de produção foi limpa.",
+			"footer": {
+				"text": "Requisitado por $[sender_name]",
+				"iconUrl": "$[sender_avatar]"
+			}
+		},
+		"restart_command": {
+			"title": "Começando a música atual do início.",
+			"description": "Recomeçando: $[track_title]",
+			"footer": {
+				"text": "Requisitado por $[sender_name]",
+				"iconUrl": "$[sender_avatar]"
+			}
+		},
+		"now_command": {
+			"title": "$[track_title]",
+			"fields": [
+				{
+					"name": "Posição:",
+					"value": "$[track_position]",
+					"inline": true
+				}
+			],
 			"footer": {
 				"text": "Requisitado por $[sender_name]",
 				"iconUrl": "$[sender_avatar]"
@@ -318,6 +354,7 @@
 	},
 	"labels": {
 		"label_invalid_position": "Posição inválida.",
+		"label_not_playing": "Nada tocando no momento.",
 		"label_already_resumed": "Uma música já está tocando.",
 		"label_already_paused": "Uma música já foi pausada.",
 		"label_unskippable": "Não é possível passar a música.",
@@ -328,8 +365,12 @@
 		"label_skip_description": "Passa para a próxima música.",
 		"label_repeat_description": "Seleciona um modo de repetição.",
 		"label_resume_description": "Retomar música pausada.",
+		"label_leave_description": "Faz o bot sair do canal atual.",
+		"label_back_description": "Volta para a música anterior.",
+		"label_now_description": "Mostra a música tocando no momento.",
 		"label_pause_description": "Pausa a música atual.",
 		"label_select_description": "Seleciona a música da posição passada.",
-		"label_queue_description": "Mostrar a lista de reprodução."
+		"label_queue_description": "Mostrar a lista de reprodução.",
+		"label_restart_description": "Começa a música atual do zero."
 	}
 }
