@@ -1,5 +1,6 @@
 # Music Box (Java Discord Bot)
 
+<!---
 [![License](https://img.shields.io/github/license/jagrosh/MusicBot.svg)](https://github.com/daviddev16/java-musicbox/blob/master/LICENSE)
 [![CircleCI](https://img.shields.io/circleci/build/github/daviddev16/java-musicbox/master)](https://circleci.com/gh/daviddev16/java-musicbox/tree/master)
 [![Discord](https://discordapp.com/api/guilds/893011039468273705/widget.png)](https://discord.gg/RjxMwhMwwF)
@@ -42,3 +43,4 @@
 ## Warning
 
 <h6><i>Since the bot is in the early development version, you eventually will find some bug or error, you can report those bugs to our community.</i></h6>
+--->
