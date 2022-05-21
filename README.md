@@ -1,5 +1,7 @@
 # Music Box (Java Discord Bot)
 
+Project deprecated :(
+
 <!---
 [![License](https://img.shields.io/github/license/jagrosh/MusicBot.svg)](https://github.com/daviddev16/java-musicbox/blob/master/LICENSE)
 [![CircleCI](https://img.shields.io/circleci/build/github/daviddev16/java-musicbox/master)](https://circleci.com/gh/daviddev16/java-musicbox/tree/master)
